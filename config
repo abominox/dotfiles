@@ -41,7 +41,7 @@ exec --no-startup-id xbindkeys_autostart
 exec --no-startup-id xfce4-volumed
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id galliumos-update-notifier
-#exec_always --no-startup-id nm-applet
+exec_always --no-startup-id nm-applet
 
 exec_always --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
 #exec_always --no-startup-id feh --bg-fill ~/Downloads/Backgrounds/groot.png
