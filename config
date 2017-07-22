@@ -48,9 +48,9 @@ exec_always --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
 
 ###### KEYBINDINGS
 
-bindsym $mod+XF86ScreenSaver exec --no-startup-id scrot '%M-%s-%Y-%m-%d_$wx$h.png' -q 100 'mv $f ~/Pictures/scrots' 
+bindsym $mod+XF86ScreenSaver exec --no-startup-id scrot '%M-%s-%Y-%m-%d_$wx$h.png' -q 100 'mv $f ~/Pictures/scrots/' 
 bindsym $mod+XF86Reload exec --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
-bindsym $mod+bracketleft exec --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds 2	
+bindsym $mod+bracketleft exec --no-startup-id feh --randomize --bg-fill ~/Downloads/bg-other	
 
 ###### OTHER CUSTOM SETTINGS
 
