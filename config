@@ -31,9 +31,9 @@ font pango:monospace 8
 ###### PERSONAL NOTES
 
 # - Use xev to find keycodes for bindings
-# - Connect to Wifi networks from the CLI using wicd-curses
+# - Connect to Wifi networks from the CLI using wicd-curses, or wicd-gtk from GUI
 
-###### EXEC SETTINGS
+###### STARTUP SETTINGS
 
 exec --no-startup-id compton
 exec --no-startup-id xfsettingsd
@@ -41,16 +41,15 @@ exec --no-startup-id xbindkeys_autostart
 exec --no-startup-id xfce4-volumed
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id galliumos-update-notifier
-exec_always --no-startup-id nm-applet
+#exec --no-startup-id nm-applet
 
 exec_always --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
-#exec_always --no-startup-id feh --bg-fill ~/Downloads/Backgrounds/groot.png
 
 ###### KEYBINDINGS
 
-bindsym $mod+XF86ScreenSaver exec --no-startup-id scrot '%H-%M-%s-%Y-%m-%d.png' -q 100 'mv $f ~/Pictures/scrots/' 
+bindsym $mod+XF86ScreenSaver exec --no-startup-id scrot -q 100 ~/Pictures/scrots/%H-%M-%S-%m-%d-%Y.png 
 bindsym $mod+XF86Reload exec --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
-bindsym $mod+bracketleft exec --no-startup-id feh --randomize --bg-fill ~/Downloads/bg-other	
+bindsym $mod+bracketleft exec --no-startup-id feh --randomize --bg-fill ~/Downloads/bg-other
 
 ###### OTHER CUSTOM SETTINGS
 
@@ -60,6 +59,13 @@ gaps outer 25
 
 #disable windows title bars so i3-gaps works correctly
 for_window [class="^.*"] border pixel 0
+
+#enable scratchpad
+exec --no-startup-id $term --name=dropdown -e tmux
+for_window [instance="dropdown"] floating enable;
+for_window [instance="dropdown"] move scratchpad; [instance="dropdown"] scratchpad show; move scratchpad
+
+bindsym $mod+u		[instance="dropdown"] scratchpad show
 
 #start rofi (dmenu replacement)
 bindsym $mod+d exec rofi -show run -opacity "85"
