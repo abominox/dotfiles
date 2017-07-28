@@ -61,7 +61,7 @@ gaps outer 25
 for_window [class="^.*"] border pixel 0
 
 #enable scratchpad
-exec --no-startup-id $term --name=dropdown -e tmux
+exec_always --no-startup-id terminator --title=dropdown 
 for_window [instance="dropdown"] floating enable;
 for_window [instance="dropdown"] move scratchpad; [instance="dropdown"] scratchpad show; move scratchpad
 
