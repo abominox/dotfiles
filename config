@@ -61,11 +61,11 @@ gaps outer 25
 for_window [class="^.*"] border pixel 0
 
 #enable scratchpad
-exec_always --no-startup-id terminator --title=dropdown 
-for_window [instance="dropdown"] floating enable;
-for_window [instance="dropdown"] move scratchpad; [instance="dropdown"] scratchpad show; move scratchpad
+#exec_always --no-startup-id terminator --title=dropdown 
+#for_window [instance="dropdown"] floating enable;
+#for_window [instance="dropdown"] move scratchpad; [instance="dropdown"] scratchpad show; move scratchpad
 
-bindsym $mod+u		[instance="dropdown"] scratchpad show
+#bindsym $mod+u		[instance="dropdown"] scratchpad show
 
 #start rofi (dmenu replacement)
 bindsym $mod+d exec rofi -show run -opacity "85"
