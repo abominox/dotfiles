@@ -19,19 +19,14 @@ font pango:monospace 8
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 
-# Before i3 v4.8, we used to recommend this one as the default:
-# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, its unicode glyph coverage is limited, the old
-# X core fonts rendering does not support right-to-left and this being a bitmap
-# font, it doesn’t scale on retina/hidpi displays.
-
 ############################################################################################
 
 ###### PERSONAL NOTES
 
 # - Use xev to find keycodes for bindings
 # - Connect to Wifi networks from the CLI using wicd-curses, or wicd-gtk from GUI
+# - Use xtightvncviewer to connect to server via VNC, and use cjmarquart.com:1, then
+#   raxemremy's pwd to connect
 
 ###### STARTUP SETTINGS
 
@@ -50,6 +45,13 @@ exec_always --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
 bindsym $mod+XF86ScreenSaver exec --no-startup-id scrot -q 100 ~/Pictures/scrots/%H-%M-%S-%m-%d-%Y.png 
 bindsym $mod+XF86Reload exec --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
 bindsym $mod+bracketleft exec --no-startup-id feh --randomize --bg-fill ~/Downloads/bg-other
+bindsym $mod+slash exec --no-startup-id terminator -x bash -c 'ssh raxemremy@cjmarquart.com -p 25'
+
+#media keys
+bindsym $mod+backslash exec --no-startup-id playerctl play
+bindsym $mod+bracketright exec --no-startup-id playerctl pause
+bindsym $mod+equal exec --no-startup-id playerctl next
+bindsym $mod+minus exec --no-startup-id playerctl previous
 
 ###### OTHER CUSTOM SETTINGS
 
@@ -76,7 +78,7 @@ bindsym $mod+d exec rofi -show run -opacity "85"
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminator
+bindsym $mod+Return exec --no-startup-id terminator
 
 #i3-sensible-terminal
 
