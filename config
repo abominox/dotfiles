@@ -1,4 +1,4 @@
-## CHRIS MARQUART'S i3 CONFIG FILE ##
+## RAXEMREMY'S i3 CONFIG FILE ##
 
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
@@ -38,9 +38,13 @@ exec_always --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
 bindsym $mod+XF86ScreenSaver exec --no-startup-id scrot -q 100 ~/Pictures/scrots/%H-%M-%S-%m-%d-%Y.png 
 bindsym $mod+XF86Reload exec --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
 bindsym $mod+bracketleft exec --no-startup-id feh --randomize --bg-fill ~/Downloads/bg-other
+
 #SSH
-bindsym $mod+slash exec --no-startup-id terminator -x bash -c 'ssh raxemremy@cjmarquart.com -p 25'
-bindsym $mod+period exec --no-startup-id terminator -x bash -c 'ssh pi@cjmarquart.com -p 15200'
+bindsym $mod+slash exec --no-startup-id terminator -x bash -c 'ssh -Y raxemremy@cjmarquart.com -p 25'
+bindsym $mod+period exec --no-startup-id terminator -x bash -c 'ssh -Y pi@cjmarquart.com -p 15200'
+
+#RSYNC
+
 
 #media keys
 bindsym $mod+backslash exec --no-startup-id playerctl play
@@ -200,7 +204,7 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-#        status_command i3status
+#       status_command i3status
 	status_command i3blocks -c ~/Projects/dotfiles/i3bar.conf 
         tray_output primary
 }

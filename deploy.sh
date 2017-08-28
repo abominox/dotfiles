@@ -1,25 +1,23 @@
 #!/bin/sh
 
-# INSTALL DEPENDENCIES
+### Personalized deploy script to setup new Debian installations to my liking.
 
-sudo apt-get install i3
-sudo apt-get install compton
-sudo apt-get install firefox
-sudo apt-get install git
-sudo apt-get install vim
-sudo apt-get install python
-sudo apt-get install python3
-sudo apt-get install 
-
-
-
-
-
-
-
-
-# clone i3-gaps
+## WM & Related ##
+apt-get install i3
+apt-get install compton
+## Configure i3-Gaps ##
 git clone https://github.com/Airblader/i3.git
 
-# install compton (compositor for transparency FX)
-sudo apt-get install compton
+## GUI Programs ##
+apt-get install firefox
+apt-get install python
+apt-get install python3
+
+## Dev Tools ##
+apt-get install vim
+
+## INSTALL UTILS ##
+apt-get install rsync
+apt-get install
+apt-get install git
+apt-get install samba
