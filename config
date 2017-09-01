@@ -19,7 +19,7 @@ font pango:monospace 8
 # - Use xev to find keycodes for bindings
 # - Connect to Wifi networks from the CLI using wicd-curses, or wicd-gtk from GUI
 # - Use xtightvncviewer to connect to server via VNC, and use cjmarquart.com:1, then
-#   raxemremy's pwd to connect (to start vnc server on starbelly, tightvncserver -geometry 1920x1080)
+#   raxemremy's pwd to connect
 
 ###### STARTUP SETTINGS
 
@@ -44,7 +44,7 @@ bindsym $mod+slash exec --no-startup-id terminator -x bash -c 'ssh -Y raxemremy@
 bindsym $mod+period exec --no-startup-id terminator -x bash -c 'ssh -Y pi@cjmarquart.com -p 15200'
 
 #RSYNC
-
+bindsym $mod+n exec /home/remy/Projects/scripts/syncweb.sh
 
 #media keys
 bindsym $mod+backslash exec --no-startup-id playerctl play
