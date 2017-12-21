@@ -48,12 +48,12 @@ font-2 = siji:pixelsize=10;1
 
 modules-left = bspwm i3
 modules-center = 
-modules-right = filesystem music volume memory cpu wlan eth battery temperature weathericons date powermenu
+modules-right = filesystem mpd volume memory cpu wlan eth battery temperature date powermenu
 
 ;unused but available modules
 ;battery-tlp (permissions issue)
 ;music
-;mpd
+;weathericons
 
 tray-position = right
 tray-padding = 2

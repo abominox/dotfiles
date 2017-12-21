@@ -26,7 +26,7 @@ font pango:monospace 8
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 exec --no-startup-id wicd
-#exec --no-startup-id wicd-client
+exec --no-startup-id wicd-client
 exec --no-startup-id compton
 exec --no-startup-id xbindkeys_autostart
 exec --no-startup-id xfce4-volumed
@@ -38,14 +38,15 @@ exec_always --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/sfw
 
 ###### KEYBINDINGS
 
-bindsym F7 exec --no-startup-id scrot -q 100 ~/pictures/scrots/%H-%M-%S-%m-%d-%Y.png 
-bindsym F10 exec --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/favorite
-bindsym F11 exec --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/sfw
-bindsym F12 exec --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/nsfw
+bindsym $mod+F7 exec --no-startup-id scrot -q 100 ~/pictures/scrots/%H-%M-%S-%m-%d-%Y.png 
+bindsym $mod+F10 exec --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/favorite
+bindsym $mod+F11 exec --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/sfw 
+#Doesn't work yet, please fix.
+#bindsym $mod+F9 exec --no-startup-id feh -A "cp -a ~/projects/misc/current_bg/%N"
+bindsym $mod+F12 exec --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/nsfw
 
 #SSH
 bindsym $mod+slash exec --no-startup-id terminator -x bash -c 'ssh -Y raxemremy@cjmarquart.com -p 25'
-#bindsym $mod+period exec --no-startup-id terminator -x bash -c 'ssh -Y pi@cjmarquart.com -p 15200'
 
 #RSYNC
 #bindsym $mod+n exec /home/remy/Projects/scripts/syncweb.sh
