@@ -15,6 +15,19 @@ hi Normal guibg=NONE ctermbg=NONE
 highlight NonText ctermbg=none
 hi lineNr ctermbg=none
 
+"#### Syntastic Settings
+"# Enable Python 3 linter
+let g:syntastic_python_checkers = ['pylint']
+
+"# Boilerplate settings for Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 "#### tmux Settings
 "# Enable the tmux Airline coloring
 let g:tmuxline_powerline_separators = 0

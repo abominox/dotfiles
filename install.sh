@@ -8,13 +8,16 @@
 #fi
 
 # Install pre-reqs/dev-tools
-sudo apt update && apt install -y \
+sudo apt update && sudo apt install -y \
 tmux \
 vim \
 python3 \
 pylint3 \
 virtualenv \
-python3-pip \
+python3-pip
+
+# Install linters
+pip3 install pylint
 
 # Rename old dotfiles to preserve them, if applicable.
 mkdir ~/.dotfiles_old
