@@ -1,45 +1,39 @@
-" Christopher Marquart's .vimrc file
+" abominox's .vimrc file
 
-
-"####### statusline configurations
-
+"#### General Settings
 set encoding=utf-8
 set laststatus=2
-set statusline=%t       "tail of the filename
-set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
-set statusline+=%{&ff}] "file format
-set statusline+=%h      "help file flag
-set statusline+=%m      "modified flag
-set statusline+=%r      "read only flag
-set statusline+=%y      "filetype
-set statusline+=%=      "left/right separator
-set statusline+=%c,     "cursor column
-set statusline+=%l/%L   "cursor line/total lines
-set statusline+=\ %P    "percent through file
-
-"should remove statusline's white bg color, does not work yet
-"hi StatusLine ctermbg=NONE cterm=NONE "remove statusline bg color
-
-"other configurations
-
 set nu
-":set cursorline
-set ruler
-filetype indent on
 syntax on
-colorscheme desert
+filetype plugin on
 
-"Pathogen plugin manager settings
+"#### Color Settings
+colorscheme badwolf
+"# Next three lines ensure badwolf,
+" a gvim theme, adds no bg color
+hi Normal guibg=NONE ctermbg=NONE
+highlight NonText ctermbg=none
+hi lineNr ctermbg=none
+
+"#### tmux Settings
+"# Enable the tmux Airline coloring
+let g:tmuxline_powerline_separators = 0
+"# Set tmuxline coloring without starting vim first
+let g:airline#extensions#tmuxline#enabled = 1
+let airline#extensions#tmuxline#snapshot_file = "~/.tmux.conf"
+
+"#### Pathogen / Plugin Settings
+"# Enable Pathogen
 execute pathogen#infect()
-filetype plugin indent on
 
-"Enable powerline fonts
+"#### Vim Airline
+"# Enable powerline fonts (does not work)
 "let g:airline_powerline_fonts = 1
 
-"####### Powerline config settings
+"#### Misc
 
-" Use 256 colours (Use this setting only if your terminal supports 256
-" colours)
-set t_Co=256
 
-set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+"#### Deprecated
+"set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+"# Use 256 colors, if your terminal supports it
+"set t_Co=256
