@@ -27,6 +27,7 @@ mv ~/.tmux.conf ~/.dotfiles_old/.tmux.conf
 mv ~/.fonts ~/.dotfiles_old/.fonts.old
 
 # Symlink new dotfiles into user home dir
+cd dotfiles
 ln -s .vim ~/.vim
 ln -s .vimrc ~/.vimrc
 ln -s .tmux.conf ~/.tmux.conf
