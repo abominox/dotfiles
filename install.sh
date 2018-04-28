@@ -28,8 +28,8 @@ mv ~/.fonts ~/.dotfiles_old/.fonts.old
 mv ~/.bashrc ~/.dotfiles_old/.bashrc
 
 # Symlink new dotfiles into user home dir
-ln -s dotfiles/.vim ~/.vim
-ln -s dotfiles/.vimrc ~/.vimrc
-ln -s dotfiles/.tmux.conf ~/.tmux.conf
-ln -s dotfiles/.fonts ~/.fonts
-ln -s dotfiles/.bashrc ~/.bashrc
+ln -s .vim ~/.vim
+ln -s .vimrc ~/.vimrc
+ln -s .tmux.conf ~/.tmux.conf
+ln -s .fonts ~/.fonts
+ln -s .bashrc ~/.bashrc
