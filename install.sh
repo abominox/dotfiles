@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script installs my dotfiles into any *nix system, where applicable.
+# This script installs my dotfiles into any *nix system.
 
 # Install pre-reqs/dev-tools
 sudo apt update && sudo apt install -y \
@@ -22,8 +22,8 @@ mv -v ~/.fonts ~/.dotfiles_old/.fonts.old
 mv -v ~/.bashrc ~/.dotfiles_old/.bashrc
 
 # Symlink new dotfiles into user home dir
-ln -vs ~/.vim .vim
-ln -vs ~/.vimrc .vimrc
-ln -vs ~/.tmux.conf .tmux.conf
-ln -vs ~/.fonts .fonts
-ln -vs ~/.bashrc .bashrc
+ln -vs ~/dotfiles/.vim ~/.vim
+ln -vs ~/dotfiles/.vimrc ~/.vimrc
+ln -vs ~/dotfiles/.tmux.conf ~/.tmux.conf
+ln -vs ~/dotfiles/.fonts ~/.fonts
+ln -vs ~/dotfiles/.bashrc ~/.bashrc
