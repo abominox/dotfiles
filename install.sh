@@ -15,11 +15,11 @@ pip3 install pylint
 
 # Rename old dotfiles and preserve them, if applicable.
 mkdir ~/.dotfiles_old
-mv -v ~/.vim ~/.dotfiles_old/.vim
-mv -v ~/.vimrc ~/.dotfiles_old/.vimrc
-mv -v ~/.tmux.conf ~/.dotfiles_old/.tmux.conf
-mv -v ~/.fonts ~/.dotfiles_old/.fonts.old
-mv -v ~/.bashrc ~/.dotfiles_old/.bashrc
+cp -av ~/.vim ~/.dotfiles_old/.vim
+cp -av ~/.vimrc ~/.dotfiles_old/.vimrc
+cp -av ~/.tmux.conf ~/.dotfiles_old/.tmux.conf
+cp -av ~/.fonts ~/.dotfiles_old/.fonts.old
+cp -av ~/.bashrc ~/.dotfiles_old/.bashrc
 
 # Symlink new dotfiles into user home dir
 ln -vs ~/dotfiles/.vim ~/.vim
