@@ -30,7 +30,7 @@ rm -f ~/.tmux.conf
 
 # Symlink new dotfiles into user home dir
 ln -vs ~/dotfiles/.vim ~/.vim
-ln -vs ~/dotfiles/.vimrc ~/.vimrc
-ln -vs ~/dotfiles/.tmux.conf ~/.tmux.conf
+ln -v ~/dotfiles/.vimrc ~/.vimrc
+ln -v ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -vs ~/dotfiles/.fonts ~/.fonts
-ln -vs ~/dotfiles/.bashrc ~/.bashrc
+ln -v ~/dotfiles/.bashrc ~/.bashrc
