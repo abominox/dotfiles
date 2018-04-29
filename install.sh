@@ -21,6 +21,13 @@ cp -av ~/.tmux.conf ~/.dotfiles_old/.tmux.conf
 cp -av ~/.fonts ~/.dotfiles_old/.fonts.old
 cp -av ~/.bashrc ~/.dotfiles_old/.bashrc
 
+# Delete old dotfiles
+rm -R ~/.vim
+rm -R ~/.fonts
+rm ~/.vimrc
+rm ~/.bashrc
+rm ~/.tmux.conf
+
 # Symlink new dotfiles into user home dir
 ln -vs ~/dotfiles/.vim ~/.vim
 ln -vs ~/dotfiles/.vimrc ~/.vimrc
