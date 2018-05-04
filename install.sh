@@ -11,7 +11,7 @@ virtualenv \
 python3-pip
 
 # Install linters
-pip3 install pylint
+#pip3 install pylint
 
 # Rename old dotfiles and preserve them, if applicable.
 mkdir ~/.dotfiles_old
