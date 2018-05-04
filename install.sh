@@ -6,12 +6,11 @@ sudo apt update && sudo apt install -y \
 tmux \
 vim \
 python3 \
-pylint3 \
 virtualenv \
 python3-pip
 
 # Install linters
-#pip3 install pylint
+sudo pip3 install pylint
 
 # Rename old dotfiles and preserve them, if applicable.
 mkdir ~/.dotfiles_old
@@ -24,9 +23,9 @@ cp -av ~/.bashrc ~/.dotfiles_old/.bashrc
 # Delete old dotfiles
 rm -Rf ~/.vim
 rm -Rf ~/.fonts
-rm -f ~/.vimrc
-rm -f ~/.bashrc
-rm -f ~/.tmux.conf
+sudo rm -f ~/.vimrc
+sudo rm -f ~/.bashrc
+sudo rm -f ~/.tmux.conf
 
 # Symlink new dotfiles into user home dir
 ln -vs ~/dotfiles/.vim ~/.vim
