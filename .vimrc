@@ -5,7 +5,7 @@ set encoding=utf-8
 set laststatus=2
 set nu
 syntax on
-filetype plugin on
+"filetype plugin on
 
 "#### Color Settings
 colorscheme badwolf
