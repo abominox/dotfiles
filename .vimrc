@@ -18,6 +18,7 @@ hi lineNr ctermbg=none
 "#### Syntastic Settings
 "# Enable Python 3 linter
 let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_yaml_checkers = ['yamllint']
 
 "# Boilerplate settings for Syntastic
 set statusline+=%#warningmsg#
