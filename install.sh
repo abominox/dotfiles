@@ -19,6 +19,7 @@ cp -av ~/.vimrc ~/.dotfiles_old/.vimrc
 cp -av ~/.tmux.conf ~/.dotfiles_old/.tmux.conf
 cp -av ~/.fonts ~/.dotfiles_old/.fonts.old
 cp -av ~/.bashrc ~/.dotfiles_old/.bashrc
+cp -av ~/.Xresources ~/.dotfiles_old/.Xresources
 
 # Delete old dotfiles
 rm -Rf ~/.vim
@@ -29,9 +30,11 @@ sudo rm -f ~/.tmux.conf
 sudo rm -f ~/.Xresources
 
 # Symlink new dotfiles into user home dir
-ln -vs ~/dotfiles/.vim ~/.vim
-ln -vs ~/dotfiles/.vimrc ~/.vimrc
-ln -vs ~/dotfiles/.tmux.conf ~/.tmux.conf
-ln -vs ~/dotfiles/.fonts ~/.fonts
-ln -vs ~/dotfiles/.bashrc ~/.bashrc
-ln -vs ~/dotfiles/.Xresources ~/.Xresources
+ln -vs $(pwd)/.vim ~/.vim
+ln -vs $(pwd)/.vimrc ~/.vimrc
+ln -vs $(pwd)/.tmux.conf ~/.tmux.conf
+ln -vs $(pwd)/.fonts ~/.fonts
+ln -vs $(pwd)/.bashrc ~/.bashrc
+ln -vs $(pwd)/.Xresources ~/.Xresources
+ln -vs $(pwd)/polybar/config ~/.config/polybar/config
+ln -vs $(pwd)/i3/config ~/.config/i3/config
