@@ -46,19 +46,20 @@ font-0 = fixed:pixelsize=10;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 
-modules-left = bspwm i3
-modules-center = 
-modules-right = filesystem mpd volume memory cpu wlan eth battery battery_internal temperature date powermenu
+modules-left = i3
+modules-center = music pulseaudio
+modules-right = volume memory cpu wlan eth battery battery_internal temperature date powermenu
 
 ;unused but available modules
 ;battery-tlp (permissions issue)
 ;music
 ;weathericons
+;filesystem (root part. mem used)
 
 tray-position = right
 tray-padding = 2
-;tray-transparent = true
-;tray-background = #0063ff
+tray-transparent = true
+tray-background = #222
 
 ;wm-restack = bspwm
 ;wm-restack = i3
@@ -93,6 +94,17 @@ label-indicator-padding = 2
 label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
 label-indicator-underline = ${colors.secondary}
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+; Sink to be used, if it exists (find using `pacmd list-sinks`, name field)
+; If not, uses default sink
+sink = alsa_output.pci-0000_12_00.3.analog-stereo
+
+; Use PA_VOLUME_UI_MAX (~153%) if true, or PA_VOLUME_NORM (100%) if false
+; Default: true
+use-ui-max = true
 
 [module/battery-tlp]
 type = custom/script
@@ -165,7 +177,8 @@ label-urgent-padding = ${module/bspwm.label-urgent-padding}
 
 [module/mpd]
 type = internal/mpd
-format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+format-online = <label-song> <icon-prev> <icon-stop> <toggle> <icon-next>
+format-offline = <label-song>
 
 icon-prev = 
 icon-stop = 

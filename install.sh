@@ -26,6 +26,7 @@ rm -Rf ~/.fonts
 sudo rm -f ~/.vimrc
 sudo rm -f ~/.bashrc
 sudo rm -f ~/.tmux.conf
+sudo rm -f ~/.Xresources
 
 # Symlink new dotfiles into user home dir
 ln -vs ~/dotfiles/.vim ~/.vim
@@ -33,3 +34,4 @@ ln -vs ~/dotfiles/.vimrc ~/.vimrc
 ln -vs ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -vs ~/dotfiles/.fonts ~/.fonts
 ln -vs ~/dotfiles/.bashrc ~/.bashrc
+ln -vs ~/dotfiles/.Xresources ~/.Xresources

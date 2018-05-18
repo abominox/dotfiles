@@ -1,16 +1,13 @@
-## RAXEMREMY'S i3 CONFIG FILE ##
+## abominox's i3 CONFIG FILE ##
 
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+# Set mod to Windows/Command key
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:monospace 8
-
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
 
 ############################################################################################
 
@@ -23,34 +20,45 @@ font pango:monospace 8
 
 ###### STARTUP SETTINGS
 
+# Start/Restart Polybar
+exec_always --no-startup-id bash -c 'killall -q polybar && while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done'
+exec_always --no-startup-id bash -c 'polybar example &'
+
+exec --no-startup-id nm-applet
+#exec --no-startup-id wicd
+#exec --no-startup-id wicd-client
 exec --no-startup-id compton
-exec --no-startup-id xfsettingsd
 exec --no-startup-id xbindkeys_autostart
 exec --no-startup-id xfce4-volumed
 exec --no-startup-id xfce4-power-manager
-#exec --no-startup-id galliumos-update-notifier
-#exec --no-startup-id nm-applet
+#exec --no-startup-id xfconfd
+#exec --no-startup-id xfsettingsd
 
-exec_always --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
+#Refresh .Xresources
+exec_always --no-startup-id bash -c 'xrdb ~/.Xresources'
+
+exec_always --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/sfw
 
 ###### KEYBINDINGS
 
-bindsym $mod+XF86ScreenSaver exec --no-startup-id scrot -q 100 ~/Pictures/scrots/%H-%M-%S-%m-%d-%Y.png 
-bindsym $mod+XF86Reload exec --no-startup-id feh --randomize --bg-fill ~/Downloads/Backgrounds
-bindsym $mod+bracketleft exec --no-startup-id feh --randomize --bg-fill ~/Downloads/bg-other
+bindsym $mod+F7 exec --no-startup-id scrot -q 100 ~/pictures/scrots/%H-%M-%S-%m-%d-%Y.png
+bindsym $mod+F10 exec --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/favorite
+bindsym $mod+F11 exec --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/sfw
+bindsym $mod+F12 exec --no-startup-id feh --randomize --bg-fill ~/pictures/wallpapers/nsfw
 
 #SSH
-bindsym $mod+slash exec --no-startup-id terminator -x bash -c 'ssh -Y raxemremy@cjmarquart.com -p 25'
-bindsym $mod+period exec --no-startup-id terminator -x bash -c 'ssh -Y pi@cjmarquart.com -p 15200'
-
-#RSYNC
-bindsym $mod+n exec /home/remy/Projects/scripts/syncweb.sh
+bindsym $mod+slash exec --no-startup-id terminator -x "bash -c 'ssh -Y raxemremy@cjmarquart.com'"
 
 #media keys
 bindsym $mod+backslash exec --no-startup-id playerctl play
 bindsym $mod+bracketright exec --no-startup-id playerctl pause
 bindsym $mod+equal exec --no-startup-id playerctl next
 bindsym $mod+minus exec --no-startup-id playerctl previous
+
+#volume keys
+bindsym F1 exec amixer -q set Master toggle
+bindsym F2 exec amixer -q set Master 3%- unmute
+bindsym F3 exec amixer -q set Master 3%+ unmute
 
 ###### OTHER CUSTOM SETTINGS
 
@@ -70,13 +78,8 @@ for_window [class="^.*"] border pixel 0
 
 #bindsym $mod+u [instance="dropdown"] scratchpad show; move position center
 
-#exec_always --no-startup-id "terminator -m"
-#for_window [class="Terminator" title="^((?!Terminator Preferences).)*$"] move scratchpad, move position 0 0, resize set 1366 768;
-#bindsym $mod+u [class="Terminator"] scratchpad show;
-
-
 #start rofi (dmenu replacement)
-bindsym $mod+d exec rofi -show run -opacity "85"
+bindsym $mod+d exec --no-startup-id rofi -show run
 
 #############################################################################################
 
@@ -85,8 +88,6 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec --no-startup-id terminator
-
-#i3-sensible-terminal
 
 # kill focused window
 bindsym $mod+q kill
@@ -203,8 +204,8 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
+#bar {
 #       status_command i3status
-	status_command i3blocks -c ~/Projects/dotfiles/i3bar.conf 
-        tray_output primary
-}
+#	status_command i3blocks -c ~/Projects/dotfiles/i3bar.conf
+#        tray_output primary
+#}
