@@ -7,11 +7,10 @@ tmux \
 vim \
 python3 \
 virtualenv \
-thefuck /
 python3-pip
 
 # Install linters
-sudo pip3 install pylint
+sudo pip3 install pylint thefuck
 
 # Rename old dotfiles and preserve them, if applicable.
 mkdir ~/.dotfiles_old
