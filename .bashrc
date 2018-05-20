@@ -2,8 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# Source custom tmux conf, if available
-tmux source ~/.tmux.conf
+# Enable "thefuck"
+eval $(thefuck --alias fuck)
 
 # Stop the new mail notifications in my terminals
 MAILCHECK=0

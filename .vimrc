@@ -5,7 +5,7 @@ set encoding=utf-8
 set laststatus=2
 set nu
 syntax on
-"filetype plugin on
+filetype plugin on
 
 "#### Color Settings
 colorscheme badwolf
@@ -16,8 +16,9 @@ highlight NonText ctermbg=none
 hi lineNr ctermbg=none
 
 "#### Syntastic Settings
-"# Enable Python 3 linter
+"# Python 3 Linter (pylint)
 let g:syntastic_python_checkers = ['pylint']
+"# YAML Linter (yamllint)
 let g:syntastic_yaml_checkers = ['yamllint']
 
 "# Boilerplate settings for Syntastic
@@ -30,11 +31,9 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 "#### tmux Settings
-"# Enable the tmux Airline coloring
-let g:tmuxline_powerline_separators = 0
-"# Set tmuxline coloring without starting vim first
-let g:airline#extensions#tmuxline#enabled = 1
-let airline#extensions#tmuxline#snapshot_file = "~/.tmux.conf"
+"let g:tmuxline_powerline_separators = 0
+"# Prevent tmuxline from CRUSHING my custom status line
+let g:airline#extensions#tmuxline#enabled = 0
 
 "#### Pathogen / Plugin Settings
 "# Enable Pathogen
