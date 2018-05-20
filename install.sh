@@ -7,6 +7,7 @@ tmux \
 vim \
 python3 \
 virtualenv \
+thefuck /
 python3-pip
 
 # Install linters
