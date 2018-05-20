@@ -31,9 +31,6 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 "#### tmux Settings
-"let g:tmuxline_powerline_separators = 0
-"# Prevent tmuxline from CRUSHING my custom status line
-let g:airline#extensions#tmuxline#enabled = 0
 
 "#### Pathogen / Plugin Settings
 "# Enable Pathogen
