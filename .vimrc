@@ -20,6 +20,8 @@ hi lineNr ctermbg=none
 let g:syntastic_python_checkers = ['pylint']
 "# YAML Linter (yamllint)
 let g:syntastic_yaml_checkers = ['yamllint']
+"# Bash Script Linter (shellcheck)
+let g:syntastic_sh_checkers = ['shellcheck']
 
 "# Boilerplate settings for Syntastic
 set statusline+=%#warningmsg#
