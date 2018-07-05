@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # This script installs my dotfiles into any *nix system.
 
 # Install pre-reqs/dev-tools
@@ -31,11 +31,11 @@ sudo rm -f ~/.tmux.conf
 sudo rm -f ~/.Xresources
 
 # Symlink new dotfiles into user home dir
-ln -vs $(pwd)/.vim ~/.vim
-ln -vs $(pwd)/.vimrc ~/.vimrc
-ln -vs $(pwd)/.tmux.conf ~/.tmux.conf
-ln -vs $(pwd)/.fonts ~/.fonts
-ln -vs $(pwd)/.bashrc ~/.bashrc
-ln -vs $(pwd)/.Xresources ~/.Xresources
-ln -vs $(pwd)/polybar/config ~/.config/polybar/config
-ln -vs $(pwd)/i3/config ~/.config/i3/config
+ln -vs "$(pwd)"/.vim ~/.vim
+ln -vs "$(pwd)"/.vimrc ~/.vimrc
+ln -vs "$(pwd)"/.tmux.conf ~/.tmux.conf
+ln -vs "$(pwd)"/.fonts ~/.fonts
+ln -vs "$(pwd)"/.bashrc ~/.bashrc
+ln -vs "$(pwd)"/.Xresources ~/.Xresources
+ln -vs "$(pwd)"/polybar/config ~/.config/polybar/config
+ln -vs "$(pwd)"/i3/config ~/.config/i3/config
