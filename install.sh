@@ -29,6 +29,8 @@ sudo rm -f ~/.vimrc
 sudo rm -f ~/.bashrc
 sudo rm -f ~/.tmux.conf
 sudo rm -f ~/.Xresources
+sudo rm -f ~/.config/polybar/config
+sudo rm -f ~/.config/i3/config
 
 # Symlink new dotfiles into user home dir
 ln -vs "$(pwd)"/.vim ~/.vim

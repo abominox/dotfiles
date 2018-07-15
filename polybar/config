@@ -289,7 +289,7 @@ date =
 date-alt = " %Y-%m-%d"
 
 #time = %I:%M:%S
-time = %A, %b %d %r
+time = "%r | %A %b %d, %Y"
 time-alt = %H:%M:%S
 
 format-prefix = 
