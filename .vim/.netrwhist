@@ -1,3 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/home/raxemremy/.config'
+let g:netrw_dirhist_2='/home/raxemremy/projects/dotfiles/.fonts'
+let g:netrw_dirhist_3='/home/raxemremy/projects/dotfiles/.fonts/.fonts'
+let g:netrw_dirhist_4='/home/raxemremy/projects/dotfiles/.fonts/.fonts/.fonts'
+let g:netrw_dirhist_5='/home/raxemremy/projects/dotfiles/.fonts/.fonts'
+let g:netrw_dirhist_6='/home/raxemremy/projects/dotfiles'
