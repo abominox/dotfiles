@@ -1,5 +1,5 @@
 #!/bin/sh
-# This script installs my dotfiles into any *nix system.
+# This script installs my dotfiles + some extras into any *nix system.
 
 # Install pre-reqs/dev-tools
 sudo apt update && sudo apt install -y \
@@ -11,7 +11,7 @@ shellcheck \
 python3-pip
 
 # Install linters
-sudo pip3 install pylint thefuck
+sudo pip3 install pylint
 
 # Rename old dotfiles and preserve them, if applicable.
 mkdir ~/.dotfiles_old
@@ -39,5 +39,5 @@ ln -vs "$(pwd)"/.tmux.conf ~/.tmux.conf
 ln -vs "$(pwd)"/.fonts ~/.fonts
 ln -vs "$(pwd)"/.bashrc ~/.bashrc
 ln -vs "$(pwd)"/.Xresources ~/.Xresources
-ln -vs "$(pwd)"/polybar/config ~/.config/polybar/config
-ln -vs "$(pwd)"/i3/config ~/.config/i3/config
+ln -vs "$(pwd)"/polybar ~/.config/polybar
+ln -vs "$(pwd)"/i3 ~/.config/i3

@@ -1,11 +1,4 @@
-;=====================================================
-;
-;   To learn more about how to configure Polybar
-;   go to https://github.com/jaagr/polybar
-;
-;   The README contains alot of information
-;
-;=====================================================
+; abominox's polybar config
 
 [colors]
 ;background = ${xrdb:color0:#222}
@@ -47,12 +40,13 @@ font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 
 modules-left = i3
-modules-center = music pulseaudio
+modules-center =
 modules-right = volume memory cpu wlan eth battery battery_internal temperature date powermenu
 
 ;unused but available modules
 ;battery-tlp (permissions issue)
 ;music
+;pulseaudio
 ;weathericons
 ;filesystem (root part. mem used)
 

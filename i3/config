@@ -14,15 +14,11 @@ font pango:monospace 8
 ###### NOTES
 
 # - Use xev to find keycodes for bindings
-# - Connect to Wifi networks from the CLI using wicd-curses, or wicd-gtk from GUI
-# - Use xtightvncviewer to connect to server via VNC, and use cjmarquart.com:1, then
-#   raxemremy's pwd to connect
 
 ###### STARTUP SETTINGS
 
 # Start/Restart Polybar
-exec_always --no-startup-id bash -c 'killall -q polybar && while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done'
-exec_always --no-startup-id bash -c 'polybar example &'
+exec_always --no-startup-id $HOME/dotfiles/polybar/launch.sh
 
 exec --no-startup-id nm-applet
 #exec --no-startup-id wicd
