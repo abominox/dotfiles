@@ -24,7 +24,6 @@ cp -av ~/.Xresources ~/.dotfiles_old/.Xresources
 
 # Delete old dotfiles
 rm -Rf ~/.vim
-rm -Rf ~/.fonts
 sudo rm -f ~/.vimrc
 sudo rm -f ~/.bashrc
 sudo rm -f ~/.tmux.conf
@@ -36,7 +35,6 @@ sudo rm -f ~/.config/i3/config
 ln -vs "$(pwd)"/.vim ~/.vim
 ln -vs "$(pwd)"/.vimrc ~/.vimrc
 ln -vs "$(pwd)"/.tmux.conf ~/.tmux.conf
-ln -vs "$(pwd)"/.fonts ~/.fonts
 ln -vs "$(pwd)"/.bashrc ~/.bashrc
 ln -vs "$(pwd)"/.Xresources ~/.Xresources
 ln -vs "$(pwd)"/polybar ~/.config/polybar
