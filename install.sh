@@ -37,5 +37,5 @@ ln -vs "$(pwd)"/.vimrc ~/.vimrc
 ln -vs "$(pwd)"/.tmux.conf ~/.tmux.conf
 ln -vs "$(pwd)"/.bashrc ~/.bashrc
 ln -vs "$(pwd)"/.Xresources ~/.Xresources
-ln -vs "$(pwd)"/polybar ~/.config/polybar
-ln -vs "$(pwd)"/i3 ~/.config/i3
+ln -vs "$(pwd)"/polybar/config ~/.config/polybar/config
+ln -vs "$(pwd)"/i3/config ~/.config/i3/config
