@@ -12,6 +12,8 @@ export HISTTIMEFORMAT='%F %T --> '
 # Safer alias for rm
 alias rm='rm -i'
 
+alias ssh='ssh -A'
+
 # Stop the new mail notifications in my terminals
 MAILCHECK=0
 
