@@ -5,6 +5,9 @@
 # custom transfer.sh alias
 alias transfer='curl cjmarquart.com/scripts/transfer.sh | bash'
 
+# Quickly download/convert YouTube videos to .mp3 using this alias + URL
+alias yt2mp3='youtube-dl --extract-audio --audio-format mp3'
+
 # Prepend date/time before commands in .bash_history
 export HISTTIMEFORMAT='%F %T --> '
 
