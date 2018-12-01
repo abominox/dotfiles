@@ -3,7 +3,7 @@
 # for examples
 
 # custom transfer.sh alias
-alias transfer='curl cjmarquart.com/scripts/transfer.sh | bash'
+alias transfer='curl cjmarquart.com/script/transfer.sh | bash'
 
 # Quickly download/convert YouTube videos to .mp3 using this alias + URL
 alias yt2mp3='youtube-dl --extract-audio --audio-format mp3'
@@ -23,10 +23,10 @@ alias tmux='tmux -2'
 TERM=xterm-256color
 
 # If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+#case $- in
+#    *i*) ;;
+#      *) return;;
+#esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
