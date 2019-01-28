@@ -1,12 +1,11 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
 # custom transfer.sh alias
 alias transfer='curl cjmarquart.com/script/transfer.sh | bash'
 
 # Quickly download/convert YouTube videos to .mp3 using this alias + URL
-alias yt2mp3='youtube-dl --extract-audio --audio-format mp3'
+alias yt2mp3='youtube-dl --extract-audio --audio-format mp3 --add-metadata \
+--embed-thumbnail'
 
 # Prepend date/time before commands in .bash_history
 export HISTTIMEFORMAT='%F %T --> '
