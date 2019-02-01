@@ -21,11 +21,9 @@ MAILCHECK=0
 alias tmux='tmux -2'
 TERM=xterm-256color
 
-# If not running interactively, don't do anything
-#case $- in
-#    *i*) ;;
-#      *) return;;
-#esac
+# After each command, save and reload history. Enables commands
+# from a tmux buffer to save into .bash_history
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
