@@ -16,7 +16,7 @@ alias rm='rm -i'
 alias ssh='ssh -A'
 
 # Default ls to format better
-alias ls='ls --color=auto -lhA'
+alias ls='ls --color=auto --group-directories-first -lh'
 
 # Stop the new mail notifications in my terminals
 MAILCHECK=0
