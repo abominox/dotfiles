@@ -1,4 +1,5 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
+# todo: organize file into sections
 
 # custom transfer.sh alias
 alias transfer='curl cjmarquart.com/script/transfer.sh | bash'
@@ -9,6 +10,9 @@ alias yt2mp3='youtube-dl --extract-audio --audio-format mp3 --add-metadata \
 
 # Prepend date/time before commands in .bash_history
 export HISTTIMEFORMAT='%D %T %p --> '
+
+# Set .bash_history to ignore common commands
+export HISTIGNORE='clear'
 
 # Safer alias for rm
 alias rm='rm -i'
