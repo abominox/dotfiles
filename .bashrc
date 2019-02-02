@@ -8,7 +8,7 @@ alias yt2mp3='youtube-dl --extract-audio --audio-format mp3 --add-metadata \
 --embed-thumbnail'
 
 # Prepend date/time before commands in .bash_history
-export HISTTIMEFORMAT='%F %T --> '
+export HISTTIMEFORMAT='%D %T %p --> '
 
 # Safer alias for rm
 alias rm='rm -i'
