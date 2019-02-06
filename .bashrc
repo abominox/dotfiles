@@ -5,14 +5,14 @@
 alias transfer='curl cjmarquart.com/script/transfer.sh | bash'
 
 # Quickly download/convert YouTube videos to .mp3 using this alias + URL
-alias yt2mp3='youtube-dl --extract-audio --audio-format mp3 --add-metadata \
---embed-thumbnail'
+alias yt2mp3="youtube-dl --extract-audio --audio-format mp3 --add-metadata \
+--embed-thumbnail"
 
 # Prepend date/time before commands in .bash_history
 export HISTTIMEFORMAT='%D %T %p --> '
 
 # Set .bash_history to ignore common commands
-export HISTIGNORE='clear'
+export HISTIGNORE='clear:ls'
 
 # Safer alias for rm
 alias rm='rm -i'
