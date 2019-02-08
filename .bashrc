@@ -94,3 +94,9 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# If OS = MacOS then specify coreutils instead of BSD
+if [ "$(uname -a | cut -d " " -f 1)" == "Darwin" ]
+  then
+    alias ls='gls --color=auto --group-directories-first -lh'
+fi

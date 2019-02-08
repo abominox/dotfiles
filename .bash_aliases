@@ -19,9 +19,3 @@ alias ls='ls --color=auto --group-directories-first -lh'
 
 # Force tmux to assume terminal supports 256 colors
 alias tmux='tmux -2'
-
-# If OS = MacOS then specify coreutils instead of BSD
-if [ "$(uname -a | cut -d " " -f 1)" == "Darwin" ]
-  then
-    alias ls='gls --color=auto --group-directories-first -lh'
-fi
