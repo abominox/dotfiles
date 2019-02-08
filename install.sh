@@ -21,15 +21,7 @@ cp -av ~/.tmux.conf ~/.dotfiles_old/.tmux.conf
 cp -av ~/.fonts ~/.dotfiles_old/.fonts.old
 cp -av ~/.bashrc ~/.dotfiles_old/.bashrc
 cp -av ~/.Xresources ~/.dotfiles_old/.Xresources
-
-# Delete old dotfiles
-rm -Rf ~/.vim
-sudo rm -f ~/.vimrc
-sudo rm -f ~/.bashrc
-sudo rm -f ~/.tmux.conf
-sudo rm -f ~/.Xresources
-sudo rm -f ~/.config/polybar/config
-sudo rm -f ~/.config/i3/config
+cp -av ~/.bash_aliases ~/.dotfiles_old/.bash_aliases
 
 # Symlink new dotfiles into user home dir
 ln -vs "$(pwd)"/.vim ~/.vim
@@ -37,5 +29,6 @@ ln -vs "$(pwd)"/.vimrc ~/.vimrc
 ln -vs "$(pwd)"/.tmux.conf ~/.tmux.conf
 ln -vs "$(pwd)"/.bashrc ~/.bashrc
 ln -vs "$(pwd)"/.Xresources ~/.Xresources
+ln -vs "$(pwd)"/.bash_aliases ~/.bash_aliases
 ln -vs "$(pwd)"/polybar/config ~/.config/polybar/config
 ln -vs "$(pwd)"/i3/config ~/.config/i3/config

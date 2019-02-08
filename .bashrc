@@ -1,12 +1,4 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# todo: organize file into sections
-
-# custom transfer.sh alias
-alias transfer='curl cjmarquart.com/script/transfer.sh | bash'
-
-# Quickly download/convert YouTube videos to .mp3 using this alias + URL
-alias yt2mp3="youtube-dl --extract-audio --audio-format mp3 --add-metadata \
---embed-thumbnail"
 
 # Prepend date/time before commands in .bash_history
 export HISTTIMEFORMAT='%D %T %p --> '
@@ -14,18 +6,10 @@ export HISTTIMEFORMAT='%D %T %p --> '
 # Set .bash_history to ignore common commands
 export HISTIGNORE='clear:ls'
 
-# Safer alias for rm
-alias rm='rm -i'
-
-alias ssh='ssh -A'
-
-# Default ls to format better
-alias ls='ls --color=auto --group-directories-first -lh'
-
 # Stop the new mail notifications in my terminals
 MAILCHECK=0
 
-alias tmux='tmux -2'
+# Force full color support for terminal
 TERM=xterm-256color
 
 # After each command, save and reload history. Enables commands
@@ -46,13 +30,6 @@ HISTFILESIZE=2000
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -105,19 +82,7 @@ if [ -x /usr/bin/dircolors ]; then
     #alias egrep='egrep --color=auto'
 fi
 
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
+# Enable separate ".bash_aliases" file
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
