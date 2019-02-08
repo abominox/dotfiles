@@ -1,7 +1,7 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+# abominox's .bashrc file
 
 # Prepend date/time before commands in .bash_history
-export HISTTIMEFORMAT='%D %T %p --> '
+export HISTTIMEFORMAT='%D %r --> '
 
 # Set .bash_history to ignore common commands
 export HISTIGNORE='clear:ls'
