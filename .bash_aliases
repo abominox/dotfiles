@@ -2,7 +2,7 @@
 alias transfer='curl cjmarquart.com/script/transfer.sh | bash'
 
 # Quickly download/convert YouTube videos to .mp3 using this alias + URL
-alias yt2mp3="youtube-dl --extract-audio --audio-format mp3 --add-metadata \
+alias yt2mp3="youtube-dl -iwc --extract-audio --audio-format mp3 --add-metadata \
 --embed-thumbnail"
 
 # Preserve environment during sudo
