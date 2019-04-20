@@ -22,3 +22,9 @@ alias ls='ls --color=auto --group-directories-first -lh'
 
 # Force tmux to assume terminal supports 256 colors
 alias tmux='tmux -2'
+
+# Force Python 2 to be Python 3
+alias python=python3
+
+# Force pip2 to be pip3
+alias pip=pip3
