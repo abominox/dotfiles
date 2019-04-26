@@ -6,7 +6,7 @@ alias yt2mp3="youtube-dl --ignore-errors --extract-audio --audio-format mp3 --ad
 --embed-thumbnail -o '%(title)s.%(ext)s'"
 
 # Force better ytdl output name for any downloaded file
-alias youtube-dl="youtube-dl -o '%(title)s.%(ext)s'"
+alias youtube-dl="youtube-dl --ignore-errors -o '%(title)s.%(ext)s'"
 
 # Preserve environment during sudo
 alias sudo='sudo -E'
