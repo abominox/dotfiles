@@ -4,7 +4,7 @@
 export HISTTIMEFORMAT='%D %r --> '
 
 # Set .bash_history to ignore common commands
-export HISTIGNORE='clear:ls'
+export HISTIGNORE='clear:ls:fuck'
 
 # Stop the new mail notifications in my terminals
 MAILCHECK=0

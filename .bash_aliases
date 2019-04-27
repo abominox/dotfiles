@@ -28,3 +28,6 @@ alias python=python3
 
 # Force pip2 to be pip3
 alias pip=pip3
+
+# For when you forget to add "sudo"
+alias fuck='sudo $(history -p \!\!)'
