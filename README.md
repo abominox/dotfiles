@@ -4,7 +4,8 @@ Also contains some of my most commonly used linters/other devtools.
 
 ## Usage
 ```bash
-git clone https://github.com/abominox/dotfiles \
-&& cd dotfiles \
+cd ~ \
+&& git clone https://github.com/abominox/dotfiles .dotfiles \
+&& cd .dotfiles \
 && ./install.sh
 ```
