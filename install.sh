@@ -1,5 +1,5 @@
 #!/bin/sh
-# This script installs my dotfiles + some extras into any *nix system.
+# This script installs my dotfiles + some extras into any Debian-based *nix system.
 
  # Install pre-reqs/dev-tools
 sudo apt update && sudo apt install -y \
@@ -19,7 +19,7 @@ python3-pip
 sudo pip3 install pylint
 
 # Option to simply pipe to terminal for quicker install
-if [ -t 1 ]; then
+if [ $1 ]; then
   git clone https://github.com/abominox/dotfiles ~/.dotfiles
   cd ~/.dotfiles && ./install.sh
 
