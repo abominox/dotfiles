@@ -9,7 +9,3 @@ cd ~ \
 && cd .dotfiles \
 && ./install.sh
 ```
-To install using curl:
-```bash
-curl https://raw.githubusercontent.com/abominox/dotfiles/master/install.sh | sh
-```
