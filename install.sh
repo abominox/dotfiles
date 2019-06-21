@@ -19,7 +19,7 @@ python3-pip
 sudo pip3 install pylint
 
 # Option to simply pipe to terminal for quicker install
-if [ $1 ]; then
+if [ $# -ne 0 ]; then
   git clone https://github.com/abominox/dotfiles ~/.dotfiles
   cd ~/.dotfiles && ./install.sh
 
