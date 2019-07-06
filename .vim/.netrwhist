@@ -1,10 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =8
-let g:netrw_dirhist_1='/home/raxemremy/.config'
-let g:netrw_dirhist_2='/home/raxemremy/projects/dotfiles/.fonts'
-let g:netrw_dirhist_3='/home/raxemremy/projects/dotfiles/.fonts/.fonts'
-let g:netrw_dirhist_4='/home/raxemremy/projects/dotfiles/.fonts/.fonts/.fonts'
-let g:netrw_dirhist_5='/home/raxemremy/projects/dotfiles/.fonts/.fonts'
-let g:netrw_dirhist_6='/home/raxemremy/projects/dotfiles'
-let g:netrw_dirhist_7='/home/raxemremy/projects/assorted/scripts'
-let g:netrw_dirhist_8='/home/raxemremy/binhex'
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/raxemremy/container_files/7dtd_4/Data'
+let g:netrw_dirhist_2='/home/raxemremy/container_files/7dtd_4'
+let g:netrw_dirhist_3='/home/raxemremy/container_files/7dtd_4/steamapps'
+let g:netrw_dirhist_4='/home/raxemremy/container_files/7dtd_4'
