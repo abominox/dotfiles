@@ -1,6 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_cnt =5
 let g:netrw_dirhist_1='/home/raxemremy/container_files/7dtd_4/Data'
 let g:netrw_dirhist_2='/home/raxemremy/container_files/7dtd_4'
 let g:netrw_dirhist_3='/home/raxemremy/container_files/7dtd_4/steamapps'
 let g:netrw_dirhist_4='/home/raxemremy/container_files/7dtd_4'
+let g:netrw_dirhist_5='/home/raxemremy/container_files/qbittorrent-nox_vpn'
