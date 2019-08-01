@@ -6,6 +6,7 @@ set laststatus=2
 set nu
 syntax on
 filetype plugin on
+let g:netrw_dirhistmax=0
 
 "#### Color Settings
 colorscheme badwolf
