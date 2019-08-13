@@ -6,6 +6,9 @@ export HISTTIMEFORMAT='%D %r --> '
 # Set .bash_history to ignore common commands
 export HISTIGNORE='clear:ls:fuck'
 
+# Set vim as the default editor
+export EDITOR='/usr/bin/vim'
+
 # Stop the new mail notifications in my terminals
 MAILCHECK=0
 
