@@ -28,12 +28,12 @@ cp -av ~/.bashrc ~/.dotfiles_old/.bashrc
 cp -av ~/.Xresources ~/.dotfiles_old/.Xresources
 cp -av ~/.bash_aliases ~/.dotfiles_old/.bash_aliases
 
-# Symlink new dotfiles into user home dir
-ln -fnvs "$(pwd)"/.vim ~/.vim
-ln -fnvs "$(pwd)"/.vimrc ~/.vimrc
-ln -fnvs "$(pwd)"/.tmux.conf ~/.tmux.conf
-ln -fnvs "$(pwd)"/.bashrc ~/.bashrc
-ln -fnvs "$(pwd)"/.Xresources ~/.Xresources
-ln -fnvs "$(pwd)"/.bash_aliases ~/.bash_aliases
-ln -fnvs "$(pwd)"/polybar/config ~/.config/polybar/config
-ln -fnvs "$(pwd)"/i3/config ~/.config/i3/config
+# Symlink new dotfiles into user home dir & source new files
+ln -fnvs "$(pwd)"/.vim ~/.vim && source ~/.vim
+ln -fnvs "$(pwd)"/.vimrc ~/.vimrc && source ~/.vimrc
+ln -fnvs "$(pwd)"/.tmux.conf ~/.tmux.conf && ~/.tmux.conf
+ln -fnvs "$(pwd)"/.bashrc ~/.bashrc && source ~/.bashrc
+ln -fnvs "$(pwd)"/.Xresources ~/.Xresources && source ~/.Xresources
+ln -fnvs "$(pwd)"/.bash_aliases ~/.bash_aliases && source ~/.bash_aliases
+ln -fnvs "$(pwd)"/polybar/config ~/.config/polybar/config && source ~/.config/polybar/config
+ln -fnvs "$(pwd)"/i3/config ~/.config/i3/config && source ~/.config/i3/config
