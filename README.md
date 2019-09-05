@@ -9,3 +9,8 @@ cd ~ \
 && cd .dotfiles \
 && ./install.sh
 ```
+If you would like to install just the bash files (no devtools, no sudo access), simply pass 
+the 'minimal' argument when invoking the script.
+```bash
+./install.sh minimal
+```
