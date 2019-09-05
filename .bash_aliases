@@ -15,7 +15,7 @@ alias sudo='sudo -E'
 alias rm='rm -i'
 
 # Automatically forward public keyring
-alias ssh='ssh -A'
+#alias ssh='ssh -A'
 
 # Default ls to format better
 alias ls='ls --color=auto --group-directories-first -lh'
