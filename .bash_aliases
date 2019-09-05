@@ -38,3 +38,6 @@ alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/m
 # wget aliases for open-directory hunting, append desired pattern (*.pdf, etc.) + address
 alias vacuum='wget -nd -N -r -e robots=off -P . --no-parent --reject "index.html*" -A'
 alias vacuum-folder='wget -N -r -e robots=off -P . --no-parent --reject "index.html*" -A'
+
+# Prevent 'clear' from appearing in command history
+alias clear=' clear'
