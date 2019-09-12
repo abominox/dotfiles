@@ -26,6 +26,9 @@ alias tmux='tmux -2'
 # Force Python 2 to be Python 3
 alias python=python3
 
+# Activate virtualenv easier
+alias activate="source env/bin/activate"
+
 # Force pip2 to be pip3
 alias pip=pip3
 
