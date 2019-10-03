@@ -37,7 +37,6 @@ install_dotfiles () {
   do
     # Preserve old dotfiles, if applicable
     if [ -f "$dotfile" ]; then
-      echo "Existing dotfiles are being moved to ~/.dotfiles_old"
       mkdir -p ~/.dotfiles_old
       cp -av ~/"$dotfile" ~/.dotfiles_old/"$dotfile"
     fi
