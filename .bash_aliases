@@ -1,5 +1,5 @@
 # custom transfer.sh alias
-alias transfer='curl cjmarquart.com/script/transfer.sh | bash'
+alias transfer='curl -s cjmarquart.com/script/transfer.sh | bash'
 
 # Quickly download/convert YouTube videos to .mp3 using this alias + URL
 alias yt2mp3="youtube-dl --ignore-errors --extract-audio --audio-format mp3 --add-metadata \
@@ -41,3 +41,6 @@ alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/m
 # wget aliases for open-directory hunting, append desired pattern (*.pdf, etc.) + address
 alias vacuum='wget -nd -N -r -e robots=off -P . --no-parent --reject "index.html*" -A'
 alias vacuum-folder='wget -N -r -e robots=off -P . --no-parent --reject "index.html*" -A'
+
+# Alias to re-encode videos of given extension in current directory (append extension)
+alias recode="curl -Ls http://bit.ly/31L4NtQ | bash"
