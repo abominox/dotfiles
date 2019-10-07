@@ -1,10 +1,17 @@
 #### PATH
 ## GOLANG
-export PATH=$PATH:/usr/local/go/bin
+if [ -d "/usr/local/go" ]; then
+  export PATH=$PATH:/usr/local/go/bin
+fi
+
+## Flutter
+if [ -d "/usr/local/flutter" ]; then
+  export PATH=$PATH:/usr/local/flutter/bin
+fi
 
 #### MISC
 # default editor
-export EDITOR="vim"
+EDITOR="vim"
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
