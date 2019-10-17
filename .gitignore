@@ -2,3 +2,6 @@
 *.swp
 *.swn
 *.swo
+
+# Pushbullet API Key #
+.pb_key
