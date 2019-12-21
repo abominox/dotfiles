@@ -10,6 +10,11 @@ if [ -d "/usr/local/flutter" ]; then
 fi
 
 #### MISC
+# Pushbullet API Key
+if [ -f "$HOME"/.dotfiles/.pb_key ]; then
+  source "$HOME"/.dotfiles/.pb_key
+fi
+
 # default editor
 EDITOR="vim"
 
