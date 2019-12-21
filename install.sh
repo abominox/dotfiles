@@ -6,6 +6,7 @@ dotfiles=(
   .vim
   .vimrc
   .tmux.conf
+  .tmux
   .fonts
   .bashrc
   .Xresources

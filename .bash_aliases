@@ -43,4 +43,4 @@ alias vacuum='wget -nd -N -r -e robots=off -P . --no-parent --reject "index.html
 alias vacuum-folder='wget -N -r -e robots=off -P . --no-parent --reject "index.html*" -A'
 
 # Alias to re-encode videos of given extension in current directory (append extension)
-alias recode="curl -Ls http://bit.ly/31L4NtQ | source /dev/stdin"
+alias recode="curl -Ls https://raw.githubusercontent.com/abominox/assorted/master/scripts/recode.sh | source /dev/stdin"
