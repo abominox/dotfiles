@@ -1,4 +1,4 @@
-# custom transfer.sh alias
+# Custom transfer.sh alias
 alias transfer='curl -s cjmarquart.com/script/transfer.sh | bash'
 
 # Quickly download/convert YouTube videos to .mp3 using this alias + URL
@@ -44,3 +44,6 @@ alias vacuum-folder='wget -N -r -e robots=off -P . --no-parent --reject "index.h
 
 # Alias to re-encode videos of given extension in current directory (append extension)
 alias recode="curl -Ls https://raw.githubusercontent.com/abominox/assorted/master/scripts/recode.sh | source /dev/stdin"
+
+# Easily find commands in Bash history
+alias sherlock='history | grep'
