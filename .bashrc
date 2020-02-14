@@ -49,3 +49,7 @@ fi
 if [ "$(uname -a | cut -d " " -f 1)" == "Darwin" ]; then
     alias ls='gls --color=auto --group-directories-first -lh'
 fi
+
+# Node Version Manager
+export NVM_DIR="/home/raxemremy/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
