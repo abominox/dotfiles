@@ -24,6 +24,9 @@ shopt -s histappend
 
 ### TERMINAL ###
 
+# Set US UTF-8
+LANG='en_US.UTF-8'
+
 # Stop the new mail notifications in my terminals
 MAILCHECK=0
 
