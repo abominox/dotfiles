@@ -19,6 +19,9 @@ alias tmux='tmux -2'
 # Quickly re-attach detached tmux sessions
 alias ta='tmux a -t'
 
+# Quickly see open tmux sessions
+alias tls='tmux ls'
+
 ####### Python #######
 
 # Force Python 2 to be Python 3
