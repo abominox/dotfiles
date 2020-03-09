@@ -63,3 +63,6 @@ alias vacuum-folder='wget -N -r -e robots=off -P . --no-parent --reject "index.h
 
 # Easily find commands in Bash history
 alias sherlock='history | grep'
+
+# Test nginx conf and restart service if successful
+alias ntest="sudo nginx -t && sudo service nginx restart && sudo service nginx status"
