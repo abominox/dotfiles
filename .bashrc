@@ -6,7 +6,7 @@
 export HISTTIMEFORMAT='%D %r --> '
 
 # Set .bash_history to ignore common commands
-export HISTIGNORE='clear:ls:fuck:sherlock'
+export HISTIGNORE='clear:ls:fuck:sherlock *'
 
 # After each command, save and reload history. Enables commands
 # from a tmux buffer to save into .bash_history
