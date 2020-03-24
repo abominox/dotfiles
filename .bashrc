@@ -54,5 +54,7 @@ if [ "$(uname -a | cut -d " " -f 1)" == "Darwin" ]; then
 fi
 
 # Node Version Manager
-export NVM_DIR="/home/raxemremy/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+if [ "$HOSTNAME" == "devbox"  ]; then
+  export NVM_DIR="/home/raxemremy/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+fi
