@@ -33,6 +33,11 @@ alias activate="source env/bin/activate"
 # Force pip2 to be pip3
 alias pip=pip3
 
+###### JavaScript ######
+
+# Install Node Version Manager
+alias nvm-install="curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash" 
+
 ####### Misc #######
 
 # Quickly download/convert YouTube videos to .mp3 using this alias + URL
