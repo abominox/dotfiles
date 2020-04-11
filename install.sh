@@ -30,7 +30,10 @@ install_devtools () {
   python3-pip
 
   # Install linters
-  sudo pip3 install pylint
+  pip3 install pylint
+  
+  # Install etc.
+  pip3 install psutil
 }
 
 install_dotfiles () {
