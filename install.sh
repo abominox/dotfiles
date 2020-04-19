@@ -27,7 +27,8 @@ install_devtools () {
   python3 \
   virtualenv \
   shellcheck \
-  python3-pip
+  python3-pip \
+  jq
 
   # Install linters
   pip3 install pylint
