@@ -30,11 +30,11 @@ install_devtools () {
   python3-pip \
   jq
 
-  # Install linters
-  pip3 install pylint
-  
-  # Install etc.
-  pip3 install psutil
+  # Install linters, etc.
+  pip3 install \
+  pylint \
+  psutil \
+  requests
 }
 
 install_dotfiles () {

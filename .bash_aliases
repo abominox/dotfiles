@@ -47,9 +47,6 @@ alias yt2mp3="youtube-dl --ignore-errors --extract-audio --audio-format mp3 --ad
 # Force better ytdl output name for any downloaded file
 alias youtube-dl="youtube-dl --ignore-errors -o '%(title)s.%(ext)s'"
 
-# Preserve environment during sudo
-alias sudo='sudo -E'
-
 # Safer alias for rm
 alias rm='rm -i'
 
