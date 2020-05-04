@@ -50,6 +50,9 @@ alias youtube-dl="youtube-dl --ignore-errors -o '%(title)s.%(ext)s'"
 # Safer alias for rm
 alias rm='rm -i'
 
+# Find external IP address
+alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
+
 # Default ls to format better
 alias ls='ls --color=auto --group-directories-first -lh'
 
