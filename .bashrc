@@ -31,7 +31,7 @@ LANG='en_US.UTF-8'
 MAILCHECK=0
 
 # Force full color support for terminal
-TERM=xterm-256color
+TERM=tmux-256color
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
