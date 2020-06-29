@@ -5,7 +5,7 @@ import requests
 import sys, json, time, os, signal
 
 def main():
-    headers = {'API-Key': 'COY7KIJQQ7SV33X6DEUR3BEA7MGCMVLHCLJA'}
+    headers = {'API-Key': 'FSP2CK3X3JK4AW3MZNJ2TK57AV72NA3DDUDQ'}
 
     # If arg exists, kill existing script PID to keep server indefinitely.
     if len(sys.argv) > 1:
@@ -29,22 +29,26 @@ def main():
     f.close()
 
     # Create server
-    requests.get("""https://api.vultr.com/v1/server/create 
+    r = requests.post("""https://api.vultr.com/v1/server/create 
         --data 'DCID=6' 
         --data 'VPSPLANID=201' 
         --data 'hostname=scratch' 
         --data 'notify_activate=yes' 
-        --data 'SCRIPTID=' 
+        --data 'SCRIPTID=720113' 
         --data 'OSID=352'""", headers=headers)
-
-    r = requests.get('https://api.vultr.com/v1/startupscript/list', headers=headers)
-
-    r = requests.get('https://api.vultr.com/v1/server/list', headers=headers)
     print(r.text)
+
+    print("SCRIPTS")
+    r = requests.get('https://api.vultr.com/v1/startupscript/list', headers=headers)
+    print(json.dumps(json.loads(r.text), indent=4, sort_keys=True))
+
+    print("SERVER LIST")
+    r = requests.get('https://api.vultr.com/v1/server/list', headers=headers)
+    #print(r.text)
     json_data = json.loads(r.text)
-    print(r.json())
-    print(json_data)
-    print(json_data['ram'])
+    #print(r.json())
+    print(json.dumps(json_data, indent=4, sort_keys=True))
+    #print(json_data['ram'])
     #time.sleep(100)
     #print(json_data.get('location'))
 

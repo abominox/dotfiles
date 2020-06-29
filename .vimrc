@@ -39,14 +39,4 @@ let g:syntastic_check_on_wq = 0
 "# Enable Pathogen
 execute pathogen#infect()
 
-"#### Vim Airline
-"# Enable powerline fonts (does not work)
-"let g:airline_powerline_fonts = 1
-
 "#### Misc
-
-
-"#### Deprecated
-"set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
-"# Use 256 colors, if your terminal supports it
-"set t_Co=256
