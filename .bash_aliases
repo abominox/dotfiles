@@ -25,7 +25,7 @@ alias tls='tmux ls'
 ####### Python #######
 
 # Force Python 2 to be Python 3
-alias python="python3.8 || python3"
+alias python=python3
 
 # Activate virtualenv easier
 alias activate="source env/bin/activate"
