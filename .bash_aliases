@@ -25,13 +25,13 @@ alias tls='tmux ls'
 ####### Python #######
 
 # Force Python 2 to be Python 3
-alias python=python3
+#alias python=python3
 
 # Activate virtualenv easier
 alias activate="source env/bin/activate"
 
 # Force pip2 to be pip3
-alias pip=pip3
+#alias pip=pip3
 
 ###### JavaScript ######
 
@@ -74,3 +74,6 @@ alias marlowe='cat ~/.dotfiles/.bash_aliases | grep'
 
 # Test nginx conf and restart service if successful
 alias ntest="sudo nginx -t && sudo service nginx restart && sudo service nginx status"
+
+# Easily search cheat.sh from the terminal
+#alias cheat="curl cheat.sh/"

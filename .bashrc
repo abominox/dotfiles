@@ -2,6 +2,9 @@
 
 ### HISTORY ###
 
+# Fix problems with PROMPT_COMMAND in newer vers.
+unset PROMPT_COMMAND
+
 # Prepend date/time before commands in .bash_history
 export HISTTIMEFORMAT='%D %r --> '
 
@@ -23,6 +26,9 @@ HISTFILESIZE=-1
 shopt -s histappend
 
 ### TERMINAL ###
+
+# Set vim to default editor
+export EDITOR=vim
 
 # Set US UTF-8
 LANG='en_US.UTF-8'
