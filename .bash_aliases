@@ -30,6 +30,9 @@ alias tls='tmux ls'
 # Activate virtualenv easier
 alias activate="source env/bin/activate"
 
+# Easily create virtualenv
+alias venv="virtualenv -p python3 env"
+
 # Force pip2 to be pip3
 #alias pip=pip3
 
@@ -74,6 +77,9 @@ alias marlowe='cat ~/.dotfiles/.bash_aliases | grep'
 
 # Test nginx conf and restart service if successful
 alias ntest="sudo nginx -t && sudo service nginx restart && sudo service nginx status"
+
+# Easy SSH to my homelab
+alias home="ssh -A raxemremy@cjmarquart.com"
 
 # Easily search cheat.sh from the terminal
 #alias cheat="curl cheat.sh/"
