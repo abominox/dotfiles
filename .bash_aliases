@@ -36,6 +36,9 @@ alias venv="virtualenv -p python3 env"
 # Force pip2 to be pip3
 #alias pip=pip3
 
+# Quick n' Easy HTTP Server on current directory
+alias server="python3 -m http.server"
+
 ###### JavaScript ######
 
 # Install Node Version Manager
