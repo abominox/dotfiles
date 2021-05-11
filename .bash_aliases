@@ -81,6 +81,9 @@ alias marlowe='cat ~/.dotfiles/.bash_aliases | grep'
 # Test nginx conf and restart service if successful
 alias ntest="sudo nginx -t && sudo service nginx restart && sudo service nginx status"
 
+# Delete lines with argument keyword from Bash history
+scrub() { sed -i "/$1/d" /home/"$(whoami)"/.bash_history; }
+
 # Easy SSH to my homelab
 alias home="ssh -A raxemremy@cjmarquart.com"
 
