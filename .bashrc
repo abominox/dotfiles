@@ -77,6 +77,9 @@ elif [ "$PLATFORM" == "Darwin" ]; then
     alias ls='gls --color=auto --group-directories-first -lh'
     alias date='gdate'
 
+    # Add pip to PATH
+    export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
+
     # Supress new ZSH default message
     export BASH_SILENCE_DEPRECATION_WARNING=1
 
