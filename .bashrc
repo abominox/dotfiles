@@ -80,6 +80,9 @@ elif [ "$PLATFORM" == "Darwin" ]; then
     # Add pip to PATH
     export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
 
+    # Add VS Code to PATH
+    export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
     # Supress new ZSH default message
     export BASH_SILENCE_DEPRECATION_WARNING=1
 
