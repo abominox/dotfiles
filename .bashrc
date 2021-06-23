@@ -49,12 +49,19 @@ if [ -f ~/.env ]; then
     source ~/.env
 fi
 
-## Development ##
+### Development ###
+
+## Golang ##
 # Set GOPATH
 export PATH="$PATH:~/.go/bin"
 
+## C ##
+# Set default GCC flags
+export CFLAGS="-Wall"
 
+### Platform ###
 PLATFORM=$(uname -a | cut -d " " -f 1)
+
 ## Linux ##
 if [ "$PLATFORM" == "Linux" ]; then
     # Force full color support for terminal
