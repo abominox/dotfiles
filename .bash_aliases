@@ -39,6 +39,9 @@ alias venv="virtualenv -p python3 env"
 # Quick n' Easy HTTP Server on current directory
 alias server="python3 -m http.server"
 
+# Use pipreqs instead of pip freeze and avoid incl. global packages
+alias pf="pipreqs --use-local ."
+
 ###### JavaScript ######
 
 # Install Node Version Manager
