@@ -97,3 +97,6 @@ alias home="ssh -A raxemremy@cjmarquart.com"
 
 # Easily search cheat.sh from the terminal
 #alias cheat="curl cheat.sh/"
+
+# Cleanup orphaned dependencies (Pacman)
+alias orph="sudo pacman -R $(pacman -Qdtq)"
