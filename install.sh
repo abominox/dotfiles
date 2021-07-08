@@ -12,6 +12,7 @@ dotfiles=(
   .Xresources
   .bash_aliases
   .profile
+  .Xauthority
 )
 
 install_devtools () {

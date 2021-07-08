@@ -75,7 +75,7 @@ if [ "$PLATFORM" == "Linux" ]; then
     export HISTSIZE=-1
     export HISTFILESIZE=-1
 
-### MacOS ###
+## MacOS ##
 elif [ "$PLATFORM" == "Darwin" ]; then
     # Force full color support for terminal
     TERM=xterm-256color
@@ -97,5 +97,12 @@ elif [ "$PLATFORM" == "Darwin" ]; then
     export SHELL_SESSION_HISTORY=0
     export HISTFILE=/Users/$(echo $USER)/.bash_history
     export HISTSIZE=10000000
+fi
+
+## NT ##
+if [ "$(uname -a | grep WSL)" ]; then
+    # Support X11 forwarding in WSL2
+    export DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0"
+    export LIBGL_ALWAYS_INDIRECT=1
 fi
 

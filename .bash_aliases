@@ -99,4 +99,4 @@ alias home="ssh -A raxemremy@cjmarquart.com"
 #alias cheat="curl cheat.sh/"
 
 # Cleanup orphaned dependencies (Pacman)
-alias orph="sudo pacman -R $(pacman -Qdtq)"
+orph() { sudo pacman -R "$(pacman -Qdtq)"; }
