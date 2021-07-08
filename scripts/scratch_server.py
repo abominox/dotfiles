@@ -5,7 +5,7 @@ import requests
 import sys, json, time, os, signal
 
 def main():
-    headers = {'API-Key': 'FSP2CK3X3JK4AW3MZNJ2TK57AV72NA3DDUDQ'}
+    headers = {'API-Key': ''}
 
     # If arg exists, kill existing script PID to keep server indefinitely.
     if len(sys.argv) > 1:
