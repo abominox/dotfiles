@@ -29,7 +29,6 @@ install_devtools () {
   virtualenv \
   shellcheck \
   python3-pip \
-  pipreqs \
   jq
 
   # Install linters, etc.
