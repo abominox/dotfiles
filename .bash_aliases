@@ -28,7 +28,7 @@ alias tls='tmux ls'
 #alias python=python3
 
 # Activate virtualenv easier
-alias activate="source env/bin/activate || source bin .env/bin/activate"
+alias activate="source .env/bin/activate 2>/dev/null || source env/bin/activate"
 
 # Easily create virtualenv
 alias venv="virtualenv -p python3 .env"
