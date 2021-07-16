@@ -29,6 +29,9 @@ LANG='en_US.UTF-8'
 # Stop the new mail notifications in my terminals
 MAILCHECK=0
 
+# Include home bin folder in PATH
+export PATH="$PATH:/home/$(whoami)/.local/bin"
+
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
