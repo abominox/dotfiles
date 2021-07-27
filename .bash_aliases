@@ -100,3 +100,7 @@ alias home="ssh -A raxemremy@cjmarquart.com"
 
 # Cleanup orphaned dependencies (Pacman)
 orph() { sudo pacman -R "$(pacman -Qdtq)"; }
+
+# Create/delete a 200MB ramdisk in /tmp
+alias ramdisk="mkdir -p /tmp/ramdisk && mount -t tmpfs -o size=200m myramdisk /tmp/ramdisk"
+alias dramdisk="umount /tmp/ramdisk/"
