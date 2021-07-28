@@ -102,5 +102,5 @@ alias home="ssh -A raxemremy@cjmarquart.com"
 orph() { sudo pacman -R "$(pacman -Qdtq)"; }
 
 # Create/delete a 200MB ramdisk in /tmp
-alias ramdisk="mkdir -p /tmp/ramdisk && mount -t tmpfs -o size=200m myramdisk /tmp/ramdisk"
-alias dramdisk="umount /tmp/ramdisk/"
+alias ramdisk="mkdir -p /tmp/ramdisk && sudo mount -t tmpfs -o size=200m ramdisk /tmp/ramdisk"
+alias dramdisk="sudo umount /tmp/ramdisk/"
