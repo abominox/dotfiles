@@ -56,7 +56,8 @@ fi
 
 ## Golang ##
 # Set GOPATH
-export PATH="$PATH:~/.go/bin"
+export GOPATH="/home/$(whoami)/projects/go"
+export PATH="$PATH:/home/$(whoami)/projects/go/bin"
 
 ## C ##
 # Set default GCC flags
@@ -77,6 +78,9 @@ if [ "$PLATFORM" == "Linux" ]; then
     # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
     export HISTSIZE=-1
     export HISTFILESIZE=-1
+
+    # Enable systat on the tmux statusline
+    nohup bash ~/.dotfiles/scripts/systat.sh > /dev/null 2>&1
 
 ## MacOS ##
 elif [ "$PLATFORM" == "Darwin" ]; then
@@ -101,6 +105,9 @@ elif [ "$PLATFORM" == "Darwin" ]; then
     export HISTFILE=/Users/$(echo $USER)/.bash_history
     export HISTSIZE=10000000
 fi
+
+    # Enable systat on the tmux statusline
+    nohup bash ~/.dotfiles/scripts/systat.sh > /dev/null 2>&1
 
 ## NT ##
 if [ "$(uname -a | grep WSL)" ]; then
