@@ -7,6 +7,11 @@ set nu
 syntax on
 filetype plugin on
 let g:netrw_dirhistmax=0
+set noerrorbells
+set tabstop=4 softtabstop=4
+set shiftwidth=4
+set smartindent
+set incsearch
 
 "#### Color Settings
 colorscheme badwolf
