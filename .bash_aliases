@@ -55,11 +55,11 @@ alias msf="msfconsole || /opt/metasploit-framework/bin/msfconsole"
 ####### Misc #######
 
 # Quickly download/convert YouTube videos to .mp3 using this alias + URL
-alias yt2mp3="youtube-dl --ignore-errors --extract-audio --audio-format mp3 --add-metadata \
+alias yt2mp3="yt-dlp --ignore-errors --extract-audio --audio-format mp3 --add-metadata \
 --embed-thumbnail -o '%(title)s.%(ext)s'"
 
 # Force better ytdl output name for any downloaded file
-alias youtube-dl="youtube-dl --ignore-errors -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best -o '%(title)s.%(ext)s'"
+alias youtube-dl="yt-dlp --ignore-errors -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best -o '%(title)s.%(ext)s'"
 
 # Safer alias for rm
 alias rm='rm -i'
