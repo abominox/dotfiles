@@ -92,6 +92,9 @@ alias ntest="sudo nginx -t && sudo service nginx restart && sudo service nginx s
 # Delete lines with argument keyword from Bash history
 scrub() { sed -i "/$1/d" /home/"$(whoami)"/.bash_history; }
 
+# Easily run things in Rosetta compatability layer on M1
+x86() { arch -x86_64 /bin/bash -c "$1"; }
+
 # Easy SSH to my homelab
 alias home="ssh -A raxemremy@cjmarquart.com"
 

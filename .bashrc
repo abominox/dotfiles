@@ -54,11 +54,6 @@ fi
 
 ### Development ###
 
-## Golang ##
-# Set GOPATH
-export GOPATH="/home/$(whoami)/projects/go"
-export PATH="$PATH:/home/$(whoami)/projects/go/bin"
-
 ## C ##
 # Set default GCC flags
 export CFLAGS="-Wall"
@@ -67,7 +62,7 @@ export CFLAGS="-Wall"
 PLATFORM=$(uname -a | cut -d " " -f 1)
 
 ## Linux ##
-if [ "$PLATFORM" == "Linux" ]; then
+if [ "$PLATFORM" = "Linux" ]; then
     # Force full color support for terminal
     TERM=tmux-256color
 
@@ -82,8 +77,14 @@ if [ "$PLATFORM" == "Linux" ]; then
     # Enable systat on the tmux statusline
     nohup bash ~/.dotfiles/scripts/systat.sh > /dev/null 2>&1
 
+	## Golang ##	
+	# Set GOPATH
+	export GOPATH="/home/$(whoami)/projects/go"
+	export PATH="$PATH:/home/$(whoami)/projects/go/bin"
+
+
 ## MacOS ##
-elif [ "$PLATFORM" == "Darwin" ]; then
+elif [ "$PLATFORM" = "Darwin" ]; then
     # Force full color support for terminal
     TERM=xterm-256color
 
@@ -108,6 +109,12 @@ fi
 
     # Enable systat on the tmux statusline
     nohup bash ~/.dotfiles/scripts/systat.sh > /dev/null 2>&1
+
+	## Golang ##
+	# Set GOPATH
+	export GOPATH="/Users/$(whoami)/projects/go"
+	export PATH="$PATH:/Users/$(whoami)/projects/go/bin"
+
 
 ## NT ##
 if [ "$(uname -a | grep WSL)" ]; then
