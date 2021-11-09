@@ -12,6 +12,7 @@ set tabstop=4 softtabstop=4
 set shiftwidth=4
 set smartindent
 set incsearch
+set noswapfile
 
 "#### Color Settings
 colorscheme badwolf

@@ -105,7 +105,6 @@ elif [ "$PLATFORM" = "Darwin" ]; then
     export SHELL_SESSION_HISTORY=0
     export HISTFILE=/Users/$(echo $USER)/.bash_history
     export HISTSIZE=10000000
-fi
 
     # Enable systat on the tmux statusline
     nohup bash ~/.dotfiles/scripts/systat.sh > /dev/null 2>&1
@@ -114,7 +113,7 @@ fi
 	# Set GOPATH
 	export GOPATH="/Users/$(whoami)/projects/go"
 	export PATH="$PATH:/Users/$(whoami)/projects/go/bin"
-
+fi
 
 ## NT ##
 if [ "$(uname -a | grep WSL)" ]; then
