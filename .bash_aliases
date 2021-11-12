@@ -99,7 +99,7 @@ x86() { arch -x86_64 /bin/bash -c "$1"; }
 alias home="ssh -A raxemremy@cjmarquart.com"
 
 # Easily search cheat.sh from the terminal
-#alias cheat="curl cheat.sh/"
+cheat() { curl cheat.sh/"$1";  }
 
 # Cleanup orphaned dependencies (Pacman)
 orph() { sudo pacman -R "$(pacman -Qdtq)"; }
