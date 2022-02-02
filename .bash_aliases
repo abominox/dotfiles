@@ -101,6 +101,9 @@ alias home="ssh -A raxemremy@cjmarquart.com"
 # Easily search cheat.sh from the terminal
 cheat() { curl cheat.sh/"$1";  }
 
+# Test transfer speed to an argument directory/device
+trantest() { dd if=/dev/zero of="$1/test.img" bs=1G count=1 oflag=dsync; rm "$1"/test.img; }
+
 # Cleanup orphaned dependencies (Pacman)
 orph() { sudo pacman -R "$(pacman -Qdtq)"; }
 
