@@ -59,7 +59,8 @@ alias yt2mp3="yt-dlp --ignore-errors --extract-audio --audio-format mp3 --add-me
 --embed-thumbnail -o '%(title)s.%(ext)s'"
 
 # Force better ytdl output name for any downloaded file
-alias youtube-dl="yt-dlp --ignore-errors -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best -o '%(title)s.%(ext)s'"
+#alias youtube-dl="yt-dlp --ignore-errors -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best -o '%(title)s.%(ext)s'"
+alias youtube-dl="yt-dlp --ignore-errors -o '%(title)s.%(ext)s'"
 
 # Safer alias for rm
 alias rm='rm -i'
