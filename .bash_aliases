@@ -42,6 +42,9 @@ alias server="python3 -m http.server"
 # Pip freeze alias, avoid incl. global packages
 alias pf="pip freeze -l > requirements.txt"
 
+# Fix pip inside of a virtualenv
+alias fixpip="curl https://bootstrap.pypa.io/get-pip.py | python -"
+
 ###### JavaScript ######
 
 # Install Node Version Manager
