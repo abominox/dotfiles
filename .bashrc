@@ -120,6 +120,12 @@ if [ "$(uname -a | grep WSL)" ]; then
     # Support X11 forwarding in WSL2
     export DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0"
     export LIBGL_ALWAYS_INDIRECT=1
+
+	## Golang ##
+    # Set GOPATH
+    export GOPATH="/home/$(whoami)/projects/go"
+	export PATH="/usr/local/go/bin:$PATH"
+
 fi
 
 
