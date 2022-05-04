@@ -85,10 +85,10 @@ alias vacuum='wget -nd -N -r -e robots=off -P . --no-parent --reject "index.html
 alias vacuum-folder='wget -N -r -e robots=off -P . --no-parent --reject "index.html*" -A'
 
 # Easily find commands in Bash history
-alias sherlock='history | grep'
+alias sherlock='history | grep -i'
 
 # Easily find alias in this file
-alias marlowe='cat ~/.dotfiles/.bash_aliases | grep'
+alias marlowe='cat ~/.dotfiles/.bash_aliases | grep -i'
 
 # Test nginx conf and restart service if successful
 alias ntest="sudo nginx -t && sudo service nginx restart && sudo service nginx status"
