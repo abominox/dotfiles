@@ -9,8 +9,8 @@ else
     exit 1
 fi
 
-# Run the binary
-"$BIN" &
+# Run the binary and write output to /tmp/statusline
+"$BIN" > /tmp/statusline &
 
 # Add @reboot crontab entry if not already present
 CRON_LINE="@reboot $(pwd)/$(basename "$0")"
