@@ -6,16 +6,16 @@
 export HISTTIMEFORMAT='%D %r --> '
 
 # Set .bash_history to ignore common commands
-export HISTIGNORE='clear:claer:scrub *:history:ls:fuck:tls:ta *:sherlock *'
+export HISTIGNORE='clear:claer:w:scrub *:history:ls:fuck:tls:ta *:sherlock *'
 
 # After each command, save and reload history. Enables commands
 # from a tmux buffer to save into .bash_history
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+export PROMPT_COMMAND="history -a; history -c; history -r"
 
 # don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth
 
-# append to the history file, don't overwrite it
+# Append to the history file, don't overwrite it
 shopt -s histappend
 
 ### TERMINAL ###
@@ -95,6 +95,12 @@ elif [ "$PLATFORM" = "Darwin" ]; then
     # Add pip to PATH
     export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
 
+	# Fix Python 3.9 packages PATH
+	export PATH="$PATH:/usr/local/lib/python3.9/site-packages"
+
+	# Add GNU coreutils to PATH, to enable regular names (no 'g' prefix)
+	export PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
+
     # Add VS Code to PATH
     export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
@@ -127,7 +133,6 @@ if [ "$(uname -a | grep WSL)" ]; then
 	export PATH="/usr/local/go/bin:$PATH"
 
 fi
-
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

@@ -46,3 +46,5 @@ let g:syntastic_check_on_wq = 0
 execute pathogen#infect()
 
 "#### Misc
+" Auto-indent after carriage return on yaml files
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab

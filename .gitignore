@@ -5,3 +5,6 @@
 
 # Pushbullet API Key #
 .pb_key
+
+# X Server
+.Xauthority

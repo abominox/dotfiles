@@ -1,3 +1,4 @@
+#!/bin/bash
 ########## abominox's .bash_aliases file ##########
 
 ####### Scripts #######
@@ -25,7 +26,7 @@ alias tls='tmux ls'
 ####### Python #######
 
 # Force Python 2 to be Python 3
-#alias python=python3
+alias python=python3
 
 # Activate virtualenv easier
 alias activate="source env/bin/activate 2>/dev/null || source .env/bin/activate"
