@@ -1,3 +1,4 @@
+#!/bin/bash
 ########## abominox's .bashrc file ##########
 
 ### HISTORY ###
@@ -37,10 +38,10 @@ export PATH="$PATH:/home/$(whoami)/.local/bin"
 shopt -s checkwinsize
 
 # Enable colored prompt
-force_color_prompt=yes
+export force_color_prompt=yes
     
 # custom PS1 prompt
-PS1="\[\033[38;5;7m\][\[$(tput sgr0)\]\[\033[38;5;46m\]\u@\h\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;33m\]\w\[$(tput sgr0)\]\[\033[38;5;7m\]]\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;7m\]\\$\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
+PS1="\[\033[38;5;7m\][\[\033[0m\]\[\033[38;5;46m\]\u@\h\[\033[0m\]\[\033[38;5;15m\] \[\033[0m\]\[\033[38;5;33m\]\w\[\033[0m\]\[\033[38;5;7m\]]\[\033[0m\]\[\033[38;5;15m\] \[\033[0m\]\[\033[38;5;7m\]\\$\[\033[0m\]\[\033[38;5;15m\] \[\033[0m\]"
 
 # Enable separate ".bash_aliases" file, if applicable
 if [ -f ~/.bash_aliases ]; then
@@ -63,24 +64,15 @@ PLATFORM=$(uname -a | cut -d " " -f 1)
 
 ## Linux ##
 if [ "$PLATFORM" = "Linux" ]; then
-    # Force full color support for terminal
-    TERM=tmux-256color
-
-    # Fix problems with PROMPT_COMMAND in newer vers.
-    unset PROMPT_COMMAND
-    export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-
     # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
     export HISTSIZE=-1
     export HISTFILESIZE=-1
 
-    # Enable systat on the tmux statusline
-    nohup bash ~/.dotfiles/scripts/systat.sh > /dev/null 2>&1
-
 	## Golang ##	
 	# Set GOPATH
-	export GOPATH="/home/$(whoami)/projects/go"
-	export PATH="$PATH:/home/$(whoami)/projects/go/bin"
+    GOUSER=$(whoami)
+    export GOPATH="/home/${GOUSER}/projects/go"
+    export PATH="$PATH:/home/${GOUSER}/projects/go/bin"
 
 
 ## MacOS ##
@@ -109,7 +101,8 @@ elif [ "$PLATFORM" = "Darwin" ]; then
 
     # Make Bash history work
     export SHELL_SESSION_HISTORY=0
-    export HISTFILE=/Users/$(echo $USER)/.bash_history
+    HISTFILE_PATH="/Users/$USER/.bash_history"
+    export HISTFILE="$HISTFILE_PATH"
     export HISTSIZE=10000000
 
     # Enable systat on the tmux statusline
