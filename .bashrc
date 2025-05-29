@@ -31,7 +31,8 @@ LANG='en_US.UTF-8'
 MAILCHECK=0
 
 # Include home bin folder in PATH
-export PATH="$PATH:/home/$(whoami)/.local/bin"
+USER_NAME=$(whoami)
+export PATH="$PATH:/home/${USER_NAME}/.local/bin"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -105,28 +106,24 @@ elif [ "$PLATFORM" = "Darwin" ]; then
     export HISTFILE="$HISTFILE_PATH"
     export HISTSIZE=10000000
 
-    # Enable systat on the tmux statusline
-    nohup bash ~/.dotfiles/scripts/systat.sh > /dev/null 2>&1
-
 	## Golang ##
 	# Set GOPATH
-	export GOPATH="/Users/$(whoami)/projects/go"
-	export PATH="$PATH:/Users/$(whoami)/projects/go/bin"
-fi
+    GOPATH="/Users/$(whoami)/projects/go"
+    export GOPATH
+    GOPATH_BIN="/Users/$(whoami)/projects/go/bin"
+    export PATH="$PATH:$GOPATH_BIN"
 
-## NT ##
-if [ "$(uname -a | grep WSL)" ]; then
+    ## NT ##
+elif uname -a | grep -q WSL; then
     # Support X11 forwarding in WSL2
-    export DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0"
+    DISPLAY_IP="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null)"
+    export DISPLAY="${DISPLAY_IP}:0"
     export LIBGL_ALWAYS_INDIRECT=1
 
-	## Golang ##
+    ## Golang ##
     # Set GOPATH
-    export GOPATH="/home/$(whoami)/projects/go"
-	export PATH="/usr/local/go/bin:$PATH"
+    GOPATH="/home/$(whoami)/projects/go"
+    export GOPATH
+    export PATH="/usr/local/go/bin:$PATH"
 
 fi
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
