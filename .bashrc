@@ -31,8 +31,7 @@ LANG='en_US.UTF-8'
 MAILCHECK=0
 
 # Include home bin folder in PATH
-USER_NAME=$(whoami)
-export PATH="$PATH:/home/${USER_NAME}/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -61,25 +60,19 @@ fi
 export CFLAGS="-Wall"
 
 ### Platform ###
-PLATFORM=$(uname -a | cut -d " " -f 1)
-
-## Linux ##
-if [ "$PLATFORM" = "Linux" ]; then
+case "$OSTYPE" in
+  linux*)
     # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
     export HISTSIZE=-1
     export HISTFILESIZE=-1
 
-	## Golang ##	
-	# Set GOPATH
-    GOUSER=$(whoami)
-    export GOPATH="/home/${GOUSER}/projects/go"
-    export PATH="$PATH:/home/${GOUSER}/projects/go/bin"
-
-
-## MacOS ##
-elif [ "$PLATFORM" = "Darwin" ]; then
+    # Golang
+    export GOPATH="$HOME/projects/go"
+    export PATH="$PATH:$GOPATH/bin"
+    ;;
+  darwin*)
     # Force full color support for terminal
-    TERM=xterm-256color
+    export TERM=xterm-256color
 
     # Specify coreutils for some things instead of BSD
     alias ls='gls --color=auto --group-directories-first -lh'
@@ -88,11 +81,11 @@ elif [ "$PLATFORM" = "Darwin" ]; then
     # Add pip to PATH
     export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.9/bin"
 
-	# Fix Python 3.9 packages PATH
-	export PATH="$PATH:/usr/local/lib/python3.9/site-packages"
+    # Fix Python 3.9 packages PATH
+    export PATH="$PATH:/usr/local/lib/python3.9/site-packages"
 
-	# Add GNU coreutils to PATH, to enable regular names (no 'g' prefix)
-	export PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
+    # Add GNU coreutils to PATH, to enable regular names (no 'g' prefix)
+    export PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
 
     # Add VS Code to PATH
     export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
@@ -102,28 +95,21 @@ elif [ "$PLATFORM" = "Darwin" ]; then
 
     # Make Bash history work
     export SHELL_SESSION_HISTORY=0
-    HISTFILE_PATH="/Users/$USER/.bash_history"
-    export HISTFILE="$HISTFILE_PATH"
+    export HISTFILE="$HOME/.bash_history"
     export HISTSIZE=10000000
 
-	## Golang ##
-	# Set GOPATH
-    GOPATH="/Users/$(whoami)/projects/go"
-    export GOPATH
-    GOPATH_BIN="/Users/$(whoami)/projects/go/bin"
-    export PATH="$PATH:$GOPATH_BIN"
-
-    ## NT ##
-elif uname -a | grep -q WSL; then
+    # Golang
+    export GOPATH="$HOME/projects/go"
+    export PATH="$PATH:$GOPATH/bin"
+    ;;
+  *WSL*)
     # Support X11 forwarding in WSL2
     DISPLAY_IP="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null)"
     export DISPLAY="${DISPLAY_IP}:0"
     export LIBGL_ALWAYS_INDIRECT=1
 
-    ## Golang ##
-    # Set GOPATH
-    GOPATH="/home/$(whoami)/projects/go"
-    export GOPATH
+    # Golang
+    export GOPATH="$HOME/projects/go"
     export PATH="/usr/local/go/bin:$PATH"
-
-fi
+    ;;
+esac
