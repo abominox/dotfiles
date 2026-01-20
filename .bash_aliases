@@ -34,9 +34,6 @@ alias activate="source env/bin/activate 2>/dev/null || source .env/bin/activate"
 # Easily create virtualenv
 alias venv="virtualenv -p python3 env"
 
-# Force pip2 to be pip3
-#alias pip=pip3
-
 # Quick n' Easy HTTP Server on current directory
 alias server="python3 -m http.server"
 
@@ -101,7 +98,7 @@ scrub() { sed -i "/$1/d" /home/"$(whoami)"/.bash_history; }
 x86() { arch -x86_64 /bin/bash -c "$1"; }
 
 # Easy SSH to my homelab
-alias home="ssh -A raxemremy@cjmarquart.com"
+alias home="ssh -A raxemremy@ssh.cjmarquart.com"
 
 # Easily search cheat.sh from the terminal
 cheat() { curl cheat.sh/"$1";  }
