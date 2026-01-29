@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script installs my dotfiles + some extras into any *nix system.
-# Requires Bash. Full install requires apt.
+# Requires Bash. Supports macOS (brew), Debian/Ubuntu (apt), and Arch Linux (pacman).
 
 dotfiles=(
   .vim
@@ -15,28 +15,103 @@ dotfiles=(
 # Fish shell configuration directory
 fish_config_dir="$HOME/.config/fish"
 
-install_devtools () {
-  # Install pre-reqs/dev-tools
-  sudo apt update && sudo apt install -y \
-  tmux \
-  vim \
-  git \
-  curl \
-  htop \
-  ncdu \
-  net-tools \
-  python3 \
-  virtualenv \
-  shellcheck \
-  python3-pip \
-  jq \
-  fish
+# Detect platform and package manager
+detect_platform () {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "macos"
+  elif [ -f /etc/arch-release ]; then
+    echo "arch"
+  elif [ -f /etc/debian_version ]; then
+    echo "debian"
+  else
+    echo "unknown"
+  fi
+}
 
-  # Install linters, etc.
+install_devtools () {
+  local platform
+  platform=$(detect_platform)
+
+  echo "Detected platform: $platform"
+
+  case "$platform" in
+    macos)
+      # Check if Homebrew is installed
+      if ! command -v brew &> /dev/null; then
+        echo "Homebrew not found. Installing..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      fi
+
+      brew install \
+        tmux \
+        vim \
+        git \
+        curl \
+        htop \
+        ncdu \
+        python3 \
+        shellcheck \
+        jq \
+        fish \
+        eza \
+        coreutils
+      ;;
+
+    debian)
+      sudo apt update && sudo apt install -y \
+        tmux \
+        vim \
+        git \
+        curl \
+        htop \
+        ncdu \
+        net-tools \
+        python3 \
+        virtualenv \
+        shellcheck \
+        python3-pip \
+        jq \
+        fish
+
+      # eza requires a separate installation on Debian
+      if ! command -v eza &> /dev/null; then
+        sudo mkdir -p /etc/apt/keyrings
+        wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+        echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+        sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+        sudo apt update && sudo apt install -y eza
+      fi
+      ;;
+
+    arch)
+      sudo pacman -Syu --noconfirm \
+        tmux \
+        vim \
+        git \
+        curl \
+        htop \
+        ncdu \
+        net-tools \
+        python \
+        python-virtualenv \
+        shellcheck \
+        python-pip \
+        jq \
+        fish \
+        eza
+      ;;
+
+    *)
+      echo "Unknown platform. Please install packages manually."
+      return 1
+      ;;
+  esac
+
+  # Install Python linters (cross-platform)
   pip3 install \
-  pylint \
-  psutil \
-  requests
+    pylint \
+    psutil \
+    requests
 }
 
 install_dotfiles () {

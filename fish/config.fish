@@ -4,8 +4,10 @@
 # This file is kept minimal - most config is in conf.d/
 # Files in conf.d/ are automatically loaded by Fish
 
-# ARM Homebrew environment setup
-eval (/opt/homebrew/bin/brew shellenv)
+# ARM Homebrew environment setup (Apple Silicon only)
+if test (uname -m) = "arm64"; and test -x /opt/homebrew/bin/brew
+    eval (/opt/homebrew/bin/brew shellenv)
+end
 
 if status is-interactive
     # Interactive shell setup
