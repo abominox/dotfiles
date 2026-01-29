@@ -1,0 +1,23 @@
+#!/usr/bin/env fish
+########## abominox's Fish shell configuration ##########
+
+# This file is kept minimal - most config is in conf.d/
+# Files in conf.d/ are automatically loaded by Fish
+
+# ARM Homebrew environment setup
+eval (/opt/homebrew/bin/brew shellenv)
+
+if status is-interactive
+    # Interactive shell setup
+
+    # Disable welcome message
+    set -g fish_greeting
+
+    # Ignore commands starting with a space (like Bash)
+    set -g fish_history_ignore_regex '^ '
+
+    # Clear "Last login" message for non-SSH sessions
+    if not set -q SSH_CONNECTION; and not set -q SSH_CLIENT
+        clear
+    end
+end

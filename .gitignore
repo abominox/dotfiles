@@ -8,3 +8,6 @@
 
 # X Server
 .Xauthority
+
+# CC
+.claude/
