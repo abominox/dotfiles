@@ -1,6 +1,15 @@
 #!/usr/bin/env fish
 ### Platform-specific configuration ###
 
+# Helper function for backwards compatibility with Fish < 3.2
+function __add_path
+    if functions -q fish_add_path
+        fish_add_path $argv
+    else if not contains $argv[1] $PATH
+        set -gx PATH $argv[1] $PATH
+    end
+end
+
 # Platform detection using uname
 switch (uname -s)
     case Darwin
@@ -19,16 +28,16 @@ switch (uname -s)
         alias date='gdate'
 
         # Add pip to PATH
-        fish_add_path /Library/Frameworks/Python.framework/Versions/3.9/bin
+        __add_path /Library/Frameworks/Python.framework/Versions/3.9/bin
 
         # Fix Python 3.9 packages PATH
-        fish_add_path /usr/local/lib/python3.9/site-packages
+        __add_path /usr/local/lib/python3.9/site-packages
 
         # Add GNU coreutils to PATH, to enable regular names (no 'g' prefix)
-        fish_add_path /usr/local/opt/coreutils/libexec/gnubin
+        __add_path /usr/local/opt/coreutils/libexec/gnubin
 
         # Add VS Code to PATH
-        fish_add_path "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+        __add_path "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
         # Suppress new ZSH default message
         set -gx BASH_SILENCE_DEPRECATION_WARNING 1
@@ -39,7 +48,7 @@ switch (uname -s)
 
         # Golang
         set -gx GOPATH "$HOME/projects/go"
-        fish_add_path "$GOPATH/bin"
+        __add_path "$GOPATH/bin"
 
     case Linux
         ### Linux-specific settings ###
@@ -49,7 +58,7 @@ switch (uname -s)
 
         # Golang
         set -gx GOPATH "$HOME/projects/go"
-        fish_add_path "$GOPATH/bin"
+        __add_path "$GOPATH/bin"
 
         # Check for WSL2
         if test -f /proc/version && string match -q '*microsoft*' (cat /proc/version)
@@ -62,6 +71,6 @@ switch (uname -s)
 
             # Golang (WSL2)
             set -gx GOPATH "$HOME/projects/go"
-            fish_add_path /usr/local/go/bin
+            __add_path /usr/local/go/bin
         end
 end

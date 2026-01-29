@@ -14,7 +14,12 @@ set -gx MAILCHECK 0
 set -gx force_color_prompt yes
 
 # Include home bin folder in PATH
-fish_add_path "$HOME/.local/bin"
+# Use fish_add_path if available (Fish 3.2+), otherwise fallback
+if functions -q fish_add_path
+    fish_add_path "$HOME/.local/bin"
+else
+    set -gx PATH "$HOME/.local/bin" $PATH
+end
 
 ### Development ###
 
