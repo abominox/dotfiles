@@ -18,8 +18,10 @@ if status is-interactive
     # Ignore commands starting with a space (like Bash)
     set -g fish_history_ignore_regex '^ '
 
-    # Clear "Last login" message for non-SSH sessions
-    if not set -q SSH_CONNECTION; and not set -q SSH_CLIENT
-        clear
+    # Clear "Last login" message for non-SSH sessions (macOS only)
+    if test (uname -s) = "Darwin"
+        if not set -q SSH_CONNECTION; and not set -q SSH_CLIENT
+            clear
+        end
     end
 end
