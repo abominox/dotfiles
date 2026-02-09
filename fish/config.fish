@@ -19,8 +19,9 @@ if status is-interactive
     set -g fish_history_ignore_regex '^ '
 
     # Clear "Last login" message for non-SSH sessions (macOS only)
+    # Skip in VS Code terminal to avoid interfering with shell integration
     if test (uname -s) = "Darwin"
-        if not set -q SSH_CONNECTION; and not set -q SSH_CLIENT
+        if not set -q SSH_CONNECTION; and not set -q SSH_CLIENT; and not set -q VSCODE_INJECTION
             clear
         end
     end

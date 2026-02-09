@@ -60,8 +60,8 @@ switch (uname -s)
         set -gx GOPATH "$HOME/projects/go"
         __add_path "$GOPATH/bin"
 
-        # Check for WSL2
-        if test -f /proc/version && string match -q '*microsoft*' (cat /proc/version)
+        # Check for WSL2 (using ; and for Fish < 3.0 compatibility)
+        if test -f /proc/version; and string match -q '*microsoft*' (cat /proc/version)
             ### WSL2-specific settings ###
 
             # Support X11 forwarding in WSL2
@@ -69,8 +69,7 @@ switch (uname -s)
             set -gx DISPLAY "$display_ip:0"
             set -gx LIBGL_ALWAYS_INDIRECT 1
 
-            # Golang (WSL2)
-            set -gx GOPATH "$HOME/projects/go"
+            # Go toolchain (WSL2 installs Go to /usr/local)
             __add_path /usr/local/go/bin
         end
 end

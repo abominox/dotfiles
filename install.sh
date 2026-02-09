@@ -129,6 +129,9 @@ install_dotfiles () {
 
   # Install Fish configuration
   install_fish_config
+
+  # Install WSL2 configuration if applicable
+  install_wsl_config
 }
 
 install_fish_config () {
@@ -163,6 +166,23 @@ install_fish_config () {
 
   echo "Fish configuration installed!"
   echo "To set Fish as default shell, run: chsh -s \$(which fish)"
+}
+
+install_wsl_config () {
+  # Only install on WSL2 instances
+  if grep -qi microsoft /proc/version 2>/dev/null; then
+    echo "WSL2 detected. Installing wsl.conf..."
+
+    # Backup existing wsl.conf
+    if [ -f /etc/wsl.conf ]; then
+      mkdir -p ~/.dotfiles_old
+      sudo cp -av /etc/wsl.conf ~/.dotfiles_old/wsl.conf
+    fi
+
+    sudo cp -v "$(pwd)/wsl.conf" /etc/wsl.conf
+    echo "WSL2 configuration installed!"
+    echo "Run 'wsl --shutdown' from PowerShell and reopen WSL to apply."
+  fi
 }
 
 if [ "$1" = "minimal" ]

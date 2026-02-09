@@ -17,8 +17,9 @@ set -gx force_color_prompt yes
 # Use fish_add_path if available (Fish 3.2+), otherwise fallback
 if functions -q fish_add_path
     fish_add_path "$HOME/.local/bin"
+    fish_add_path "$HOME/.bun/bin"
 else
-    set -gx PATH "$HOME/.local/bin" $PATH
+    set -gx PATH "$HOME/.local/bin" "$HOME/.bun/bin" $PATH
 end
 
 ### Development ###
