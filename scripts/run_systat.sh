@@ -9,8 +9,20 @@ else
     exit 1
 fi
 
+PIDFILE="/tmp/systat.pid"
+
+# Kill any existing instance
+if [[ -f "$PIDFILE" ]]; then
+    OLD_PID=$(cat "$PIDFILE")
+    if kill -0 "$OLD_PID" 2>/dev/null && ps -p "$OLD_PID" -o comm= | grep -qF "systat"; then
+        kill "$OLD_PID"
+    fi
+    rm -f "$PIDFILE"
+fi
+
 # Run the binary and write output to /tmp/statusline
 "$BIN" > /tmp/statusline &
+echo $! > "$PIDFILE"
 
 # Add @reboot crontab entry if not already present
 CRON_LINE="@reboot $(pwd)/$(basename "$0")"
