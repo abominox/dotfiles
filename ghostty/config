@@ -1,0 +1,17 @@
+background-opacity = 0.90
+
+# Font configuration
+font-family = JetBrainsMono Nerd Font
+font-size = 13
+
+# Shell configuration
+command = /opt/homebrew/bin/fish
+
+# Cursor configuration
+cursor-style = block
+cursor-style-blink = true
+
+# MacOS Keybinds
+keybind = super+t=new_tab
+keybind = super+left=previous_tab
+keybind = super+right=next_tab

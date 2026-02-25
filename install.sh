@@ -55,6 +55,8 @@ install_devtools () {
         fish \
         eza \
         coreutils
+
+      brew install --cask font-jetbrains-mono-nerd-font
       ;;
 
     debian)
@@ -130,6 +132,9 @@ install_dotfiles () {
   # Install Fish configuration
   install_fish_config
 
+  # Install Ghostty configuration (macOS only)
+  install_ghostty_config
+
   # Install WSL2 configuration if applicable
   install_wsl_config
 }
@@ -166,6 +171,27 @@ install_fish_config () {
 
   echo "Fish configuration installed!"
   echo "To set Fish as default shell, run: chsh -s \$(which fish)"
+}
+
+install_ghostty_config () {
+  # Only install on macOS
+  if [[ "$(detect_platform)" != "macos" ]]; then
+    return 0
+  fi
+
+  local ghostty_dir="$HOME/Library/Application Support/com.mitchellh.ghostty"
+  echo "Setting up Ghostty configuration..."
+
+  mkdir -p "$ghostty_dir"
+
+  # Backup existing config if it's not already a symlink to our dotfiles
+  if [ -f "$ghostty_dir/config" ] && [ ! -L "$ghostty_dir/config" ]; then
+    mkdir -p ~/.dotfiles_old/ghostty
+    cp -av "$ghostty_dir/config" ~/.dotfiles_old/ghostty/config
+  fi
+
+  ln -fnvs "$(pwd)/ghostty/config" "$ghostty_dir/config"
+  echo "Ghostty configuration installed!"
 }
 
 install_wsl_config () {
