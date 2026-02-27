@@ -19,7 +19,7 @@ if status is-interactive
     set -g fish_history_ignore_regex '^ '
 
 	# Set cursor style
-	set fish_cursor_default block
+	set fish_cursor_default line
 
     # Clear "Last login" message for non-SSH sessions (macOS only)
     # Skip in VS Code terminal to avoid interfering with shell integration
