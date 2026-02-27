@@ -9,7 +9,7 @@ command = /opt/homebrew/bin/fish
 
 # Cursor configuration
 cursor-style = block
-cursor-style-blink = true
+cursor-style-blink = false
 
 # MacOS Keybinds
 keybind = super+t=new_tab

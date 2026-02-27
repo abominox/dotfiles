@@ -9,14 +9,17 @@ if test (uname -m) = "arm64"; and test -x /opt/homebrew/bin/brew
     eval (/opt/homebrew/bin/brew shellenv)
 end
 
+# Interactive shell setup
 if status is-interactive
-    # Interactive shell setup
 
     # Disable welcome message
     set -g fish_greeting
 
     # Ignore commands starting with a space (like Bash)
     set -g fish_history_ignore_regex '^ '
+
+	# Set cursor style
+	set fish_cursor_default block
 
     # Clear "Last login" message for non-SSH sessions (macOS only)
     # Skip in VS Code terminal to avoid interfering with shell integration
