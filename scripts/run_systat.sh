@@ -21,7 +21,7 @@ if [[ -f "$PIDFILE" ]]; then
 fi
 
 # Run the binary and write output to /tmp/statusline
-"$BIN" > /tmp/statusline &
+"$BIN" &
 echo $! > "$PIDFILE"
 
 # Add @reboot crontab entry if not already present
