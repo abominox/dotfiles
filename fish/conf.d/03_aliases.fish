@@ -71,9 +71,9 @@ alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
 # Default ls to format better
 # Use eza if available, otherwise regular ls
 if command -v eza &> /dev/null
-    alias ls='eza -lh --group-directories-first --icons'
+    alias ls='eza -lah --group-directories-first --icons'
 else
-    alias ls='ls --color=auto --group-directories-first -lh'
+    alias ls='ls --color=auto --group-directories-first -lah'
 end
 
 # Colored grep output
