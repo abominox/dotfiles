@@ -15,3 +15,4 @@ cursor-style-blink = false
 keybind = super+t=new_tab
 keybind = super+left=previous_tab
 keybind = super+right=next_tab
+keybind = super+r=prompt_surface_title
