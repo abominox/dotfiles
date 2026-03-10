@@ -12,6 +12,11 @@ end
 # Interactive shell setup
 if status is-interactive
 
+    # WSL2-specific settings
+    if test -f /proc/sys/fs/binfmt_misc/WSLInterop
+        set -x QT_QPA_PLATFORM wayland
+    end
+
     # Disable welcome message
     set -g fish_greeting
 
