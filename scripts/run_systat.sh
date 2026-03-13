@@ -1,9 +1,11 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 if [[ "$(uname)" == "Darwin" ]]; then
-    BIN="./systat_macos"
+    BIN="$SCRIPT_DIR/systat_macos"
 elif [[ "$(uname)" == "Linux" ]]; then
-    BIN="./systat_linux"
+    BIN="$SCRIPT_DIR/systat_linux"
 else
     echo "Unsupported OS: $(uname)"
     exit 1
@@ -25,6 +27,6 @@ fi
 echo $! > "$PIDFILE"
 
 # Add @reboot crontab entry if not already present
-CRON_LINE="@reboot $(pwd)/$(basename "$0")"
+CRON_LINE="@reboot $SCRIPT_DIR/$(basename "$0")"
 (crontab -l 2>/dev/null | grep -F -q "$CRON_LINE") || \
     (crontab -l 2>/dev/null; echo "$CRON_LINE") | crontab -
