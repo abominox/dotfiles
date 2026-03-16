@@ -54,7 +54,8 @@ install_devtools () {
         jq \
         fish \
         eza \
-        coreutils
+        coreutils \
+        bun
 
       brew install --cask font-jetbrains-mono-nerd-font
       ;;
@@ -135,6 +136,9 @@ install_dotfiles () {
   # Install Ghostty configuration (macOS only)
   install_ghostty_config
 
+  # Install Claude Code configuration
+  install_claude_config
+
   # Install WSL2 configuration if applicable
   install_wsl_config
 }
@@ -192,6 +196,20 @@ install_ghostty_config () {
 
   ln -fnvs "$(pwd)/ghostty/config" "$ghostty_dir/config"
   echo "Ghostty configuration installed!"
+}
+
+install_claude_config () {
+  echo "Setting up Claude Code configuration..."
+
+  mkdir -p "$HOME/.claude"
+
+  if [ -f "$HOME/.claude/settings.json" ] && [ ! -L "$HOME/.claude/settings.json" ]; then
+    mkdir -p ~/.dotfiles_old/claude
+    cp -av "$HOME/.claude/settings.json" ~/.dotfiles_old/claude/settings.json
+  fi
+
+  ln -fnvs "$(pwd)/.claude/settings.json" "$HOME/.claude/settings.json"
+  echo "Claude Code configuration installed!"
 }
 
 install_wsl_config () {
