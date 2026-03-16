@@ -54,10 +54,11 @@ install_devtools () {
         jq \
         fish \
         eza \
-        coreutils \
-        bun
+        coreutils
 
-      brew install --cask font-jetbrains-mono-nerd-font
+      brew install --cask \
+        font-jetbrains-mono-nerd-font \
+        bun
       ;;
 
     debian)
@@ -209,6 +210,12 @@ install_claude_config () {
   fi
 
   ln -fnvs "$(pwd)/.claude/settings.json" "$HOME/.claude/settings.json"
+
+  # Install ccusage for Claude Code statusline
+  if command -v bun &> /dev/null; then
+    bun install -g ccusage
+  fi
+
   echo "Claude Code configuration installed!"
 }
 
