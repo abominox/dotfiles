@@ -10,4 +10,5 @@
 .Xauthority
 
 # CC
-.claude/
+.claude/*
+!.claude/settings.json
