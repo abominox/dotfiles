@@ -15,6 +15,9 @@ dotfiles=(
 # Fish shell configuration directory
 fish_config_dir="$HOME/.config/fish"
 
+# Packages with identical names across all package managers
+common_packages=(tmux vim git curl htop ncdu shellcheck jq fish)
+
 # Detect platform and package manager
 detect_platform () {
   if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -28,6 +31,29 @@ detect_platform () {
   fi
 }
 
+ensure_homebrew () {
+  if ! command -v brew &> /dev/null; then
+    echo "Homebrew not found. Installing..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
+}
+
+install_bun () {
+  if ! command -v bun &> /dev/null; then
+    curl -fsSL https://bun.sh/install | bash
+  fi
+}
+
+install_eza_debian () {
+  if ! command -v eza &> /dev/null; then
+    sudo mkdir -p /etc/apt/keyrings
+    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+    sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+    sudo apt update && sudo apt install -y eza
+  fi
+}
+
 install_devtools () {
   local platform
   platform=$(detect_platform)
@@ -36,73 +62,23 @@ install_devtools () {
 
   case "$platform" in
     macos)
-      # Check if Homebrew is installed
-      if ! command -v brew &> /dev/null; then
-        echo "Homebrew not found. Installing..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      fi
-
-      brew install \
-        tmux \
-        vim \
-        git \
-        curl \
-        htop \
-        ncdu \
-        python3 \
-        shellcheck \
-        jq \
-        fish \
-        eza \
-        coreutils
-
-      brew install --cask \
-        font-jetbrains-mono-nerd-font \
-        bun
+      ensure_homebrew
+      brew install "${common_packages[@]}" python3 eza coreutils
+      brew install --cask font-jetbrains-mono-nerd-font
+      install_bun
       ;;
 
     debian)
       sudo apt update && sudo apt install -y \
-        tmux \
-        vim \
-        git \
-        curl \
-        htop \
-        ncdu \
-        net-tools \
-        python3 \
-        virtualenv \
-        shellcheck \
-        python3-pip \
-        jq \
-        fish
-
-      # eza requires a separate installation on Debian
-      if ! command -v eza &> /dev/null; then
-        sudo mkdir -p /etc/apt/keyrings
-        wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-        echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
-        sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-        sudo apt update && sudo apt install -y eza
-      fi
+        "${common_packages[@]}" net-tools python3 python3-pip virtualenv
+      install_bun
+      install_eza_debian
       ;;
 
     arch)
       sudo pacman -Syu --noconfirm \
-        tmux \
-        vim \
-        git \
-        curl \
-        htop \
-        ncdu \
-        net-tools \
-        python \
-        python-virtualenv \
-        shellcheck \
-        python-pip \
-        jq \
-        fish \
-        eza
+        "${common_packages[@]}" net-tools python python-pip python-virtualenv eza
+      install_bun
       ;;
 
     *)
