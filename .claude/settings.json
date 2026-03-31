@@ -1,11 +1,12 @@
 {
   "statusLine": {
     "type": "command",
-    "command": "~/.bun/bin/ccusage statusline | sed 's/ | 💰.* | 🔥[^|]* | / | /'",
+    "command": "~/.bun/bin/ccusage statusline",
     "padding": 0
   },
   "enabledPlugins": {
     "clangd-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true
-  }
+  },
+  "model": "opus"
 }
