@@ -4,8 +4,13 @@
 # Avoid duplicates in history (equivalent to HISTCONTROL=ignoreboth)
 set -gx fish_history_avoid_duplicates yes
 
-# Don't save commands starting with space
-set -gx fish_history_ignore_space yes
+# Don't save commands starting with space (fish has no native support, so we delete after the fact)
+function __history_ignore_space --on-event fish_preexec
+    if string match -qr '^ ' -- "$argv"
+        builtin history delete --case-sensitive --exact -- "$argv"
+        builtin history delete --case-sensitive --exact -- (string trim -- "$argv")
+    end
+end
 
 # Fish automatically timestamps history and syncs across sessions!
 # No additional configuration needed for:
