@@ -186,6 +186,7 @@ install_claude_config () {
   fi
 
   ln -fnvs "$(pwd)/.claude/settings.json" "$HOME/.claude/settings.json"
+  ln -fnvs "$(pwd)/.claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 
   # Install ccusage for Claude Code statusline
   if command -v bun &> /dev/null; then
