@@ -283,8 +283,32 @@ install_pi_node_wrapper () {
   echo "Created pi node wrapper at $target"
 }
 
+# Ensure npm global binaries (e.g. pi) are on PATH
+# On Linux, npm install -g puts binaries in /usr/local/bin or /usr/bin,
+# but the script's PATH may not include it depending on how it was invoked.
+ensure_npm_global_bin_path () {
+  if command -v npm &> /dev/null; then
+    local npm_bin
+    npm_bin="$(npm bin -g 2>/dev/null)"
+    if [ -n "$npm_bin" ] && [ -d "$npm_bin" ]; then
+      case ":$PATH:" in
+        *":$npm_bin:"*) : ;;
+        *) export PATH="$npm_bin:$PATH" ;;
+      esac
+    fi
+  fi
+}
+
 install_pi_packages () {
   echo "Installing pi packages..."
+
+  # Ensure pi is on PATH (npm global bin not always in script PATH on Linux)
+  ensure_npm_global_bin_path
+
+  if ! command -v pi &> /dev/null; then
+    echo "  ⚠️  pi not found on PATH — skipping package installs"
+    return 0
+  fi
 
   # Re-install known packages (tracked via install commands, not code)
   pi install npm:pi-wierd-statusline
