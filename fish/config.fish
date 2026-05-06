@@ -9,6 +9,8 @@ if test (uname -m) = "arm64"; and test -x /opt/homebrew/bin/brew
     eval (/opt/homebrew/bin/brew shellenv)
 end
 
+set -x COLORTERM truecolor
+
 # Interactive shell setup
 if status is-interactive
 

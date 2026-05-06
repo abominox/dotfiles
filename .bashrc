@@ -113,3 +113,4 @@ case "$OSTYPE" in
     export PATH="/usr/local/go/bin:$PATH"
     ;;
 esac
+. "$HOME/.cargo/env"
