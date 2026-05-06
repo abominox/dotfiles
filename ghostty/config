@@ -1,3 +1,5 @@
+tmux-title = all
+
 background-opacity = 0.90
 
 # Font configuration

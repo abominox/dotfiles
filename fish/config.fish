@@ -18,7 +18,7 @@ if status is-interactive
     end
 
     # Disable welcome message
-    set -g fish_greeting
+    set -U fish_greeting
 
     # Ignore commands starting with a space (like Bash)
     set -g fish_history_ignore_regex '^ '

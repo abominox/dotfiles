@@ -2,6 +2,9 @@
 # This script installs my dotfiles + some extras into any *nix system.
 # Requires Bash. Supports macOS (brew), Debian/Ubuntu (apt), and Arch Linux (pacman).
 
+# Directory where the script lives (resolved once, immune to caller's CWD)
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 dotfiles=(
   .vim
   .vimrc
@@ -63,22 +66,26 @@ install_devtools () {
   case "$platform" in
     macos)
       ensure_homebrew
-      brew install "${common_packages[@]}" python3 eza coreutils
+      brew install "${common_packages[@]}" python3 eza coreutils pi-coding-agent
       brew install --cask font-jetbrains-mono-nerd-font
       install_bun
       ;;
 
     debian)
       sudo apt update && sudo apt install -y \
-        "${common_packages[@]}" net-tools python3 python3-pip virtualenv
+        "${common_packages[@]}" net-tools python3 python3-pip virtualenv nodejs npm
       install_bun
+      # Install pi coding agent via npm
+      npm install -g @mariozechner/pi-coding-agent
       install_eza_debian
       ;;
 
     arch)
       sudo pacman -Syu --noconfirm \
-        "${common_packages[@]}" net-tools python python-pip python-virtualenv eza
+        "${common_packages[@]}" net-tools python python-pip python-virtualenv eza nodejs npm
       install_bun
+      # Install pi coding agent via npm
+      npm install -g @mariozechner/pi-coding-agent
       ;;
 
     *)
@@ -104,7 +111,7 @@ install_dotfiles () {
     fi
 
     # Symlink new dotfiles into user home dir
-    ln -fnvs "$(pwd)"/"$dotfile" ~/"$dotfile"
+    ln -fnvs "$DOTFILES_DIR"/"$dotfile" ~/"$dotfile"
   done
 
   # Install Fish configuration
@@ -115,6 +122,18 @@ install_dotfiles () {
 
   # Install Claude Code configuration
   install_claude_config
+
+  # Install pi configuration
+  install_pi_config
+
+  # Install pi node wrapper (macOS only — tmux compat, pbsi_comm="pi")
+  install_pi_node_wrapper
+
+  # Install pi packages
+  install_pi_packages
+
+  # Install yazi configuration
+  install_yazi_config
 
   # Install WSL2 configuration if applicable
   install_wsl_config
@@ -136,17 +155,21 @@ install_fish_config () {
   fi
 
   # Symlink Fish configuration
-  ln -fnvs "$(pwd)/fish/config.fish" "$fish_config_dir/config.fish"
+    ln -fnvs "$DOTFILES_DIR/fish/config.fish" "$fish_config_dir/config.fish"
 
   # Symlink conf.d files
-  for conf_file in "$(pwd)"/fish/conf.d/*.fish; do
+  for conf_file in "$DOTFILES_DIR"/fish/conf.d/*.fish; do
     [ -f "$conf_file" ] || continue
     ln -fnvs "$conf_file" "$fish_config_dir/conf.d/$(basename "$conf_file")"
   done
 
   # Symlink functions
-  for func_file in "$(pwd)"/fish/functions/*.fish; do
+  for func_file in "$DOTFILES_DIR"/fish/functions/*.fish; do
     [ -f "$func_file" ] || continue
+    # pi.fish is a macOS-specific tmux workaround — skip on Linux
+    if [[ "$(basename "$func_file")" == "pi.fish" && "$(detect_platform)" != "macos" ]]; then
+      continue
+    fi
     ln -fnvs "$func_file" "$fish_config_dir/functions/$(basename "$func_file")"
   done
 
@@ -171,7 +194,7 @@ install_ghostty_config () {
     cp -av "$ghostty_dir/config" ~/.dotfiles_old/ghostty/config
   fi
 
-  ln -fnvs "$(pwd)/ghostty/config" "$ghostty_dir/config"
+    ln -fnvs "$DOTFILES_DIR/ghostty/config" "$ghostty_dir/config"
   echo "Ghostty configuration installed!"
 }
 
@@ -185,7 +208,7 @@ install_claude_config () {
     cp -av "$HOME/.claude/settings.json" ~/.dotfiles_old/claude/settings.json
   fi
 
-  ln -fnvs "$(pwd)/.claude/settings.json" "$HOME/.claude/settings.json"
+    ln -fnvs "$DOTFILES_DIR/.claude/settings.json" "$HOME/.claude/settings.json"
 
   # Install ccusage for Claude Code statusline
   if command -v bun &> /dev/null; then
@@ -193,6 +216,104 @@ install_claude_config () {
   fi
 
   echo "Claude Code configuration installed!"
+}
+
+install_pi_config () {
+  echo "Setting up pi configuration..."
+
+  mkdir -p "$HOME/.pi/agent"
+
+  # Backup existing settings if not already symlinked
+  if [ -f "$HOME/.pi/agent/settings.json" ] && [ ! -L "$HOME/.pi/agent/settings.json" ]; then
+    mkdir -p ~/.dotfiles_old/pi
+    cp -av "$HOME/.pi/agent/settings.json" ~/.dotfiles_old/pi/settings.json
+  fi
+
+  # Symlink top-level config files (create them in ~/.dotfiles/pi/ to manage)
+  for f in settings.json keybindings.json models.json mcp.json; do
+    if [ -f "$DOTFILES_DIR/pi/$f" ]; then
+      ln -fnvs "$DOTFILES_DIR/pi/$f" "$HOME/.pi/agent/$f"
+    fi
+  done
+
+  # Symlink plugin-related directories (pi packages, skills, prompts, themes, extensions)
+  # These persist your installed "plugins" / customizations
+  for dir in skills prompts themes extensions git; do
+    if [ -d "$DOTFILES_DIR/pi/$dir" ]; then
+      mkdir -p "$HOME/.pi/agent/$dir"
+      for item in "$DOTFILES_DIR/pi/$dir"/*; do
+        [ -e "$item" ] || continue
+        ln -fnvs "$item" "$HOME/.pi/agent/$dir/$(basename "$item")"
+      done
+    fi
+  done
+
+  echo "pi configuration installed! (run 'pi' to complete setup/login)"
+}
+
+install_pi_node_wrapper () {
+  # Creates a hard link to node named "pi" so macOS records pbsi_comm = "pi"
+  # at the kernel level, fixing tmux showing "node" instead of "pi".
+  if [[ "$(detect_platform)" != "macos" ]]; then
+    return 0
+  fi
+  if ! command -v pi &> /dev/null || ! command -v node &> /dev/null; then
+    return 0
+  fi
+
+  echo "Setting up pi node wrapper for tmux compatibility..."
+
+  local target="$HOME/.local/share/pi/pi"
+  local node_bin
+  node_bin="$(realpath /opt/homebrew/opt/node/bin/node 2>/dev/null || realpath "$(which node)")"
+  local lib_dir="$(dirname "$node_bin")/../lib"
+
+  mkdir -p "$(dirname "$target")"
+  ln -f "$node_bin" "$target"
+
+  # Symlink libnode alongside so @rpath resolves correctly
+  for lib in "$lib_dir"/libnode*.dylib; do
+    [ -f "$lib" ] || continue
+    ln -sf "$lib" "$(dirname "$target")"/"$(basename "$lib")"
+  done
+
+  # The fish function at ~/.dotfiles/fish/functions/pi.fish is symlinked
+  # automatically by install_fish_config above.
+
+  echo "Created pi node wrapper at $target"
+}
+
+install_pi_packages () {
+  echo "Installing pi packages..."
+
+  # Re-install known packages (tracked via install commands, not code)
+  pi install npm:pi-wierd-statusline
+  pi install npm:pi-web-access
+  pi install npm:pi-btw          # Side conversation overlay (/btw, /btw:new, /btw:tangent, etc.)
+  pi install npm:pi-mcp-adapter   # MCP (Model Context Protocol) adapter
+
+  echo "pi packages installed!"
+}
+
+install_yazi_config () {
+  echo "Setting up yazi configuration..."
+
+  local yazi_dir="$HOME/.config/yazi"
+  mkdir -p "$yazi_dir"
+
+  # Backup existing keymap if it's not already a symlink to our dotfiles
+  if [ -f "$yazi_dir/keymap.toml" ] && [ ! -L "$yazi_dir/keymap.toml" ]; then
+    mkdir -p ~/.dotfiles_old/yazi
+    cp -av "$yazi_dir/keymap.toml" ~/.dotfiles_old/yazi/keymap.toml
+  fi
+
+  # Symlink each yazi config file from ~/.dotfiles/yazi/
+  for f in "$DOTFILES_DIR"/yazi/*.toml; do
+    [ -f "$f" ] || continue
+    ln -fnvs "$f" "$yazi_dir/$(basename "$f")"
+  done
+
+  echo "yazi configuration installed!"
 }
 
 install_wsl_config () {
@@ -206,7 +327,7 @@ install_wsl_config () {
       sudo cp -av /etc/wsl.conf ~/.dotfiles_old/wsl.conf
     fi
 
-    sudo cp -v "$(pwd)/wsl.conf" /etc/wsl.conf
+        sudo cp -v "$DOTFILES_DIR/wsl.conf" /etc/wsl.conf
     echo "WSL2 configuration installed!"
     echo "Run 'wsl --shutdown' from PowerShell and reopen WSL to apply."
   fi

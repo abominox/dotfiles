@@ -1,0 +1,16 @@
+#:schema https://yazi-rs.github.io/schemas/keymap.json
+
+# Prepend custom keybindings before the defaults.
+# This keymap.toml only includes our additions — yazi merges them with the defaults.
+
+[[mgr.prepend_keymap]]
+on   = [ "C", "m" ] # Mnemonic: [C]ustom [M]ove
+run  = 'shell "rsync -auv --remove-source-files --progress \"$@\" . && for f in \"$@\"; do rmdir \"$f\" 2>/dev/null; d=\"$(dirname \"$f\")\"; find \"$d\" -depth -type d -empty -delete 2>/dev/null; done" --block --confirm'
+desc = "Rsync move (clean up empty source dirs)"
+
+# If you want to replace yazi's default `x` (cut) + `p` (paste) with rsync entirely
+# (useful for large files / network mounts), add:
+# [[mgr.prepend_keymap]]
+# on   = [ "C", "p" ]  # [C]ustom [P]aste
+# run  = 'shell "rsync -auv --remove-source-files --progress \"$@\" . && for f in \"$@\"; do rmdir \"$f\" 2>/dev/null; d=\"$(dirname \"$f\")\"; find \"$d\" -depth -type d -empty -delete 2>/dev/null; done" --block --confirm'
+# desc = "Rsync paste (move + cleanup)"

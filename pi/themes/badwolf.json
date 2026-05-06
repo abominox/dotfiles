@@ -1,0 +1,84 @@
+{
+  "$schema": "https://raw.githubusercontent.com/badlogic/pi-mono/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json",
+  "name": "badwolf",
+  "vars": {
+    "bg": "#1c1c1c",
+    "bgAlt": "#242424",
+    "fg": "#f0f0f0",
+    "red": "#ff2c4b",
+    "orange": "#ffa500",
+    "yellow": "#ffdf00",
+    "green": "#00ff87",
+    "cyan": "#00ffff",
+    "blue": "#4b9cff",
+    "magenta": "#ff00ff",
+    "gray": 244,
+    "grayDark": 240,
+    "grayLight": 250
+  },
+  "colors": {
+    "accent": "red",
+    "border": "gray",
+    "borderAccent": "red",
+    "borderMuted": "grayDark",
+    "success": "green",
+    "error": "red",
+    "warning": "orange",
+    "muted": "gray",
+    "dim": "grayDark",
+    "text": "",
+    "thinkingText": "gray",
+
+    "selectedBg": "#2d2d30",
+    "userMessageBg": "#2a2a2a",
+    "userMessageText": "",
+    "customMessageBg": "#2a2a2a",
+    "customMessageText": "",
+    "customMessageLabel": "cyan",
+
+    "toolPendingBg": "#1e1e2e",
+    "toolSuccessBg": "#1a2a1a",
+    "toolErrorBg": "#2a1a1a",
+    "toolTitle": "red",
+    "toolOutput": "",
+
+    "mdHeading": "yellow",
+    "mdLink": "cyan",
+    "mdLinkUrl": "gray",
+    "mdCode": "orange",
+    "mdCodeBlock": "",
+    "mdCodeBlockBorder": "gray",
+    "mdQuote": "gray",
+    "mdQuoteBorder": "grayDark",
+    "mdHr": "grayDark",
+    "mdListBullet": "cyan",
+
+    "toolDiffAdded": "green",
+    "toolDiffRemoved": "red",
+    "toolDiffContext": "gray",
+
+    "syntaxComment": "grayDark",
+    "syntaxKeyword": "red",
+    "syntaxFunction": "yellow",
+    "syntaxVariable": "orange",
+    "syntaxString": "green",
+    "syntaxNumber": "magenta",
+    "syntaxType": "blue",
+    "syntaxOperator": "red",
+    "syntaxPunctuation": "gray",
+
+    "thinkingOff": "grayDark",
+    "thinkingMinimal": "gray",
+    "thinkingLow": "blue",
+    "thinkingMedium": "cyan",
+    "thinkingHigh": "yellow",
+    "thinkingXhigh": "red",
+
+    "bashMode": "orange"
+  },
+  "export": {
+    "pageBg": "#1c1c1c",
+    "cardBg": "#242424",
+    "infoBg": "#3c3728"
+  }
+}

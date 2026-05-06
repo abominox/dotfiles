@@ -1,0 +1,23 @@
+{
+  "lastChangelogVersion": "0.73.0",
+  "defaultProvider": "openrouter",
+  "defaultModel": "deepseek/deepseek-v4-flash",
+  "defaultThinkingLevel": "high",
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "hideThinkingBlock": true,
+  "packages": [
+    "npm:pi-wierd-statusline",
+    "npm:pi-mcp-adapter",
+    "npm:pi-web-access",
+    "npm:pi-btw",
+    "git:github.com/tmustier/pi-extensions"
+  ],
+  "theme": "dark",
+  "editorPaddingX": 0,
+  "quietStartup": false,
+  "enableInstallTelemetry": false,
+  "collapseChangelog": false,
+  "doubleEscapeAction": "tree"
+}

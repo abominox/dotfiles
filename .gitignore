@@ -12,3 +12,10 @@
 # CC
 .claude/*
 !.claude/settings.json
+
+# pi (coding agent) - never commit secrets or chat history
+pi/auth.json
+pi/sessions/
+pi/sessions.json
+pi/pi-sub-bar-settings.json
+pi/bin/

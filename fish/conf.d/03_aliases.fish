@@ -68,6 +68,7 @@ alias rm='rm -i'
 # Find external IP address
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
 
+
 # Default ls to format better
 # Use eza if available, otherwise regular ls
 if command -v eza &> /dev/null
