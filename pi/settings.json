@@ -20,5 +20,8 @@
   "enableInstallTelemetry": false,
   "collapseChangelog": false,
   "doubleEscapeAction": "tree",
-  "steeringMode": "all"
+  "steeringMode": "all",
+  "flags": {
+    "--recap-model": "openrouter/google/gemini-2.5-flash"
+  }
 }
