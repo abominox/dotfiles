@@ -10,12 +10,11 @@
   "packages": [
     "npm:pi-wierd-statusline",
     "npm:pi-mcp-adapter",
-    "npm:pi-web-access",
     "npm:pi-btw",
     "git:github.com/tmustier/pi-extensions"
   ],
   "theme": "dark",
-  "editorPaddingX": 0,
+  "editorPaddingX": 2,
   "quietStartup": true,
   "enableInstallTelemetry": false,
   "collapseChangelog": false,
