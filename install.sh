@@ -242,7 +242,7 @@ install_pi_config () {
   fi
 
   # Symlink top-level config files (create them in ~/.dotfiles/pi/ to manage)
-  for f in settings.json keybindings.json models.json mcp.json; do
+  for f in settings.json keybindings.json models.json mcp.json AGENTS.md; do
     if [ -f "$DOTFILES_DIR/pi/$f" ]; then
       ln -fnvs "$DOTFILES_DIR/pi/$f" "$HOME/.pi/agent/$f"
     fi
