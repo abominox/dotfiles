@@ -47,6 +47,21 @@ install_bun () {
   fi
 }
 
+install_nodejs_debian () {
+  if command -v node &> /dev/null; then
+    local major
+    major="$(node --version | cut -d'.' -f1 | tr -d 'v')"
+    [ "$major" -ge 20 ] && return 0
+  fi
+  echo "Installing Node.js 22.x via NodeSource (Pi requires Node >= 20)..."
+  if ! curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - 2>/dev/null; then
+    echo "  ⚠️  Could not install Node.js 22 automatically (sudo may need a TTY)."
+    echo "  Run this manually: curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash"
+    return 1
+  fi
+  sudo apt install -y nodejs
+}
+
 install_eza_debian () {
   if ! command -v eza &> /dev/null; then
     sudo mkdir -p /etc/apt/keyrings
@@ -73,10 +88,12 @@ install_devtools () {
 
     debian)
       sudo apt update && sudo apt install -y \
-        "${common_packages[@]}" net-tools python3 python3-pip virtualenv nodejs npm
+        "${common_packages[@]}" net-tools python3 python3-pip virtualenv
+      # Install a modern Node.js (Pi needs >= 20, Debian bookworm only has 18)
+      install_nodejs_debian
       install_bun
-      # Install pi coding agent via npm
-      npm install -g @mariozechner/pi-coding-agent
+      # Install pi coding agent via bun (avoids EACCES with npm on Debian)
+      bun install -g @mariozechner/pi-coding-agent
       install_eza_debian
       ;;
 
@@ -84,8 +101,8 @@ install_devtools () {
       sudo pacman -Syu --noconfirm \
         "${common_packages[@]}" net-tools python python-pip python-virtualenv eza nodejs npm
       install_bun
-      # Install pi coding agent via npm
-      npm install -g @mariozechner/pi-coding-agent
+      # Install pi coding agent via bun (avoids potential EACCES with npm)
+      bun install -g @mariozechner/pi-coding-agent
       ;;
 
     *)
@@ -94,11 +111,6 @@ install_devtools () {
       ;;
   esac
 
-  # Install Python linters (cross-platform)
-  pip3 install \
-    pylint \
-    psutil \
-    requests
 }
 
 install_dotfiles () {
@@ -283,13 +295,23 @@ install_pi_node_wrapper () {
   echo "Created pi node wrapper at $target"
 }
 
-# Ensure npm global binaries (e.g. pi) are on PATH
-# On Linux, npm install -g puts binaries in /usr/local/bin or /usr/bin,
-# but the script's PATH may not include it depending on how it was invoked.
-ensure_npm_global_bin_path () {
+# Ensure pi (and other global binaries) are on PATH
+# On Linux, pi may be installed via npm or bun, each with a different bin dir.
+# The script's PATH may not include them depending on how it was invoked.
+ensure_pi_on_path () {
+  if command -v bun &> /dev/null; then
+    local bun_bin
+    bun_bin="$(bun pm bin -g 2>/dev/null)"
+    if [ -n "$bun_bin" ] && [ -d "$bun_bin" ]; then
+      case ":$PATH:" in
+        *":$bun_bin:"*) : ;;
+        *) export PATH="$bun_bin:$PATH" ;;
+      esac
+    fi
+  fi
   if command -v npm &> /dev/null; then
     local npm_bin
-    npm_bin="$(npm bin -g 2>/dev/null)"
+    npm_bin="$(npm root -g 2>/dev/null)/../bin"
     if [ -n "$npm_bin" ] && [ -d "$npm_bin" ]; then
       case ":$PATH:" in
         *":$npm_bin:"*) : ;;
@@ -303,11 +325,22 @@ install_pi_packages () {
   echo "Installing pi packages..."
 
   # Ensure pi is on PATH (npm global bin not always in script PATH on Linux)
-  ensure_npm_global_bin_path
+  ensure_pi_on_path
 
   if ! command -v pi &> /dev/null; then
     echo "  ⚠️  pi not found on PATH — skipping package installs"
     return 0
+  fi
+
+  # Pi requires Node.js >= 20 (uses /v regex flag)
+  if command -v node &> /dev/null; then
+    local node_major
+    node_major="$(node --version | cut -d'.' -f1 | tr -d 'v')"
+    if [ "$node_major" -lt 20 ]; then
+      echo "  ⚠️  pi requires Node.js >= 20 (found v$node_major) — skipping package installs"
+      echo "  Run: curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash"
+      return 0
+    fi
   fi
 
   # Re-install known packages (tracked via install commands, not code)
