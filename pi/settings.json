@@ -16,8 +16,9 @@
   ],
   "theme": "dark",
   "editorPaddingX": 0,
-  "quietStartup": false,
+  "quietStartup": true,
   "enableInstallTelemetry": false,
   "collapseChangelog": false,
-  "doubleEscapeAction": "tree"
+  "doubleEscapeAction": "tree",
+  "steeringMode": "all"
 }
