@@ -11,7 +11,10 @@
     "npm:pi-wierd-statusline",
     "npm:pi-mcp-adapter",
     "npm:pi-btw",
-    "git:github.com/tmustier/pi-extensions"
+    {
+      "source": "git:github.com/tmustier/pi-extensions",
+      "extensions": ["!files-widget/**", "!arcade/*"]
+    }
   ],
   "theme": "dark",
   "editorPaddingX": 2,

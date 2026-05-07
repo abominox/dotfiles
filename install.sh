@@ -146,6 +146,8 @@ install_dotfiles () {
   # Install pi node wrapper (macOS only — tmux compat, pbsi_comm="pi")
   install_pi_node_wrapper
 
+  # Install pi packages
+  install_pi_packages
 
   # Install yazi configuration
   install_yazi_config
@@ -264,6 +266,65 @@ install_pi_node_wrapper () {
   echo "Created pi node wrapper at $target"
 }
 
+# Ensure pi is on PATH
+ensure_pi_on_path () {
+  if command -v npm &> /dev/null; then
+    local npm_bin
+    npm_bin="$(npm root -g 2>/dev/null)/../bin"
+    if [ -n "$npm_bin" ] && [ -d "$npm_bin" ]; then
+      case ":$PATH:" in
+        *":$npm_bin:"*) : ;;
+        *) export PATH="$npm_bin:$PATH" ;;
+      esac
+    fi
+  fi
+}
+
+install_pi_packages () {
+  echo "Installing pi packages..."
+
+  ensure_pi_on_path
+
+  if ! command -v pi &> /dev/null; then
+    echo "  ⚠️  pi not found on PATH — skipping package installs"
+    return 0
+  fi
+
+  # Pi requires Node.js >= 20
+  if command -v node &> /dev/null; then
+    local node_major
+    node_major="$(node --version | cut -d'.' -f1 | tr -d 'v')"
+    if [ "$node_major" -lt 20 ]; then
+      echo "  ⚠️  pi requires Node.js >= 20 (found v$node_major) — skipping package installs"
+      return 0
+    fi
+  fi
+
+  # pi install uses npm internally — ensure writable prefix on Linux
+  if [ -d /usr/lib/node_modules ] && [ ! -w /usr/lib/node_modules ]; then
+    local npm_prefix="$HOME/.npm-global"
+    mkdir -p "$npm_prefix"
+    export npm_config_prefix="$npm_prefix"
+    export PATH="$npm_prefix/bin:$PATH"
+  fi
+
+  # Read packages from settings.json (single source of truth)
+  local pi_settings="$DOTFILES_DIR/pi/settings.json"
+  if [ ! -f "$pi_settings" ]; then
+    echo "  ⚠️  No pi/settings.json found — nothing to install"
+    return 0
+  fi
+
+  # Parse each entry: strings are package sources, objects have a "source" field
+  while IFS= read -r pkg; do
+    [ -z "$pkg" ] && continue
+    echo "  Installing package: $pkg..."
+    pi install "$pkg"
+  done < <(jq -r '.packages[] | if type == "object" then .source else . end' "$pi_settings" 2>/dev/null || grep -o '"[a-z][a-z]*:[^"]*"' "$pi_settings" | tr -d '"')
+
+  echo "pi packages installed!"
+}
+
 install_yazi_config () {
   echo "Setting up yazi configuration..."
 
@@ -278,6 +339,11 @@ install_yazi_config () {
     [ -f "$f" ] || continue
     ln -fnvs "$f" "$yazi_dir/$(basename "$f")"
   done
+
+  # Install yazi plugins (toggle-pane, etc.)
+  if command -v ya &> /dev/null; then
+    ya pkg install 2>/dev/null || true
+  fi
 
   echo "yazi configuration installed!"
 }
