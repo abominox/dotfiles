@@ -343,6 +343,15 @@ install_pi_packages () {
     fi
   fi
 
+  # Pi's "pi install" internally uses npm, which needs a user-writable prefix
+  # Default system prefix (/usr/lib/node_modules) requires root on Linux
+  if [ -d /usr/lib/node_modules ] && [ ! -w /usr/lib/node_modules ]; then
+    local npm_prefix="$HOME/.npm-global"
+    mkdir -p "$npm_prefix"
+    export npm_config_prefix="$npm_prefix"
+    export PATH="$npm_prefix/bin:$PATH"
+  fi
+
   # Re-install known packages (tracked via install commands, not code)
   pi install npm:pi-wierd-statusline
   pi install npm:pi-web-access
