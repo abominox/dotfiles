@@ -22,6 +22,15 @@ else
     set -gx PATH "$HOME/.local/bin" "$HOME/.bun/bin" $PATH
 end
 
+# Use user-local npm prefix (avoids EACCES on Linux where /usr/lib/node_modules is root-owned)
+set -gx npm_config_prefix "$HOME/.npm-global"
+# Add npm-global bin to PATH
+if functions -q fish_add_path
+    fish_add_path "$HOME/.npm-global/bin"
+else
+    set -gx PATH "$HOME/.npm-global/bin" $PATH
+end
+
 ### Development ###
 
 ## C ##

@@ -19,7 +19,7 @@ dotfiles=(
 fish_config_dir="$HOME/.config/fish"
 
 # Packages with identical names across all package managers
-common_packages=(tmux vim git curl htop ncdu shellcheck jq fish)
+common_packages=(tmux vim git curl htop ncdu shellcheck jq fish bat git-delta glow)
 
 # Detect platform and package manager
 detect_platform () {
