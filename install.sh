@@ -322,6 +322,18 @@ install_pi_packages () {
     pi install "$pkg"
   done < <(jq -r '.packages[] | if type == "object" then .source else . end' "$pi_settings" 2>/dev/null || grep -o '"[a-z][a-z]*:[^"]*"' "$pi_settings" | tr -d '"')
 
+  # Some git packages (e.g. tmustier/pi-extensions) import Pi modules as peer
+  # deps under names that the current Pi version may not bundle. Install them
+  # explicitly so extensions can resolve their imports.
+  for cloned in "$HOME/.pi/agent/git"/*/*/package.json; do
+    [ -f "$cloned" ] || continue
+    local dir="$(dirname "$cloned")"
+    if grep -qr '@earendil-works/pi-' "$dir" 2>/dev/null; then
+      echo "  Installing missing peer deps for $(basename "$dir")..."
+      (cd "$dir" && npm install @earendil-works/pi-ai @earendil-works/pi-tui @earendil-works/pi-agent-core @earendil-works/pi-coding-agent --save-dev 2>/dev/null)
+    fi
+  done
+
   echo "pi packages installed!"
 }
 

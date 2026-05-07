@@ -13,7 +13,7 @@
     "npm:pi-btw",
     {
       "source": "git:github.com/tmustier/pi-extensions",
-      "extensions": ["!files-widget/**", "!arcade/*"]
+      "extensions": ["!files-widget/**", "!arcade/**"]
     }
   ],
   "theme": "dark",
