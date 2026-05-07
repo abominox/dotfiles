@@ -325,14 +325,15 @@ install_pi_packages () {
   # Some git packages (e.g. tmustier/pi-extensions) import Pi modules as peer
   # deps under names that the current Pi version may not bundle. Install them
   # explicitly so extensions can resolve their imports.
-  for cloned in "$HOME/.pi/agent/git"/*/*/package.json; do
-    [ -f "$cloned" ] || continue
+  # Git packages are cloned to ~/.pi/agent/git/<host>/<org>/<repo>/
+  # Find all package.json files (depth varies by URL) and install missing peer deps
+  while IFS= read -r cloned; do
     local dir="$(dirname "$cloned")"
-    if grep -qr '@earendil-works/pi-' "$dir" 2>/dev/null; then
+    if grep -qr '@earendil-works/pi-' "$dir" --include='*.ts' --include='*.js' 2>/dev/null; then
       echo "  Installing missing peer deps for $(basename "$dir")..."
-      (cd "$dir" && npm install @earendil-works/pi-ai @earendil-works/pi-tui @earendil-works/pi-agent-core @earendil-works/pi-coding-agent --save-dev 2>/dev/null)
+      (cd "$dir" && npm install --no-save @earendil-works/pi-ai @earendil-works/pi-tui @earendil-works/pi-agent-core @earendil-works/pi-coding-agent 2>&1)
     fi
-  done
+  done < <(find "$HOME/.pi/agent/git" -maxdepth 4 -name package.json 2>/dev/null)
 
   echo "pi packages installed!"
 }
