@@ -82,8 +82,12 @@ install_devtools () {
   case "$platform" in
     macos)
       ensure_homebrew
-      brew install "${common_packages[@]}" python3 eza coreutils git-delta glow chafa
-      npm install -g @earendil-works/pi-coding-agent
+      brew install "${common_packages[@]}" python3 eza coreutils git-delta glow chafa imagemagick
+      # Unlink brew's pi if present (avoids EEXIST conflict with npm global install)
+      # Pin brew's pi so upgrade doesn't re-link and clobber the npm global binary
+      brew unlink pi-coding-agent 2>/dev/null || true
+      brew pin pi-coding-agent 2>/dev/null || true
+      npm install -g --force @earendil-works/pi-coding-agent
       brew install --cask font-jetbrains-mono-nerd-font
       pip3 install readability-lxml html2text
       ;;
