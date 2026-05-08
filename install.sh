@@ -304,10 +304,11 @@ install_pi_packages () {
     fi
   fi
 
-  # pi install uses npm internally — ensure writable prefix on Linux
-  if [ -d /usr/lib/node_modules ] && [ ! -w /usr/lib/node_modules ]; then
+  # On Linux, ensure npm uses a user-writable prefix (pi install uses npm internally)
+  if [[ "$PLATFORM" != "macos" ]] && ! npm prefix -g 2>/dev/null | grep -q "$HOME/.npm-global"; then
     local npm_prefix="$HOME/.npm-global"
     mkdir -p "$npm_prefix"
+    npm config set prefix "$npm_prefix" 2>/dev/null || true
     export npm_config_prefix="$npm_prefix"
     export PATH="$npm_prefix/bin:$PATH"
   fi
