@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.73.0",
+  "lastChangelogVersion": "0.74.0",
   "defaultProvider": "openrouter",
   "defaultModel": "deepseek/deepseek-v4-flash",
   "defaultThinkingLevel": "high",
@@ -10,11 +10,14 @@
   "packages": [
     "npm:pi-wierd-statusline",
     "npm:pi-mcp-adapter",
-    "npm:pi-btw",
     {
       "source": "git:github.com/tmustier/pi-extensions",
-      "extensions": ["!files-widget/**", "!arcade/**"]
-    }
+      "extensions": [
+        "!files-widget/**",
+        "!arcade/**"
+      ]
+    },
+    "npm:pi-qq"
   ],
   "theme": "dark",
   "editorPaddingX": 2,
