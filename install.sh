@@ -344,17 +344,7 @@ install_yazi_config () {
     ln -fnvs "$f" "$yazi_dir/$(basename "$f")"
   done
 
-  # Symlink custom yazi plugins from ~/.dotfiles/yazi/plugins/
-  local yazi_plugins_dir="$DOTFILES_DIR/yazi/plugins"
-  if [ -d "$yazi_plugins_dir" ]; then
-    mkdir -p "$yazi_dir/plugins"
-    for plugin_dir in "$yazi_plugins_dir"/*; do
-      [ -d "$plugin_dir" ] || continue
-      ln -fnvs "$plugin_dir" "$yazi_dir/plugins/$(basename "$plugin_dir")"
-    done
-  fi
-
-  # Install yazi plugins (toggle-pane, etc.)
+  # Install yazi plugins (zoom.yazi, etc.)
   if command -v ya &> /dev/null; then
     ya pkg install 2>/dev/null || true
   fi

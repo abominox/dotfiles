@@ -8,6 +8,22 @@ on   = [ "C", "m" ] # Mnemonic: [C]ustom [M]ove
 run  = 'shell "rsync -auv --remove-source-files --progress \"$@\" . && for f in \"$@\"; do rmdir \"$f\" 2>/dev/null; d=\"$(dirname \"$f\")\"; find \"$d\" -depth -type d -empty -delete 2>/dev/null; done" --block --confirm'
 desc = "Rsync move (clean up empty source dirs)"
 
+# Zoom preview image in/out (standard zoom.yazi bindings)
+[[mgr.prepend_keymap]]
+on   = "+"
+run  = "plugin zoom 1"
+desc = "Zoom in hovered file"
+
+[[mgr.prepend_keymap]]
+on   = "-"
+run  = "plugin zoom -1"
+desc = "Zoom out hovered file"
+
+[[mgr.prepend_keymap]]
+on   = "M"
+run  = "plugin zoom 10"
+desc = "Max zoom in hovered file"
+
 # If you want to replace yazi's default `x` (cut) + `p` (paste) with rsync entirely
 # (useful for large files / network mounts), add:
 # [[mgr.prepend_keymap]]
