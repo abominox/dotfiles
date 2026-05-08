@@ -82,7 +82,8 @@ install_devtools () {
   case "$platform" in
     macos)
       ensure_homebrew
-      brew install "${common_packages[@]}" python3 eza coreutils pi-coding-agent git-delta glow
+      brew install "${common_packages[@]}" python3 eza coreutils git-delta glow chafa
+      npm install -g @earendil-works/pi-coding-agent
       brew install --cask font-jetbrains-mono-nerd-font
       pip3 install readability-lxml html2text
       ;;
@@ -92,8 +93,7 @@ install_devtools () {
         "${common_packages[@]}" net-tools python3 python3-pip virtualenv
       # Install a modern Node.js (Pi needs >= 20, Debian bookworm only has 18)
       install_nodejs_debian
-      # Install pi coding agent via npm (npm_config_prefix already set to user-local dir)
-      npm install -g @mariozechner/pi-coding-agent
+      npm install -g @earendil-works/pi-coding-agent
       pip3 install readability-lxml html2text
       install_eza_debian
       # git-delta and glow not in Debian bookworm repos — install manually:
@@ -109,7 +109,7 @@ install_devtools () {
     arch)
       sudo pacman -Syu --noconfirm \
         "${common_packages[@]}" net-tools python python-pip python-virtualenv eza nodejs npm git-delta glow
-      npm install -g @mariozechner/pi-coding-agent
+      npm install -g @earendil-works/pi-coding-agent
       pip3 install readability-lxml html2text
       ;;
 
@@ -321,19 +321,6 @@ install_pi_packages () {
     echo "  Installing package: $pkg..."
     pi install "$pkg"
   done < <(jq -r '.packages[] | if type == "object" then .source else . end' "$pi_settings" 2>/dev/null || grep -o '"[a-z][a-z]*:[^"]*"' "$pi_settings" | tr -d '"')
-
-  # Some git packages (e.g. tmustier/pi-extensions) import Pi modules as peer
-  # deps under names that the current Pi version may not bundle. Install them
-  # explicitly so extensions can resolve their imports.
-  # Git packages are cloned to ~/.pi/agent/git/<host>/<org>/<repo>/
-  # Find all package.json files (depth varies by URL) and install missing peer deps
-  while IFS= read -r cloned; do
-    local dir="$(dirname "$cloned")"
-    if grep -qr '@earendil-works/pi-' "$dir" --include='*.ts' --include='*.js' 2>/dev/null; then
-      echo "  Installing missing peer deps for $(basename "$dir")..."
-      (cd "$dir" && npm install --no-save @earendil-works/pi-ai @earendil-works/pi-tui @earendil-works/pi-agent-core @earendil-works/pi-coding-agent 2>&1)
-    fi
-  done < <(find "$HOME/.pi/agent/git" -maxdepth 4 -name package.json 2>/dev/null)
 
   echo "pi packages installed!"
 }
