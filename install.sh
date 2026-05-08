@@ -274,7 +274,7 @@ install_pi_node_wrapper () {
 ensure_pi_on_path () {
   if command -v npm &> /dev/null; then
     local npm_bin
-    npm_bin="$(npm root -g 2>/dev/null)/../bin"
+    npm_bin="$(npm root -g 2>/dev/null)/../../bin"
     if [ -n "$npm_bin" ] && [ -d "$npm_bin" ]; then
       case ":$PATH:" in
         *":$npm_bin:"*) : ;;
