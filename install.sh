@@ -97,6 +97,11 @@ install_devtools () {
         "${common_packages[@]}" net-tools python3 python3-pip virtualenv
       # Install a modern Node.js (Pi needs >= 20, Debian bookworm only has 18)
       install_nodejs_debian
+      # Set user-writable npm prefix before installing pi (system prefix is root-owned)
+      if ! npm prefix -g 2>/dev/null | grep -q "$HOME/.npm-global"; then
+        mkdir -p "$HOME/.npm-global"
+        npm config set prefix "$HOME/.npm-global" 2>/dev/null || true
+      fi
       npm install -g @earendil-works/pi-coding-agent
       pip3 install readability-lxml html2text
       install_eza_debian
@@ -113,6 +118,11 @@ install_devtools () {
     arch)
       sudo pacman -Syu --noconfirm \
         "${common_packages[@]}" net-tools python python-pip python-virtualenv eza nodejs npm git-delta glow
+      # Set user-writable npm prefix before installing pi (system prefix is root-owned)
+      if ! npm prefix -g 2>/dev/null | grep -q "$HOME/.npm-global"; then
+        mkdir -p "$HOME/.npm-global"
+        npm config set prefix "$HOME/.npm-global" 2>/dev/null || true
+      fi
       npm install -g @earendil-works/pi-coding-agent
       pip3 install readability-lxml html2text
       ;;
