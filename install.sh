@@ -87,6 +87,8 @@ install_devtools () {
       # Pin brew's pi so upgrade doesn't re-link and clobber the npm global binary
       brew unlink pi-coding-agent 2>/dev/null || true
       brew pin pi-coding-agent 2>/dev/null || true
+      # Remove stale bun-installed pi (shadowed npm version on PATH)
+      rm -f "$HOME/.bun/bin/pi" 2>/dev/null || true
       npm install -g --force @earendil-works/pi-coding-agent
       brew install --cask font-jetbrains-mono-nerd-font
       pip3 install readability-lxml html2text
@@ -105,6 +107,8 @@ install_devtools () {
       npm install -g @earendil-works/pi-coding-agent
       pip3 install readability-lxml html2text
       install_eza_debian
+      # Remove stale bun-installed pi (shadowed npm version on PATH)
+      rm -f "$HOME/.bun/bin/pi" 2>/dev/null || true
       # git-delta and glow not in Debian bookworm repos — install manually:
       if ! command -v delta &> /dev/null; then
         echo "  git-delta: install via cargo (cargo install git-delta) or from github.com/dandavison/delta"
@@ -118,6 +122,8 @@ install_devtools () {
     arch)
       sudo pacman -Syu --noconfirm \
         "${common_packages[@]}" net-tools python python-pip python-virtualenv eza nodejs npm git-delta glow
+      # Remove stale bun-installed pi (shadowed npm version on PATH)
+      rm -f "$HOME/.bun/bin/pi" 2>/dev/null || true
       # Set user-writable npm prefix before installing pi (system prefix is root-owned)
       if ! npm prefix -g 2>/dev/null | grep -q "$HOME/.npm-global"; then
         mkdir -p "$HOME/.npm-global"
