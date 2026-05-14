@@ -12,7 +12,7 @@ function poirot --description "Quick AI help from the terminal, streaming to std
     end
 
     # Parse flags
-    set -l history_count 50
+    set -l history_count 5
     set -l render_mode 0
     set -l prompt_args
 
@@ -28,7 +28,7 @@ function poirot --description "Quick AI help from the terminal, streaming to std
                 echo "Usage: poirot [--history=N] [--no-history] [--render] <prompt>"
                 echo ""
                 echo "Options:"
-                echo "  --history=N    Include last N commands from terminal history (default: 50)"
+                echo "  --history=N    Include last N commands from terminal history (default: 5)"
                 echo "  --no-history   Disable history context"
                 echo "  --render       Buffer full response and render via glow"
                 echo "  -h, --help     Show this help"
@@ -60,7 +60,7 @@ function poirot --description "Quick AI help from the terminal, streaming to std
             # Build the full system message via jq to avoid quote nesting issues
             set -l system_msg (echo -n "$history_text" | jq -Rs '{
               role: "system",
-              content: "Here is the users recent shell history. Only use this as context if it is relevant to the question. Ignore it otherwise.\nHistory:\n" + .
+              content: "Here are your recent commands from this terminal session. Only use them as context if relevant to the question. Ignore them otherwise.\nCommands:\n" + .
             }')
             set -a messages "$system_msg"
         end
