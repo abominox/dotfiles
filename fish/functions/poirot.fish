@@ -12,7 +12,7 @@ function poirot --description "Quick AI help from the terminal, streaming to std
     end
 
     # Parse flags
-    set -l history_count 0
+    set -l history_count 50
     set -l render_mode 0
     set -l prompt_args
 
@@ -20,15 +20,16 @@ function poirot --description "Quick AI help from the terminal, streaming to std
         switch "$arg"
             case '--render'
                 set render_mode 1
-            case '--history'
-                set history_count 50
+            case '--no-history'
+                set history_count 0
             case '--history=*'
                 set history_count (string replace -r '^--history=' '' -- "$arg")
             case '-h' '--help'
-                echo "Usage: poirot [--history[=N]] [--render] <prompt>"
+                echo "Usage: poirot [--history=N] [--no-history] [--render] <prompt>"
                 echo ""
                 echo "Options:"
-                echo "  --history[=N]  Include last N commands from terminal history (default: 50)"
+                echo "  --history=N    Include last N commands from terminal history (default: 50)"
+                echo "  --no-history   Disable history context"
                 echo "  --render       Buffer full response and render via glow"
                 echo "  -h, --help     Show this help"
                 return 0
@@ -39,14 +40,14 @@ function poirot --description "Quick AI help from the terminal, streaming to std
 
     set -l prompt (string join " " $prompt_args)
     if test -z "$prompt"
-        echo "Usage: poirot [--history[=N]] [--render] <prompt>" >&2
+        echo "Usage: poirot [--history=N] [--no-history] [--render] <prompt>" >&2
         return 1
     end
 
     # Build messages array
     set -l messages
 
-    # Add history as system context if requested
+    # Add history as context (default: 50, disable with --no-history)
     if test "$history_count" -gt 0
         set -l history_lines (history --max=$history_count --null 2>/dev/null | string split0)
         if set -q history_lines[1]
