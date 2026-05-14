@@ -57,8 +57,12 @@ function poirot --description "Quick AI help from the terminal, streaming to std
                     set history_text "$history_text$line\n"
                 end
             end
-            set -l escaped_history (echo -n "$history_text" | jq -Rs .)
-            set -a messages '{"role":"system","content":"Here is the users recent shell history. Only use this as context if it is relevant to the question. Ignore it otherwise.\nHistory:\n'"$escaped_history"'"}'
+            # Build the full system message via jq to avoid quote nesting issues
+            set -l system_msg (echo -n "$history_text" | jq -Rs '{
+              role: "system",
+              content: "Here is the users recent shell history. Only use this as context if it is relevant to the question. Ignore it otherwise.\nHistory:\n" + .
+            }')
+            set -a messages "$system_msg"
         end
     end
 
