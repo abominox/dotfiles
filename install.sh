@@ -120,6 +120,25 @@ _install_rtk () {
   fi
 }
 
+# Check if a pi package source is already installed (so we can skip reinstall)
+_pi_package_installed () {
+  local pkg="$1"
+  case "$pkg" in
+    npm:*)
+      local name="${pkg#npm:}"
+      [ -d "$(npm root -g)/$name" ] 2>/dev/null
+      return $?
+      ;;
+    git:*)
+      local path="${pkg#git:}"
+      [ -d "$HOME/.pi/agent/git/$path" ] 2>/dev/null
+      return $?
+      ;;
+    *)
+      return 1 ;;
+  esac
+}
+
 # ── Devtools ────────────────────────────────────────────────────────────────
 
 install_devtools () {
@@ -331,8 +350,15 @@ install_pi_packages () {
 
   while IFS= read -r pkg; do
     [ -z "$pkg" ] && continue
+
+    # Skip if already installed
+    if _pi_package_installed "$pkg"; then
+      echo "  ✔️  $pkg already installed — skipping"
+      continue
+    fi
+
     echo "  Installing package: $pkg..."
-    pi install "$pkg"
+    pi install "$pkg" || echo "  ⚠️  Failed to install $pkg"
   done < <(jq -r '.packages[] | if type == "object" then .source else . end' "$pi_settings" 2>/dev/null || grep -o '"[a-z][a-z]*:[^"]*"' "$pi_settings" | tr -d '"')
 
   echo "pi packages installed!"
