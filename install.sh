@@ -2,8 +2,22 @@
 # This script installs my dotfiles + some extras into any *nix system.
 # Requires Bash. Supports macOS (brew), Debian/Ubuntu (apt), and Arch Linux (pacman).
 
+# Detect platform and package manager
+detect_platform () {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "macos"
+  elif [ -f /etc/arch-release ]; then
+    echo "arch"
+  elif [ -f /etc/debian_version ]; then
+    echo "debian"
+  else
+    echo "unknown"
+  fi
+}
+
 # Directory where the script lives (resolved once, immune to caller's CWD)
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLATFORM="$(detect_platform)"
 
 dotfiles=(
   .vim
@@ -17,19 +31,6 @@ fish_config_dir="$HOME/.config/fish"
 
 # Packages with identical names across all package managers
 common_packages=(tmux vim git curl htop ncdu shellcheck jq fish bat)
-
-# Detect platform and package manager
-detect_platform () {
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "macos"
-  elif [ -f /etc/arch-release ]; then
-    echo "arch"
-  elif [ -f /etc/debian_version ]; then
-    echo "debian"
-  else
-    echo "unknown"
-  fi
-}
 
 ensure_homebrew () {
   if ! command -v brew &> /dev/null; then
@@ -73,6 +74,54 @@ install_eza_debian () {
   fi
 }
 
+# ── Shared helpers ──────────────────────────────────────────────────────────
+
+# Install pi coding agent (handles bun cleanup + npm prefix on Linux)
+_install_pi () {
+  # Remove stale bun-installed pi (shadows npm version on PATH)
+  rm -f "$HOME/.bun/bin/pi" 2>/dev/null || true
+
+  # On Linux, set user-writable npm prefix (system prefix is root-owned)
+  if [[ "$PLATFORM" != "macos" ]] && ! npm prefix -g 2>/dev/null | grep -q "$HOME/.npm-global"; then
+    mkdir -p "$HOME/.npm-global"
+    npm config set prefix "$HOME/.npm-global" 2>/dev/null || true
+    export npm_config_prefix="$HOME/.npm-global"
+    export PATH="$HOME/.npm-global/bin:$PATH"
+  fi
+
+  npm install -g @earendil-works/pi-coding-agent
+}
+
+# Install python tools via uv (not pip3 — avoids externally-managed-environment issues)
+_install_pip_tools () {
+  if ! command -v uv &> /dev/null; then
+    echo "  Installing uv (Python package manager)..."
+    if [[ "$PLATFORM" == "macos" ]]; then
+      brew install uv
+    else
+      curl -fsSL https://astral.sh/uv/install.sh | sh
+    fi
+  fi
+  uv pip install --system readability-lxml html2text 2>/dev/null || \
+    pip3 install --break-system-packages readability-lxml html2text 2>/dev/null || \
+    pip3 install readability-lxml html2text
+}
+
+# Install rtk (Rust Token Killer)
+_install_rtk () {
+  if command -v rtk &> /dev/null; then
+    return 0
+  fi
+  echo "  Installing rtk (Rust Token Killer)..."
+  if [[ "$PLATFORM" == "macos" ]]; then
+    brew install rtk
+  else
+    curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+  fi
+}
+
+# ── Devtools ────────────────────────────────────────────────────────────────
+
 install_devtools () {
   local platform
   platform=$(detect_platform)
@@ -83,33 +132,22 @@ install_devtools () {
     macos)
       ensure_homebrew
       brew install "${common_packages[@]}" python3 eza coreutils git-delta glow chafa imagemagick
-      # Unlink brew's pi if present (avoids EEXIST conflict with npm global install)
-      # Pin brew's pi so upgrade doesn't re-link and clobber the npm global binary
       brew unlink pi-coding-agent 2>/dev/null || true
       brew pin pi-coding-agent 2>/dev/null || true
-      # Remove stale bun-installed pi (shadowed npm version on PATH)
-      rm -f "$HOME/.bun/bin/pi" 2>/dev/null || true
-      npm install -g --force @earendil-works/pi-coding-agent
+      _install_pi
       brew install --cask font-jetbrains-mono-nerd-font
-      pip3 install readability-lxml html2text
+      _install_pip_tools
+      _install_rtk
       ;;
 
     debian)
       sudo apt update && sudo apt install -y \
         "${common_packages[@]}" net-tools python3 python3-pip virtualenv
-      # Install a modern Node.js (Pi needs >= 20, Debian bookworm only has 18)
       install_nodejs_debian
-      # Set user-writable npm prefix before installing pi (system prefix is root-owned)
-      if ! npm prefix -g 2>/dev/null | grep -q "$HOME/.npm-global"; then
-        mkdir -p "$HOME/.npm-global"
-        npm config set prefix "$HOME/.npm-global" 2>/dev/null || true
-      fi
-      npm install -g @earendil-works/pi-coding-agent
-      pip3 install readability-lxml html2text
+      _install_pi
+      _install_pip_tools
       install_eza_debian
-      # Remove stale bun-installed pi (shadowed npm version on PATH)
-      rm -f "$HOME/.bun/bin/pi" 2>/dev/null || true
-      # git-delta and glow not in Debian bookworm repos — install manually:
+      _install_rtk
       if ! command -v delta &> /dev/null; then
         echo "  git-delta: install via cargo (cargo install git-delta) or from github.com/dandavison/delta"
         echo "    (available behind backports for trixie, see packages.debian.org/git-delta)"
@@ -122,15 +160,9 @@ install_devtools () {
     arch)
       sudo pacman -Syu --noconfirm \
         "${common_packages[@]}" net-tools python python-pip python-virtualenv eza nodejs npm git-delta glow
-      # Remove stale bun-installed pi (shadowed npm version on PATH)
-      rm -f "$HOME/.bun/bin/pi" 2>/dev/null || true
-      # Set user-writable npm prefix before installing pi (system prefix is root-owned)
-      if ! npm prefix -g 2>/dev/null | grep -q "$HOME/.npm-global"; then
-        mkdir -p "$HOME/.npm-global"
-        npm config set prefix "$HOME/.npm-global" 2>/dev/null || true
-      fi
-      npm install -g @earendil-works/pi-coding-agent
-      pip3 install readability-lxml html2text
+      _install_pi
+      _install_pip_tools
+      _install_rtk
       ;;
 
     *)
@@ -138,72 +170,51 @@ install_devtools () {
       return 1
       ;;
   esac
-
 }
+
+# ── Dotfiles ────────────────────────────────────────────────────────────────
 
 install_dotfiles () {
   for dotfile in "${dotfiles[@]}"
   do
-    # Preserve old dotfiles, if applicable
     if [ -f "$dotfile" ]; then
       mkdir -p ~/.dotfiles_old
       cp -av ~/"$dotfile" ~/.dotfiles_old/"$dotfile"
     fi
-
-    # Symlink new dotfiles into user home dir
     ln -fnvs "$DOTFILES_DIR"/"$dotfile" ~/"$dotfile"
   done
 
-  # Install Fish configuration
   install_fish_config
-
-  # Install Ghostty configuration (macOS only)
   install_ghostty_config
-
-  # Install pi configuration
   install_pi_config
-
-  # Install pi node wrapper (macOS only — tmux compat, pbsi_comm="pi")
   install_pi_node_wrapper
-
-  # Install pi packages
   install_pi_packages
-
-  # Install yazi configuration
   install_yazi_config
-
-  # Install WSL2 configuration if applicable
   install_wsl_config
 }
 
 install_fish_config () {
   echo "Setting up Fish shell configuration..."
 
-  # Create Fish config directory if it doesn't exist
   mkdir -p "$fish_config_dir"
   mkdir -p "$fish_config_dir/conf.d"
   mkdir -p "$fish_config_dir/functions"
   mkdir -p "$fish_config_dir/completions"
 
-  # Backup existing Fish config
   if [ -f "$fish_config_dir/config.fish" ]; then
     mkdir -p ~/.dotfiles_old/fish
     cp -av "$fish_config_dir"/* ~/.dotfiles_old/fish/ 2>/dev/null || true
   fi
 
-  # Symlink Fish configuration
   ln -fnvs "$DOTFILES_DIR/fish/config.fish" "$fish_config_dir/config.fish"
 
-  # Symlink conf.d files
   for conf_file in "$DOTFILES_DIR"/fish/conf.d/*.fish; do
     [ -f "$conf_file" ] || continue
     ln -fnvs "$conf_file" "$fish_config_dir/conf.d/$(basename "$conf_file")"
   done
 
-  # Symlink functions
   for func_file in "$DOTFILES_DIR"/fish/functions/*.fish; do
     [ -f "$func_file" ] || continue
-    # pi.fish is a macOS-specific tmux workaround — skip on Linux
     if [[ "$(basename "$func_file")" == "pi.fish" && "$PLATFORM" != "macos" ]]; then
       continue
     fi
@@ -228,25 +239,18 @@ install_ghostty_config () {
   echo "Ghostty configuration installed!"
 }
 
-
-
 install_pi_config () {
   echo "Setting up pi configuration..."
 
   mkdir -p "$HOME/.pi/agent"
-
-  # Backup existing settings if not already symlinked
   backup_if_real "$HOME/.pi/agent/settings.json" pi
 
-  # Symlink top-level config files (create them in ~/.dotfiles/pi/ to manage)
   for f in settings.json keybindings.json models.json mcp.json AGENTS.md; do
     if [ -f "$DOTFILES_DIR/pi/$f" ]; then
       ln -fnvs "$DOTFILES_DIR/pi/$f" "$HOME/.pi/agent/$f"
     fi
   done
 
-  # Symlink plugin-related directories (pi packages, skills, prompts, themes, extensions)
-  # These persist your installed "plugins" / customizations
   for dir in skills prompts themes extensions git; do
     if [ -d "$DOTFILES_DIR/pi/$dir" ]; then
       mkdir -p "$HOME/.pi/agent/$dir"
@@ -310,7 +314,6 @@ install_pi_packages () {
     return 0
   fi
 
-  # Pi requires Node.js >= 20
   if command -v node &> /dev/null; then
     local node_major
     node_major="$(node --version | cut -d'.' -f1 | tr -d 'v')"
@@ -320,23 +323,12 @@ install_pi_packages () {
     fi
   fi
 
-  # On Linux, ensure npm uses a user-writable prefix (pi install uses npm internally)
-  if [[ "$PLATFORM" != "macos" ]] && ! npm prefix -g 2>/dev/null | grep -q "$HOME/.npm-global"; then
-    local npm_prefix="$HOME/.npm-global"
-    mkdir -p "$npm_prefix"
-    npm config set prefix "$npm_prefix" 2>/dev/null || true
-    export npm_config_prefix="$npm_prefix"
-    export PATH="$npm_prefix/bin:$PATH"
-  fi
-
-  # Read packages from settings.json (single source of truth)
   local pi_settings="$DOTFILES_DIR/pi/settings.json"
   if [ ! -f "$pi_settings" ]; then
     echo "  ⚠️  No pi/settings.json found — nothing to install"
     return 0
   fi
 
-  # Parse each entry: strings are package sources, objects have a "source" field
   while IFS= read -r pkg; do
     [ -z "$pkg" ] && continue
     echo "  Installing package: $pkg..."
@@ -352,16 +344,13 @@ install_yazi_config () {
   local yazi_dir="$HOME/.config/yazi"
   mkdir -p "$yazi_dir"
 
-  # Backup existing keymap if it's not already a symlink to our dotfiles
   backup_if_real "$yazi_dir/keymap.toml" yazi
 
-  # Symlink each yazi config file from ~/.dotfiles/yazi/
   for f in "$DOTFILES_DIR"/yazi/*.toml; do
     [ -f "$f" ] || continue
     ln -fnvs "$f" "$yazi_dir/$(basename "$f")"
   done
 
-  # Install yazi plugins (zoom.yazi, etc.)
   if command -v ya &> /dev/null; then
     ya pkg install 2>/dev/null || true
   fi
@@ -370,11 +359,9 @@ install_yazi_config () {
 }
 
 install_wsl_config () {
-  # Only install on WSL2 instances
   if grep -qi microsoft /proc/version 2>/dev/null; then
     echo "WSL2 detected. Installing wsl.conf..."
 
-    # Backup existing wsl.conf
     if [ -f /etc/wsl.conf ]; then
       mkdir -p ~/.dotfiles_old
       sudo cp -av /etc/wsl.conf ~/.dotfiles_old/wsl.conf
