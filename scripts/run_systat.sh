@@ -1,12 +1,15 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_PATH="$SCRIPT_DIR/$(basename "${BASH_SOURCE[0]}")"
+
 if [[ "$(uname)" == "Darwin" ]]; then
-    BIN="./systat_macos"
+    BIN="$SCRIPT_DIR/systat_macos"
 elif [[ "$(uname)" == "Linux" ]]; then
     if [[ "$(uname -m)" == "aarch64" ]]; then
-        BIN="./systat_linux_arm64"
+        BIN="$SCRIPT_DIR/systat_linux_arm64"
     else
-        BIN="./systat_linux"
+        BIN="$SCRIPT_DIR/systat_linux"
     fi
 else
     echo "Unsupported OS: $(uname)"
@@ -28,7 +31,6 @@ fi
 "$BIN" &
 echo $! > "$PIDFILE"
 
-# Add @reboot crontab entry if not already present
-CRON_LINE="@reboot $(pwd)/$(basename "$0")"
-(crontab -l 2>/dev/null | grep -F -q "$CRON_LINE") || \
-    (crontab -l 2>/dev/null; echo "$CRON_LINE") | crontab -
+# Ensure exactly one @reboot crontab entry for this script, removing any stale ones
+CRON_LINE="@reboot $SCRIPT_PATH"
+crontab -l 2>/dev/null | grep -v -F "run_systat.sh" | (cat; echo "$CRON_LINE") | crontab -
