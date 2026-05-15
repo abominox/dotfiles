@@ -22,23 +22,6 @@ hi Normal guibg=NONE ctermbg=NONE
 highlight NonText ctermbg=none
 hi lineNr ctermbg=none
 
-"#### Syntastic Settings
-"# Python 3 Linter (pylint)
-let g:syntastic_python_checkers = ['pylint']
-"# YAML Linter (yamllint)
-let g:syntastic_yaml_checkers = ['yamllint']
-"# Bash Script Linter (shellcheck)
-let g:syntastic_sh_checkers = ['shellcheck']
-
-"# Boilerplate settings for Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
 "#### tmux Settings
 
 "#### Pathogen / Plugin Settings
