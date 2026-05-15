@@ -154,6 +154,16 @@ install_devtools () {
       brew unlink pi-coding-agent 2>/dev/null || true
       brew pin pi-coding-agent 2>/dev/null || true
       _install_pi
+      # Ensure pi is actually runnable (npm may install to a different prefix,
+      # or the shell has a stale hash cache)
+      hash -r 2>/dev/null || true
+      if ! command -v pi &> /dev/null || [ ! -x "$(command -v pi)" ]; then
+        local npm_pi_bin="$(npm root -g 2>/dev/null)/../../bin/pi"
+        if [ -x "$npm_pi_bin" ]; then
+          mkdir -p /opt/homebrew/bin 2>/dev/null
+          ln -sf "$npm_pi_bin" /opt/homebrew/bin/pi 2>/dev/null || true
+        fi
+      fi
       brew install --cask font-jetbrains-mono-nerd-font
       _install_pip_tools
       _install_rtk
