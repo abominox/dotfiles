@@ -35,6 +35,18 @@ curl -s "https://context7.com/api/v2/context?libraryId=/owner/repo&query=your+sp
 ```
 This returns relevant `codeSnippets` (with code examples) and `infoSnippets` (documentation explanations). Use a descriptive query for best results.
 
+**⚠️ Always include `&type=json`.** The default response format is `text/plain`. Without `&type=json`, piping into `python3 -c "json.load(sys.stdin)"` or any JSON parser will fail with `JSONDecodeError`.
+
+**Parsing tip:** Use `python3 -m json.tool` for a human-readable dump, or a compact inline script to extract only what you need:
+```bash
+curl -s "https://context7.com/api/v2/context?libraryId=/owner/repo&query=...&type=json" | python3 -c "
+import json, sys
+d = json.load(sys.stdin)
+for s in d.get('codeSnippets', []):
+    for c in s.get('codeList', []): print(c['code'])
+"
+```
+
 If the library isn't on Context7 or you can't find a match, fall through to Method 2.
 
 ### Method 2 — Direct documentation scraping
