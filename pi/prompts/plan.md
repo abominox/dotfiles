@@ -22,8 +22,9 @@ Follow this structure:
    - `sequenceDiagram` for request/response flows and interaction sequences
    - `stateDiagram-v2` for state machines or lifecycle changes
    - `graph TD` for dependency trees or directory structure changes  
-   Use ` ```mermaid ` blocks. If the change is purely mechanical or doesn't involve
-   structural changes, this section can be omitted.
+   Use ` ```mermaid ` blocks — they will be rendered as readable ASCII art in the TUI
+   (powered by the `pi-mermaid` extension). If the change is purely mechanical or
+   doesn't involve structural changes, this section can be omitted.
 
 4. **Detailed Steps**  
    Break the work into numbered steps. For each step include:
