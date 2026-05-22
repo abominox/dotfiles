@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.75.3",
+  "lastChangelogVersion": "0.75.4",
   "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4-pro",
+  "defaultModel": "deepseek/deepseek-v4-flash",
   "defaultThinkingLevel": "high",
   "terminal": {
     "showTerminalProgress": true
@@ -19,7 +19,8 @@
     },
     "npm:pi-qq",
     "npm:pi-mermaid",
-    "npm:pi-tool-display"
+    "npm:pi-tool-display",
+    "npm:pi-rtk-optimizer"
   ],
   "theme": "dark",
   "editorPaddingX": 2,

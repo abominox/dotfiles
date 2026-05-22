@@ -290,6 +290,15 @@ install_pi_config () {
     fi
   done
 
+  # Restore extension configs from dotfiles
+  for ext_conf in "$DOTFILES_DIR/pi/extensions"/*/config.json; do
+    [ -f "$ext_conf" ] || continue
+    local ext_name
+    ext_name="$(basename "$(dirname "$ext_conf")")"
+    mkdir -p "$HOME/.pi/agent/extensions/$ext_name"
+    cp -v "$ext_conf" "$HOME/.pi/agent/extensions/$ext_name/config.json"
+  done
+
   echo "pi configuration installed! (run 'pi' to complete setup/login)"
 }
 
