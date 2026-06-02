@@ -13,6 +13,6 @@ function barney
         return 1
     end
 
-    # Run copyparty with read/write access
-    uvx copyparty@latest -v $target_dir::rw
+    # Run copyparty with read/write access, show QR code
+    uvx copyparty@latest -v --qr $target_dir::rw
 end
