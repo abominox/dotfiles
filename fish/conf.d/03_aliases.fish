@@ -53,6 +53,10 @@ alias nvm-install="curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3
 # Shorter Metasploit command
 alias msf="msfconsole || /opt/metasploit-framework/bin/msfconsole"
 
+####### Share (copyparty) #######
+
+# Share a directory via copyparty with read/write access (defined in functions/barney.fish)
+
 ####### Misc #######
 
 # Quickly download/convert YouTube videos to .mp3 using this alias + URL
