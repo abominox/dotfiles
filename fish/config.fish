@@ -22,8 +22,8 @@ if status is-interactive
     # Disable welcome message
     set -U fish_greeting
 
-    # Ignore commands starting with a space (like Bash)
-    set -g fish_history_ignore_regex '^ '
+    # Ignore commands starting with a space (like Bash) or poirot (contains LLM prompts)
+    set -g fish_history_ignore_regex '^( |poirot\b)'
 
 	# Set cursor style
 	set fish_cursor_default line

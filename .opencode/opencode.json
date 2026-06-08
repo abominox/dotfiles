@@ -1,0 +1,18 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true
+    },
+    "searxng": {
+      "type": "local",
+      "command": ["npx", "-y", "searxng-mul-mcp"],
+      "env": {
+        "SEARXNG_URL": "http://localhost:8888"
+      },
+      "enabled": true
+    }
+  }
+}
