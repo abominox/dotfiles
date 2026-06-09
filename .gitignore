@@ -16,3 +16,6 @@ pi/sessions.json
 pi/pi-sub-bar-settings.json
 pi/bin/
 pi/git/
+
+# Plan files
+PLAN.md
