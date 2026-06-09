@@ -1,15 +1,14 @@
 {
-  "lastChangelogVersion": "0.75.4",
+  "lastChangelogVersion": "0.79.0",
   "defaultProvider": "openrouter",
   "defaultModel": "deepseek/deepseek-v4-flash",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "off",
   "terminal": {
     "showTerminalProgress": true
   },
   "hideThinkingBlock": true,
   "packages": [
     "npm:pi-wierd-statusline",
-    "npm:pi-mcp-adapter",
     {
       "source": "git:github.com/tmustier/pi-extensions",
       "extensions": [
@@ -18,9 +17,9 @@
       ]
     },
     "npm:pi-qq",
-    "npm:pi-mermaid",
-    "npm:pi-tool-display",
-    "npm:pi-rtk-optimizer"
+    "npm:pi-rtk-optimizer",
+    "npm:@plannotator/pi-extension",
+    "npm:pi-tool-display"
   ],
   "theme": "dark",
   "editorPaddingX": 2,

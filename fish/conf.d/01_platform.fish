@@ -1,15 +1,6 @@
 #!/usr/bin/env fish
 ### Platform-specific configuration ###
 
-# Helper function for backwards compatibility with Fish < 3.2
-function __add_path
-    if functions -q fish_add_path
-        fish_add_path $argv
-    else if not contains $argv[1] $PATH
-        set -gx PATH $argv[1] $PATH
-    end
-end
-
 # Platform detection using uname
 switch (uname -s)
     case Darwin
@@ -27,17 +18,15 @@ switch (uname -s)
         end
         alias date='gdate'
 
-        # Add pip to PATH
-        __add_path /Library/Frameworks/Python.framework/Versions/3.9/bin
-
-        # Fix Python 3.9 packages PATH
-        __add_path /usr/local/lib/python3.9/site-packages
+        # Add Python paths
+        fish_add_path /Library/Frameworks/Python.framework/Versions/3.9/bin
+        fish_add_path /usr/local/lib/python3.9/site-packages
 
         # Add GNU coreutils to PATH, to enable regular names (no 'g' prefix)
-        __add_path /usr/local/opt/coreutils/libexec/gnubin
+        fish_add_path /usr/local/opt/coreutils/libexec/gnubin
 
         # Add VS Code to PATH
-        __add_path "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+        fish_add_path "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
         # Suppress new ZSH default message
         set -gx BASH_SILENCE_DEPRECATION_WARNING 1
@@ -48,7 +37,7 @@ switch (uname -s)
 
         # Golang
         set -gx GOPATH "$HOME/projects/go"
-        __add_path "$GOPATH/bin"
+        fish_add_path "$GOPATH/bin"
 
     case Linux
         ### Linux-specific settings ###
@@ -58,9 +47,9 @@ switch (uname -s)
 
         # Golang
         set -gx GOPATH "$HOME/projects/go"
-        __add_path "$GOPATH/bin"
+        fish_add_path "$GOPATH/bin"
 
-        # Check for WSL2 (using ; and for Fish < 3.0 compatibility)
+        # Check for WSL2
         if test -f /proc/version; and string match -q '*microsoft*' (cat /proc/version)
             ### WSL2-specific settings ###
 
@@ -70,6 +59,6 @@ switch (uname -s)
             set -gx LIBGL_ALWAYS_INDIRECT 1
 
             # Go toolchain (WSL2 installs Go to /usr/local)
-            __add_path /usr/local/go/bin
+            fish_add_path /usr/local/go/bin
         end
 end

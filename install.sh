@@ -151,6 +151,8 @@ install_devtools () {
     macos)
       ensure_homebrew
       brew install "${common_packages[@]}" python3 eza coreutils git-delta glow chafa imagemagick
+      brew tap 1broseidon/tap 2>/dev/null || true
+      brew install ketch
       brew unlink pi-coding-agent 2>/dev/null || true
       brew pin pi-coding-agent 2>/dev/null || true
       _install_pi
@@ -389,13 +391,7 @@ install_yazi_config () {
   local yazi_dir="$HOME/.config/yazi"
   mkdir -p "$yazi_dir"
 
-  backup_if_real "$yazi_dir/keymap.toml" yazi
-
-  for f in "$DOTFILES_DIR"/yazi/*.toml; do
-    [ -f "$f" ] || continue
-    ln -fnvs "$f" "$yazi_dir/$(basename "$f")"
-  done
-
+  # Install yazi packages if ya is available
   if command -v ya &> /dev/null; then
     ya pkg install 2>/dev/null || true
   fi

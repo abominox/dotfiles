@@ -1,6 +1,0 @@
-#:schema https://yazi-rs.github.io/schemas/yazi.json
-
-[preview]
-# Allow images to scale up when the preview pane is expanded via toggle-pane
-max_width  = 2000
-max_height = 2000

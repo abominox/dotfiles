@@ -19,51 +19,45 @@ When you don't know a library, API, framework, or CLI tool confidently, **look i
 
 **Important**: answering "let me check the latest docs" is always preferred over guessing.
 
-### Method 1 — Context7 REST API (preferred)
+### Method 1 — ketch (preferred)
 
-Context7 indexes up-to-date docs for thousands of libraries. No auth required for public repos. Use two endpoints:
-
-**Step 1: Search for the library**
-```bash
-curl -s "https://context7.com/api/v2/libs/search?libraryName=library-name&query=short+description+of+what+you+need"
-```
-The response includes library `id`, `title`, `description`, `versions`, etc. Pick the best match.
-
-**Step 2: Get documentation context**
-```bash
-curl -s "https://context7.com/api/v2/context?libraryId=/owner/repo&query=your+specific+question&type=json"
-```
-This returns relevant `codeSnippets` (with code examples) and `infoSnippets` (documentation explanations). Use a descriptive query for best results.
-
-**⚠️ Always include `&type=json`.** The default response format is `text/plain`. Without `&type=json`, piping into `python3 -c "json.load(sys.stdin)"` or any JSON parser will fail with `JSONDecodeError`.
-
-**Parsing tip:** Use `python3 -m json.tool` for a human-readable dump, or a compact inline script to extract only what you need:
-```bash
-curl -s "https://context7.com/api/v2/context?libraryId=/owner/repo&query=...&type=json" | python3 -c "
-import json, sys
-d = json.load(sys.stdin)
-for s in d.get('codeSnippets', []):
-    for c in s.get('codeList', []): print(c['code'])
-"
-```
-
-If the library isn't on Context7 or you can't find a match, fall through to Method 2.
-
-### Method 2 — Direct documentation scraping
-
-Use the web-requests skill to fetch official docs or READMEs directly:
+[Ketch](https://github.com/1broseidon/ketch) is a blazing fast CLI for agentic search and scrape. It uses a local SearXNG instance for web search and Context7 for library docs. One tool for web search, scraping, library docs, and code search.
 
 ```bash
-SKILL_DIR="$HOME/.pi/agent/skills/web-requests"
-curl -sL "https://pypi.org/pypi/package-name/json" 2>/dev/null | python3 "$SKILL_DIR/scripts/extract.py"
-curl -sL "https://raw.githubusercontent.com/owner/repo/main/README.md" 2>/dev/null | python3 "$SKILL_DIR/scripts/extract.py"
+# Search the web (uses SearXNG backend configured in ~/Library/Application\ Support/ketch/config.json)
+ketch search "your query"
+ketch search "your query" --scrape       # search + fetch full content
+ketch search "your query" --limit 10     # more results
+ketch search "your query" --json         # structured JSON output
+
+# Scrape a URL to clean markdown
+ketch scrape https://example.com/page
+
+# Search library docs (Context7-backed, supports pagination via --limit)
+ketch docs "library-name"                        # search docs for a library
+ketch docs "how to render tables" --library /charmbracelet/glamour  # direct library ID
+ketch docs <library-name> --limit 10              # paginate results
+ketch docs <library-name> --limit 10 --tokens 8000  # full-detail docs
+
+# Search open-source code (Grep, Sourcegraph, or GitHub backends)
+ketch code "http.NewRequestWithContext" --lang go
+ketch code "rate limit middleware" --lang go --limit 10 -b github
+ketch code "search pattern" --regex
+
+# Crawl a site
+ketch crawl https://docs.example.com --depth 2
 ```
 
-### Method 3 — Web search (last resort)
+All commands support `--json` for structured output. Use `--limit` to control result volume and paginate through results.
+
+### Method 2 — Direct URL fetching (fallback)
+
+If you need to fetch a raw URL that ketch can't handle:
 
 ```bash
-curl -s "https://html.duckduckgo.com/html/?q=library+name+how+to+do+something" | python3 "$SKILL_DIR/scripts/extract.py"
+curl -sL "https://raw.githubusercontent.com/owner/repo/main/README.md"
+curl -sL "https://pypi.org/pypi/package-name/json"
 ```
 
 ### After looking up docs
-Always cite where the info came from and which endpoint you used. If you still can't find a definitive answer, be honest about that instead of fabricating an answer.
+Always cite where the info came from. If you still can't find a definitive answer, be honest about that instead of fabricating an answer.
