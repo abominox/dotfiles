@@ -313,7 +313,26 @@ function formatMOTD(skills: SkillInfo[], extensions: string[]): string {
 	lines.push("");
 
 	if (extensions.length > 0) {
-		lines.push(`  🔩  Extensions: ${extensions.join(", ")}`);
+		const prefix = "  🔩  Extensions: ";
+		const indent = "  ".repeat(5);
+		const maxLine = 120;
+
+		const parts = extensions.join(", ");
+		let remaining = parts;
+		let first = true;
+		while (remaining.length > 0) {
+			const limit = maxLine - (first ? prefix.length : indent.length);
+			if (remaining.length <= limit) {
+				lines.push((first ? prefix : indent) + remaining);
+				break;
+			}
+			// Find last comma before the limit
+			let cut = remaining.lastIndexOf(", ", limit);
+			if (cut < 1) cut = limit; // fallback: hard cut if no comma found
+			lines.push((first ? prefix : indent) + remaining.slice(0, cut));
+			remaining = remaining.slice(cut + 2); // skip ", "
+			first = false;
+		}
 		lines.push("");
 	}
 
