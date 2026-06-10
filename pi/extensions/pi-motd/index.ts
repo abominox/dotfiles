@@ -231,6 +231,8 @@ function discoverExtensions(): string[] {
 	const home = homedir();
 	const extDir = join(home, ".pi", "agent", "extensions");
 	const names: string[] = [];
+
+	// 1. Scan ~/.pi/agent/extensions/ for local extensions
 	try {
 		const entries = readdirSync(extDir, { withFileTypes: true });
 		for (const entry of entries) {
@@ -248,7 +250,53 @@ function discoverExtensions(): string[] {
 			}
 		}
 	} catch { /* skip */ }
-	return names.sort();
+
+	// 2. Scan npm packages for pi extensions (pi.extensions in package.json)
+	const npmDir = join(home, ".pi", "agent", "npm", "node_modules");
+	try {
+		const walkScoped = (dir: string) => {
+			let entries: string[] = [];
+			try { entries = readdirSync(dir); } catch { return; }
+			for (const entry of entries) {
+				const fullPath = join(dir, entry);
+				const pkgJson = join(fullPath, "package.json");
+				try {
+					if (existsSync(pkgJson)) {
+						const pkg = JSON.parse(readFileSync(pkgJson, "utf-8"));
+						if (pkg.pi?.extensions) {
+							// Clean display name: last segment of the package name
+							const fullName: string = pkg.name || entry;
+							const name = fullName.includes("/") ? fullName.split("/").pop()! : fullName;
+							// Check if the extension actually has an entry point
+							const extEntries = Array.isArray(pkg.pi.extensions) ? pkg.pi.extensions : [pkg.pi.extensions];
+							for (const ext of extEntries) {
+								if (typeof ext === "string" && existsSync(join(fullPath, ext, "index.ts"))) {
+										names.push(name);
+										break;
+									} else if (typeof ext === "string" && existsSync(join(fullPath, ext))) {
+										// Could be a file or dir — check stat
+										try {
+											const s = statSync(join(fullPath, ext));
+											if (s.isFile() && ext.endsWith(".ts")) {
+												names.push(name);
+												break;
+										}
+									} catch {}
+								}
+							}
+						}
+					}
+					// Recurse into scoped packages (@scope/name)
+					if (entry.startsWith("@")) {
+						walkScoped(fullPath);
+					}
+				} catch { /* skip unreadable */ }
+			}
+		};
+		walkScoped(npmDir);
+	} catch { /* skip */ }
+
+	return [...new Set(names)].sort();
 }
 
 // ─── MOTD Builder ────────────────────────────────────────────────────────────
