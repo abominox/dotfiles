@@ -120,25 +120,6 @@ _install_rtk () {
   fi
 }
 
-# Check if a pi package source is already installed (so we can skip reinstall)
-_pi_package_installed () {
-  local pkg="$1"
-  case "$pkg" in
-    npm:*)
-      local name="${pkg#npm:}"
-      [ -d "$(npm root -g)/$name" ] 2>/dev/null
-      return $?
-      ;;
-    git:*)
-      local path="${pkg#git:}"
-      [ -d "$HOME/.pi/agent/git/$path" ] 2>/dev/null
-      return $?
-      ;;
-    *)
-      return 1 ;;
-  esac
-}
-
 # ── Devtools ────────────────────────────────────────────────────────────────
 
 install_devtools () {
@@ -150,7 +131,7 @@ install_devtools () {
   case "$platform" in
     macos)
       ensure_homebrew
-      brew install "${common_packages[@]}" python3 eza coreutils git-delta glow chafa imagemagick pi-coding-agent
+      brew install "${common_packages[@]}" python3 eza coreutils git-delta glow pi-coding-agent
       brew tap 1broseidon/tap 2>/dev/null || true
       brew install ketch
       brew install --cask font-jetbrains-mono-nerd-font
@@ -206,8 +187,6 @@ install_dotfiles () {
   install_ghostty_config
   install_pi_config
   install_pi_node_wrapper
-  install_pi_packages
-  install_yazi_config
   install_wsl_config
 }
 
@@ -315,75 +294,6 @@ install_pi_node_wrapper () {
   done
 
   echo "Created pi node wrapper at $target"
-}
-
-# Ensure pi is on PATH
-ensure_pi_on_path () {
-  if command -v npm &> /dev/null; then
-    local npm_bin
-    npm_bin="$(npm root -g 2>/dev/null)/../../bin"
-    if [ -n "$npm_bin" ] && [ -d "$npm_bin" ]; then
-      case ":$PATH:" in
-        *":$npm_bin:"*) : ;;
-        *) export PATH="$npm_bin:$PATH" ;;
-      esac
-    fi
-  fi
-}
-
-install_pi_packages () {
-  echo "Installing pi packages..."
-
-  ensure_pi_on_path
-
-  if ! command -v pi &> /dev/null; then
-    echo "  ⚠️  pi not found on PATH — skipping package installs"
-    return 0
-  fi
-
-  if command -v node &> /dev/null; then
-    local node_major
-    node_major="$(node --version | cut -d'.' -f1 | tr -d 'v')"
-    if [ "$node_major" -lt 20 ]; then
-      echo "  ⚠️  pi requires Node.js >= 20 (found v$node_major) — skipping package installs"
-      return 0
-    fi
-  fi
-
-  local pi_settings="$DOTFILES_DIR/pi/settings.json"
-  if [ ! -f "$pi_settings" ]; then
-    echo "  ⚠️  No pi/settings.json found — nothing to install"
-    return 0
-  fi
-
-  while IFS= read -r pkg; do
-    [ -z "$pkg" ] && continue
-
-    # Skip if already installed
-    if _pi_package_installed "$pkg"; then
-      echo "  ✔️  $pkg already installed — skipping"
-      continue
-    fi
-
-    echo "  Installing package: $pkg..."
-    pi install "$pkg" || echo "  ⚠️  Failed to install $pkg"
-  done < <(jq -r '.packages[] | if type == "object" then .source else . end' "$pi_settings" 2>/dev/null || grep -o '"[a-z][a-z]*:[^"]*"' "$pi_settings" | tr -d '"')
-
-  echo "pi packages installed!"
-}
-
-install_yazi_config () {
-  echo "Setting up yazi configuration..."
-
-  local yazi_dir="$HOME/.config/yazi"
-  mkdir -p "$yazi_dir"
-
-  # Install yazi packages if ya is available
-  if command -v ya &> /dev/null; then
-    ya pkg install 2>/dev/null || true
-  fi
-
-  echo "yazi configuration installed!"
 }
 
 install_wsl_config () {
