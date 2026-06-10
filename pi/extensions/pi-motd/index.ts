@@ -2,8 +2,10 @@
  * Pi MOTD Extension
  *
  * Displays a Message of the Day on Pi startup, showing:
- * - Agent name + extension/skill counts
- * - Available skills list
+ * - Boxed agent name with Pi version
+ * - Extension count + names
+ * - Skill names
+ * - Current working directory
  * - Rotating tip of the day
  *
  * Install in ~/.pi/agent/extensions/pi-motd/
@@ -17,9 +19,39 @@ import { join } from "node:path";
 
 // ─── Header ──────────────────────────────────────────────────────────────────
 
-const PI_HEADER = `╭──────────────────────────╮
-│  🥧  —  Pi Coding Agent  │
-╰──────────────────────────╯`;
+const PI_HEADER = `╔══════════════════════════════╗
+║       🥧  Pi Coding Agent     ║
+╚══════════════════════════════╝`;
+
+// ─── Pi Version ──────────────────────────────────────────────────────────────
+
+let piVersion: string | null = null;
+
+function getPiVersion(): string {
+	if (piVersion) return piVersion;
+
+	const candidates = [
+		"/opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/package.json",
+		"/usr/local/lib/node_modules/@earendil-works/pi-coding-agent/package.json",
+		"/usr/lib/node_modules/@earendil-works/pi-coding-agent/package.json",
+		join(homedir(), ".local", "share", "fnm", "default", "lib", "node_modules", "@earendil-works", "pi-coding-agent", "package.json"),
+	];
+
+	for (const pkgPath of candidates) {
+		try {
+			if (existsSync(pkgPath)) {
+				const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+				if (pkg.version) {
+					piVersion = pkg.version;
+					return piVersion;
+				}
+			}
+		} catch { /* skip */ }
+	}
+
+	piVersion = "?";
+	return piVersion;
+}
 
 // ─── Skill Discovery ─────────────────────────────────────────────────────────
 
@@ -28,22 +60,11 @@ interface SkillInfo {
 	description: string;
 }
 
-/** Built-in skills that ship with Pi and shouldn't clutter the MOTD. */
-const BUILT_IN_SKILLS = new Set([
-	"extending-pi",
-	"skill-creator",
-]);
+const BUILT_IN_SKILLS = new Set(["extending-pi", "skill-creator"]);
 
-/**
- * Parse YAML frontmatter from a SKILL.md file.
- * Returns { name, description } or null.
- * Handles single-line and multi-line (|) YAML descriptions.
- */
 function parseSkillMd(filePath: string): SkillInfo | null {
 	try {
 		const content = readFileSync(filePath, "utf-8");
-
-		// Extract frontmatter between --- markers
 		const match = content.match(/^---\n([\s\S]*?)\n---/);
 		if (!match) return null;
 
@@ -51,148 +72,76 @@ function parseSkillMd(filePath: string): SkillInfo | null {
 		const name = frontmatter.match(/^name:\s*(.+)$/m)?.[1]?.trim();
 		if (!name) return null;
 
-		// Try single-line description first
-		let description = frontmatter.match(/^description:\s*(.+)$/m)?.[1]?.trim();
-
-		// If description wasn't found or starts with | (block scalar), parse multi-line
-		if (!description || description === "|") {
+		let desc = frontmatter.match(/^description:\s*(.+)$/m)?.[1]?.trim();
+		if (!desc || desc === "|") {
 			const lines = frontmatter.split("\n");
 			let inBlock = false;
-			const blockLines: string[] = [];
+			const block: string[] = [];
 			for (const line of lines) {
-				if (line.trimStart().startsWith("description:")) {
-					inBlock = true;
-					continue;
-				}
+				if (line.trimStart().startsWith("description:")) { inBlock = true; continue; }
 				if (inBlock) {
-					// A block scalar line starts with at least 2 spaces (indented)
-					if (/^\s{2,}/.test(line)) {
-						blockLines.push(line.trim());
-					} else {
-						break;
-					}
+					if (/^\s{2,}/.test(line)) block.push(line.trim());
+					else break;
 				}
 			}
-			if (blockLines.length > 0) description = blockLines.join(" ");
+			if (block.length > 0) desc = block.join(" ");
 		}
-
-		if (!description) return null;
-		return { name, description };
-	} catch {
-		return null;
-	}
+		if (!desc) return null;
+		return { name, description: desc };
+	} catch { return null; }
 }
 
-/**
- * Scan a directory for SKILL.md files (recursive) or standalone .md files.
- */
 function scanSkillDir(baseDir: string): SkillInfo[] {
 	const skills: SkillInfo[] = [];
-
 	try {
 		if (!existsSync(baseDir)) return skills;
-
-		const entries = readdirSync(baseDir, { withFileTypes: true });
-
-		for (const entry of entries) {
-			const fullPath = join(baseDir, entry.name);
-
-			if (entry.isDirectory() || entry.isSymbolicLink()) {
-				// For symlinks, stat to check if it's a directory
-				try {
-					const stat = statSync(fullPath);
-					if (!stat.isDirectory()) continue;
-				} catch {
-					continue;
-				}
-				// Directory-based skill: look for SKILL.md inside
-				const skillFile = join(fullPath, "SKILL.md");
-				if (existsSync(skillFile)) {
-					const info = parseSkillMd(skillFile);
-					if (info) skills.push(info);
-				}
-			} else if (entry.isFile() && entry.name.endsWith(".md") && entry.name !== "README.md") {
-				// Flat-file skill
-				const info = parseSkillMd(fullPath);
-				if (info) skills.push(info);
+		for (const e of readdirSync(baseDir, { withFileTypes: true })) {
+			const fp = join(baseDir, e.name);
+			if (e.isDirectory() || e.isSymbolicLink()) {
+				try { if (!statSync(fp).isDirectory()) continue; } catch { continue; }
+				const sf = join(fp, "SKILL.md");
+				if (existsSync(sf)) { const i = parseSkillMd(sf); if (i) skills.push(i); }
+			} else if (e.isFile() && e.name.endsWith(".md") && e.name !== "README.md") {
+				const i = parseSkillMd(fp); if (i) skills.push(i);
 			}
 		}
-	} catch {
-		// skip unreadable dirs
-	}
-
+	} catch { /* skip */ }
 	return skills;
 }
 
-/**
- * Discover all installed skills across all known skill locations.
- */
 function discoverSkills(): SkillInfo[] {
 	const seen = new Set<string>();
 	const all: SkillInfo[] = [];
-
-	const scanAndDedup = (dir: string) => {
-		for (const skill of scanSkillDir(dir)) {
-			if (!seen.has(skill.name) && !BUILT_IN_SKILLS.has(skill.name)) {
-				seen.add(skill.name);
-				all.push(skill);
-			}
-		}
-	};
-
 	const home = homedir();
+	const add = (s: SkillInfo) => { if (!seen.has(s.name) && !BUILT_IN_SKILLS.has(s.name)) { seen.add(s.name); all.push(s); } };
+	const scan = (dir: string) => { for (const s of scanSkillDir(dir)) add(s); };
 
-	// Standard global locations
-	scanAndDedup(join(home, ".pi", "agent", "skills"));
-	scanAndDedup(join(home, ".agents", "skills"));
+	scan(join(home, ".pi", "agent", "skills"));
+	scan(join(home, ".agents", "skills"));
 
-	// Package-based skills (e.g. from pi install)
-	const gitSkillsDir = join(home, ".pi", "agent", "git");
-	if (existsSync(gitSkillsDir)) {
-		const walkDir = (dir: string) => {
+	const gitDir = join(home, ".pi", "agent", "git");
+	if (existsSync(gitDir)) {
+		const walk = (dir: string) => {
 			try {
-				const entries = readdirSync(dir, { withFileTypes: true });
-				for (const entry of entries) {
-					const fullPath = join(dir, entry.name);
-					if (entry.name.startsWith(".")) continue; // skip hidden
-					if (entry.isDirectory() || entry.isSymbolicLink()) {
-						// Check if this directory itself contains SKILL.md (any dir, not just "skills")
-						const skillFile = join(fullPath, "SKILL.md");
-						if (existsSync(skillFile)) {
-							for (const s of scanSkillDir(fullPath)) {
-								if (!seen.has(s.name) && !BUILT_IN_SKILLS.has(s.name)) {
-									seen.add(s.name);
-									all.push(s);
-								}
-							}
-						} else {
-							// Otherwise recurse deeper
-							walkDir(fullPath);
-						}
+				for (const e of readdirSync(dir, { withFileTypes: true })) {
+					if (e.name.startsWith(".")) continue;
+					const fp = join(dir, e.name);
+					if (e.isDirectory() || e.isSymbolicLink()) {
+						if (existsSync(join(fp, "SKILL.md"))) { for (const s of scanSkillDir(fp)) add(s); }
+						else walk(fp);
 					}
 				}
-			} catch {
-				// skip
-			}
+			} catch { /* skip */ }
 		};
-		walkDir(gitSkillsDir);
+		walk(gitDir);
 	}
 
-	// npm packaged skills
-	const npmSkillsDir = join(home, ".pi", "agent", "npm", "node_modules");
-	if (existsSync(npmSkillsDir)) {
-		const entries = readdirSync(npmSkillsDir, { withFileTypes: true });
-		for (const entry of entries) {
-			if (entry.isDirectory()) {
-				const pkgSkillsDir = join(npmSkillsDir, entry.name, "skills");
-				if (existsSync(pkgSkillsDir)) {
-					for (const s of scanSkillDir(pkgSkillsDir)) {
-						if (!seen.has(s.name)) {
-							seen.add(s.name);
-							all.push(s);
-						}
-					}
-				}
+	const npmDir = join(home, ".pi", "agent", "npm", "node_modules");
+	if (existsSync(npmDir)) {
+		for (const e of readdirSync(npmDir, { withFileTypes: true })) {
+			if (e.isDirectory()) {
+				const sd = join(npmDir, e.name, "skills");
+				if (existsSync(sd)) { for (const s of scanSkillDir(sd)) add(s); }
 			}
 		}
 	}
@@ -221,146 +170,109 @@ const TIPS = [
 ];
 
 function pickTip(): string {
-	const dayIndex = new Date().getDate();
-	return TIPS[dayIndex % TIPS.length];
+	return TIPS[new Date().getDate() % TIPS.length];
 }
 
 // ─── Extension Discovery ─────────────────────────────────────────────────────
 
 function discoverExtensions(): string[] {
 	const home = homedir();
-	const extDir = join(home, ".pi", "agent", "extensions");
 	const names: string[] = [];
 
-	// 1. Scan ~/.pi/agent/extensions/ for local extensions
 	try {
-		const entries = readdirSync(extDir, { withFileTypes: true });
-		for (const entry of entries) {
-			const fullPath = join(extDir, entry.name);
-			if (entry.isDirectory() || entry.isSymbolicLink()) {
-				try {
-					const stat = statSync(fullPath);
-					if (stat.isDirectory() && existsSync(join(fullPath, "index.ts"))) {
-						names.push(entry.name);
-					}
-				} catch { /* skip */ }
-			} else if (entry.isFile() && entry.name.endsWith(".ts")) {
-				const base = entry.name.replace(/\.ts$/, "");
-				names.push(base);
+		for (const e of readdirSync(join(home, ".pi", "agent", "extensions"), { withFileTypes: true })) {
+			const fp = join(home, ".pi", "agent", "extensions", e.name);
+			if (e.isDirectory() || e.isSymbolicLink()) {
+				try { if (statSync(fp).isDirectory() && existsSync(join(fp, "index.ts"))) names.push(e.name); } catch { /* skip */ }
+			} else if (e.isFile() && e.name.endsWith(".ts")) {
+				names.push(e.name.replace(/\.ts$/, ""));
 			}
 		}
 	} catch { /* skip */ }
 
-	// 2. Scan npm packages for pi extensions (pi.extensions in package.json)
 	const npmDir = join(home, ".pi", "agent", "npm", "node_modules");
 	try {
-		const walkScoped = (dir: string) => {
+		const walk = (dir: string) => {
 			let entries: string[] = [];
 			try { entries = readdirSync(dir); } catch { return; }
-			for (const entry of entries) {
-				const fullPath = join(dir, entry);
-				const pkgJson = join(fullPath, "package.json");
+			for (const e of entries) {
+				const fp = join(dir, e);
+				const pj = join(fp, "package.json");
 				try {
-					if (existsSync(pkgJson)) {
-						const pkg = JSON.parse(readFileSync(pkgJson, "utf-8"));
+					if (existsSync(pj)) {
+						const pkg = JSON.parse(readFileSync(pj, "utf-8"));
 						if (pkg.pi?.extensions) {
-							// Clean display name: last segment of the package name
-							const fullName: string = pkg.name || entry;
-							const name = fullName.includes("/") ? fullName.split("/").pop()! : fullName;
-							// Check if the extension actually has an entry point
-							const extEntries = Array.isArray(pkg.pi.extensions) ? pkg.pi.extensions : [pkg.pi.extensions];
-							for (const ext of extEntries) {
-								if (typeof ext === "string" && existsSync(join(fullPath, ext, "index.ts"))) {
-										names.push(name);
-										break;
-									} else if (typeof ext === "string" && existsSync(join(fullPath, ext))) {
-										// Could be a file or dir — check stat
-										try {
-											const s = statSync(join(fullPath, ext));
-											if (s.isFile() && ext.endsWith(".ts")) {
-												names.push(name);
-												break;
-										}
-									} catch {}
+							const displayName = (pkg.name || e).includes("/") ? (pkg.name || e).split("/").pop()! : (pkg.name || e);
+							const es = Array.isArray(pkg.pi.extensions) ? pkg.pi.extensions : [pkg.pi.extensions];
+							for (const ext of es) {
+								if (typeof ext === "string" && (existsSync(join(fp, ext, "index.ts")) || (existsSync(join(fp, ext)) && statSync(join(fp, ext)).isFile() && ext.endsWith(".ts")))) {
+									names.push(displayName);
+									break;
 								}
 							}
 						}
 					}
-					// Recurse into scoped packages (@scope/name)
-					if (entry.startsWith("@")) {
-						walkScoped(fullPath);
-					}
-				} catch { /* skip unreadable */ }
+					if (e.startsWith("@")) walk(fp);
+				} catch { /* skip */ }
 			}
 		};
-		walkScoped(npmDir);
+		walk(npmDir);
 	} catch { /* skip */ }
 
 	return [...new Set(names)].sort();
 }
 
+// ─── Word Wrap Helper ────────────────────────────────────────────────────────
+
+function wrapCommaList(items: string[], maxLen: number, prefix: string): string[] {
+	const text = items.join(", ");
+	const result: string[] = [];
+	let remaining = text;
+	let first = true;
+	const indent = "  ".repeat(5); // fixed 10-space indent for continuation lines
+
+	while (remaining.length > 0) {
+		const pad = first ? prefix : indent;
+		const budget = maxLen - pad.length;
+
+		if (remaining.length <= budget) {
+			result.push(pad + remaining);
+			break;
+		}
+
+		let cut = remaining.lastIndexOf(", ", budget);
+		if (cut < 1) cut = budget;
+		result.push(pad + remaining.slice(0, cut));
+		remaining = remaining.slice(cut + 2);
+		first = false;
+	}
+	return result;
+}
+
 // ─── MOTD Builder ────────────────────────────────────────────────────────────
 
-function formatMOTD(skills: SkillInfo[], extensions: string[]): string {
+function formatMOTD(skills: SkillInfo[], extensions: string[], cwd: string): string {
 	const lines: string[] = [];
+	const version = getPiVersion();
+	const projectName = cwd.split("/").pop() || "";
+	const maxLen = 120;
 
 	lines.push("");
 	lines.push(PI_HEADER);
-	lines.push("");
-	lines.push("  ────────────────────────────────────────────");
-	lines.push("");
-	lines.push(`  🔌  ${extensions.length} extension(s) loaded  ·  ${skills.length} skill(s) available`);
+	lines.push(`  ═════════  v${version}  ·  ${projectName}  ═════════`);
 	lines.push("");
 
 	if (extensions.length > 0) {
-		const prefix = "  🔩  Extensions: ";
-		const indent = "  ".repeat(5);
-		const maxLine = 120;
-
-		const parts = extensions.join(", ");
-		let remaining = parts;
-		let first = true;
-		while (remaining.length > 0) {
-			const limit = maxLine - (first ? prefix.length : indent.length);
-			if (remaining.length <= limit) {
-				lines.push((first ? prefix : indent) + remaining);
-				break;
-			}
-			// Find last comma before the limit
-			let cut = remaining.lastIndexOf(", ", limit);
-			if (cut < 1) cut = limit; // fallback: hard cut if no comma found
-			lines.push((first ? prefix : indent) + remaining.slice(0, cut));
-			remaining = remaining.slice(cut + 2); // skip ", "
-			first = false;
-		}
+		lines.push(...wrapCommaList(extensions, maxLen, "  🔌  Extensions: "));
 		lines.push("");
 	}
 
 	if (skills.length > 0) {
-		lines.push("  📦  Skills:");
-
-		// Show up to 8 skills, then summarize the rest
-		const visible = skills.slice(0, 8);
-		const remaining = skills.length - visible.length;
-
-		for (const skill of visible) {
-			const desc = skill.description.length > 60
-				? skill.description.slice(0, 57) + "..."
-				: skill.description;
-			lines.push(`       • ${skill.name.padEnd(18)} ${desc}`);
-		}
-
-		if (remaining > 0) {
-			lines.push(`       • ... and ${remaining} more`);
-		}
-
-		lines.push("");
-	} else {
-		lines.push("  ℹ️  No skills installed. Add some to ~/.pi/agent/skills/");
+		lines.push(...wrapCommaList(skills.map(s => s.name), maxLen, "  📦  Skills: "));
 		lines.push("");
 	}
 
-	lines.push(`  💡  Tip: ${pickTip()}`);
+	lines.push(`  💡  ${pickTip()}`);
 	lines.push("");
 
 	return lines.join("\n");
@@ -369,35 +281,29 @@ function formatMOTD(skills: SkillInfo[], extensions: string[]): string {
 // ─── Extension Entry Point ───────────────────────────────────────────────────
 
 export default function (pi: ExtensionAPI) {
-	// Track whether we've shown the MOTD this session.
-	// session_start fires on startup, /new, /resume, /fork, /reload.
 	let shown = false;
+	getPiVersion();
 
 	pi.on("session_start", async (event, ctx) => {
-		// Only show on initial startup, not on /new, /resume, /fork, /reload
 		if (event.reason !== "startup" || shown) return;
 		shown = true;
 
 		try {
 			const skills = discoverSkills();
 			const extensions = discoverExtensions();
-			const motd = formatMOTD(skills, extensions);
+			const motd = formatMOTD(skills, extensions, ctx.cwd);
 
 			if (ctx.hasUI) {
-				// In TUI/RPC mode, use notify for a clean notification
 				ctx.ui.notify(motd, "info");
 			} else {
-				// In print/JSON mode, write to stderr so it doesn't interfere with output
 				console.error(motd);
 			}
 		} catch (err) {
-			// If something goes wrong, don't crash Pi
 			console.error("[pi-motd] Error generating MOTD:", err);
 		}
 	});
 
-	// Reset flag on shutdown so next process start shows it again
-	pi.on("session_shutdown", async (_event) => {
+	pi.on("session_shutdown", async () => {
 		shown = false;
 	});
 }
