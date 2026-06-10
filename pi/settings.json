@@ -24,7 +24,8 @@
     "npm:pi-intercom"
   ],
   "extensions": [
-    "./extensions/ask-lockdown.ts"
+    "./extensions/ask-lockdown.ts",
+    "./extensions/plan-mode"
   ],
   "theme": "dark",
   "editorPaddingX": 2,
