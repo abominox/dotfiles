@@ -7,7 +7,7 @@
     "enabled": true,
     "stripAnsi": true,
     "readCompaction": {
-      "enabled": true
+      "enabled": false
     },
     "truncate": {
       "enabled": true,
