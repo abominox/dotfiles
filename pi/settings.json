@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.79.0",
+  "lastChangelogVersion": "0.79.1",
   "defaultProvider": "openrouter",
   "defaultModel": "deepseek/deepseek-v4-flash",
   "defaultThinkingLevel": "off",
@@ -19,7 +19,9 @@
     "npm:pi-qq",
     "npm:pi-rtk-optimizer",
     "npm:@plannotator/pi-extension",
-    "npm:pi-tool-display"
+    "npm:pi-tool-display",
+    "npm:pi-subagents",
+    "npm:pi-intercom"
   ],
   "theme": "dark",
   "editorPaddingX": 2,
@@ -30,5 +32,41 @@
   "steeringMode": "all",
   "flags": {
     "--recap-model": "openrouter/google/gemini-2.5-flash"
+  },
+  "subagents": {
+    "agentOverrides": {
+      "scout": {
+        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "thinking": "off"
+      },
+      "researcher": {
+        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "thinking": "off"
+      },
+      "planner": {
+        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "thinking": "off"
+      },
+      "worker": {
+        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "thinking": "off"
+      },
+      "reviewer": {
+        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "thinking": "off"
+      },
+      "oracle": {
+        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "thinking": "off"
+      },
+      "context-builder": {
+        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "thinking": "off"
+      },
+      "delegate": {
+        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "thinking": "off"
+      }
+    }
   }
 }
