@@ -2,7 +2,7 @@
   "lastChangelogVersion": "0.79.1",
   "defaultProvider": "openrouter",
   "defaultModel": "deepseek/deepseek-v4-flash",
-  "defaultThinkingLevel": "off",
+  "defaultThinkingLevel": "high",
   "terminal": {
     "showTerminalProgress": true
   },
@@ -21,7 +21,8 @@
     "npm:@plannotator/pi-extension",
     "npm:pi-tool-display",
     "npm:pi-subagents",
-    "npm:pi-intercom"
+    "npm:pi-intercom",
+    "npm:pi-simplify"
   ],
   "extensions": [
     "./extensions/ask-lockdown.ts",
