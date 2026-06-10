@@ -259,7 +259,7 @@ function formatMOTD(skills: SkillInfo[], extensions: string[], cwd: string): str
 
 	lines.push("");
 	lines.push(PI_HEADER);
-	lines.push(`  ═════════  v${version}  ·  ${projectName}  ═════════`);
+	lines.push(`═════════  v${version}  ·  ${projectName}  ═════════`);
 	lines.push("");
 
 	if (extensions.length > 0) {
