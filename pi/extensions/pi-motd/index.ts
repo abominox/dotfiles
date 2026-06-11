@@ -30,6 +30,25 @@ let piVersion: string | null = null;
 function getPiVersion(): string {
 	if (piVersion) return piVersion;
 
+	// Look up Homebrew Cellar path first (handles versioned installs)
+	try {
+		const cellarDir = "/opt/homebrew/Cellar/pi-coding-agent";
+		if (existsSync(cellarDir)) {
+			for (const ver of readdirSync(cellarDir)) {
+				const pkgPath = join(cellarDir, ver, "libexec", "lib", "node_modules", "@earendil-works", "pi-coding-agent", "package.json");
+				try {
+					if (existsSync(pkgPath)) {
+						const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+						if (pkg.version) {
+							piVersion = pkg.version;
+							return piVersion;
+						}
+					}
+				} catch { /* skip */ }
+			}
+		}
+	} catch { /* skip */ }
+
 	const candidates = [
 		"/opt/homebrew/lib/node_modules/@earendil-works/pi-coding-agent/package.json",
 		"/usr/local/lib/node_modules/@earendil-works/pi-coding-agent/package.json",
@@ -273,9 +292,9 @@ function formatMOTD(skills: SkillInfo[], extensions: string[], cwd: string): str
 
 	// Build version line padded with ═ to match box width
 	const verContent = `v${version}  ·  ${projectName}`;
-	const innerPad = boxWidth - verContent.length - 2; // -2 for the surrounding spaces
+	const innerPad = Math.max(0, boxWidth - verContent.length - 2); // -2 for the surrounding spaces
 	const leftEq = Math.floor(innerPad / 2);
-	const rightEq = innerPad - leftEq;
+	const rightEq = Math.max(0, innerPad - leftEq);
 	const versionLine = `${String.prototype.repeat.call("═", leftEq)} ${verContent} ${String.prototype.repeat.call("═", rightEq)}`
 
 	lines.push("");
