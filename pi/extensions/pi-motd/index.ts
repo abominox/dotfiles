@@ -175,6 +175,19 @@ function pickTip(): string {
 
 // ─── Extension Discovery ─────────────────────────────────────────────────────
 
+function computeDisplayName(packageName: string): string {
+	// For scoped packages (@scope/name), use the scope (without @)
+	// e.g. @plannotator/pi-extension → plannotator
+	if (packageName.startsWith("@")) {
+		const parts = packageName.split("/");
+		if (parts.length >= 2) {
+			return parts[0].slice(1); // strip @
+		}
+	}
+	// For unscoped packages, use the last segment
+	return packageName.includes("/") ? packageName.split("/").pop()! : packageName;
+}
+
 function discoverExtensions(): string[] {
 	const home = homedir();
 	const names: string[] = [];
@@ -202,7 +215,7 @@ function discoverExtensions(): string[] {
 					if (existsSync(pj)) {
 						const pkg = JSON.parse(readFileSync(pj, "utf-8"));
 						if (pkg.pi?.extensions) {
-							const displayName = (pkg.name || e).includes("/") ? (pkg.name || e).split("/").pop()! : (pkg.name || e);
+							const displayName = computeDisplayName(pkg.name || e);
 							const es = Array.isArray(pkg.pi.extensions) ? pkg.pi.extensions : [pkg.pi.extensions];
 							for (const ext of es) {
 								if (typeof ext === "string" && (existsSync(join(fp, ext, "index.ts")) || (existsSync(join(fp, ext)) && statSync(join(fp, ext)).isFile() && ext.endsWith(".ts")))) {

@@ -23,7 +23,8 @@
     "npm:pi-subagents",
     "npm:pi-intercom",
     "npm:pi-simplify",
-    "npm:@juicesharp/rpiv-ask-user-question"
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:@ff-labs/pi-fff"
   ],
   "extensions": [
     "./extensions/ask-lockdown.ts",
