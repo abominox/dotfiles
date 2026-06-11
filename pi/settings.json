@@ -6,7 +6,7 @@
   "terminal": {
     "showTerminalProgress": true
   },
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "packages": [
     "npm:pi-wierd-statusline",
     {
