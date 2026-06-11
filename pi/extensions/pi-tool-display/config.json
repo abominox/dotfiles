@@ -1,8 +1,8 @@
 {
   "registerToolOverrides": {
     "read": true,
-    "grep": true,
-    "find": true,
+    "grep": false,
+    "find": false,
     "ls": true,
     "bash": false,
     "edit": true,

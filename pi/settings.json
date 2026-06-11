@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.79.1",
   "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4-flash",
+  "defaultModel": "deepseek/deepseek-v4-pro",
   "defaultThinkingLevel": "high",
   "terminal": {
     "showTerminalProgress": true
