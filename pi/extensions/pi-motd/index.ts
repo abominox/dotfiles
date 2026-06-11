@@ -256,10 +256,18 @@ function formatMOTD(skills: SkillInfo[], extensions: string[], cwd: string): str
 	const version = getPiVersion();
 	const projectName = cwd.split("/").pop() || "";
 	const maxLen = 120;
+	const boxWidth = 32; // total width of the header box (incl borders)
+
+	// Build version line padded with ═ to match box width
+	const verContent = `v${version}  ·  ${projectName}`;
+	const innerPad = boxWidth - verContent.length - 2; // -2 for the surrounding spaces
+	const leftEq = Math.floor(innerPad / 2);
+	const rightEq = innerPad - leftEq;
+	const versionLine = `${String.prototype.repeat.call("═", leftEq)} ${verContent} ${String.prototype.repeat.call("═", rightEq)}`
 
 	lines.push("");
 	lines.push(PI_HEADER);
-	lines.push(`═════════  v${version}  ·  ${projectName}  ═════════`);
+	lines.push(versionLine);
 	lines.push("");
 
 	if (extensions.length > 0) {
