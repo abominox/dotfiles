@@ -1,0 +1,60 @@
+{
+  "name": "pi-thinking-steps",
+  "version": "1.0.11",
+  "description": "Professional three-mode thinking-step rendering for Pi's TUI.",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fluxgear/pi-thinking-steps.git"
+  },
+  "homepage": "https://github.com/fluxgear/pi-thinking-steps#readme",
+  "bugs": {
+    "url": "https://github.com/fluxgear/pi-thinking-steps/issues"
+  },
+  "keywords": [
+    "pi",
+    "pi-package",
+    "terminal",
+    "extension",
+    "thinking",
+    "tui"
+  ],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "assets/readme-hero.svg",
+    "assets/modes-overview.svg",
+    "index.ts",
+    "internal-patch.ts",
+    "parse.ts",
+    "persistence.ts",
+    "render.ts",
+    "state.ts",
+    "types.ts",
+    "tsconfig.json",
+    "test/thinking-steps.test.ts",
+    "test/summarizer-challenger.test.ts"
+  ],
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "npm run build && node --import tsx test/thinking-steps.test.ts && node --import tsx test/summarizer-challenger.test.ts"
+  },
+  "dependencies": {
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}
