@@ -254,6 +254,25 @@ function discoverExtensions(): string[] {
 	return [...new Set(names)].sort();
 }
 
+// ─── MCP Server Discovery ──────────────────────────────────────────────────
+
+const MCP_CONFIG_PATH = join(homedir(), ".pi", "agent", "mcp.json");
+
+function discoverMcpServers(): string[] {
+	try {
+		if (!existsSync(MCP_CONFIG_PATH)) return [];
+		const config = JSON.parse(readFileSync(MCP_CONFIG_PATH, "utf-8"));
+		const servers = config.mcpServers;
+		if (!servers || typeof servers !== "object") return [];
+		return Object.keys(servers).filter(name => {
+			const s = servers[name];
+			return s === null || s === undefined || s.enabled !== false;
+		}).sort();
+	} catch {
+		return [];
+	}
+}
+
 // ─── Word Wrap Helper ────────────────────────────────────────────────────────
 
 function wrapCommaList(items: string[], maxLen: number, prefix: string): string[] {
@@ -283,7 +302,7 @@ function wrapCommaList(items: string[], maxLen: number, prefix: string): string[
 
 // ─── MOTD Builder ────────────────────────────────────────────────────────────
 
-function formatMOTD(skills: SkillInfo[], extensions: string[], cwd: string): string {
+function formatMOTD(skills: SkillInfo[], extensions: string[], mcpServers: string[], cwd: string): string {
 	const lines: string[] = [];
 	const version = getPiVersion();
 	const projectName = cwd.split("/").pop() || "";
@@ -304,6 +323,11 @@ function formatMOTD(skills: SkillInfo[], extensions: string[], cwd: string): str
 
 	if (extensions.length > 0) {
 		lines.push(...wrapCommaList(extensions, maxLen, "  🔌  Extensions: "));
+		lines.push("");
+	}
+
+	if (mcpServers.length > 0) {
+		lines.push(...wrapCommaList(mcpServers, maxLen, "  🔗  MCP: "));
 		lines.push("");
 	}
 
@@ -331,7 +355,8 @@ export default function (pi: ExtensionAPI) {
 		try {
 			const skills = discoverSkills();
 			const extensions = discoverExtensions();
-			const motd = formatMOTD(skills, extensions, ctx.cwd);
+			const mcpServers = discoverMcpServers();
+			const motd = formatMOTD(skills, extensions, mcpServers, ctx.cwd);
 
 			if (ctx.hasUI) {
 				ctx.ui.notify(motd, "info");
