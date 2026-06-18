@@ -43,9 +43,9 @@ install_nodejs_debian () {
   if command -v node &> /dev/null; then
     local major
     major="$(node --version | cut -d'.' -f1 | tr -d 'v')"
-    [ "$major" -ge 20 ] && return 0
+    [ "$major" -ge 22 ] && return 0
   fi
-  echo "Installing Node.js 22.x via NodeSource (Pi requires Node >= 20)..."
+  echo "Installing Node.js 22.x via NodeSource (Pi requires Node >= 22.19)..."
   if ! curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - 2>/dev/null; then
     echo "  ⚠️  Could not install Node.js 22 automatically (sudo may need a TTY)."
     echo "  Run this manually: curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash"
