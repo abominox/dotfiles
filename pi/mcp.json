@@ -5,6 +5,9 @@
     },
     "mcpjungle": {
       "url": "http://192.168.1.3:8080/mcp"
+    },
+    "playwright": {
+      "url": "http://192.168.1.193:8931/mcp"
     }
   }
 }

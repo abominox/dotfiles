@@ -57,6 +57,11 @@ alias msf="msfconsole || /opt/metasploit-framework/bin/msfconsole"
 
 # Share a directory via copyparty with read/write access (defined in functions/barney.fish)
 
+####### Homebrew #######
+
+# Brew upgrade + cleanup in one step
+alias bu='brew upgrade && brew cleanup'
+
 ####### Misc #######
 
 # Quickly download/convert YouTube videos to .mp3 using this alias + URL
