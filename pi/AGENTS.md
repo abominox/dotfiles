@@ -5,9 +5,30 @@
 - **Never commit or push to git without asking the user first.** Always confirm before `git commit`, `git push`, or any operation that modifies remotes.
 - The user will explicitly tell you when they're ready to commit. Don't assume.
 
+## Subagent Delegation (REQUIRED)
+
+Context-mode and subagents add fixed upfront context cost but prevent context bloat. Use them aggressively:
+
+- **After any implementation**, launch parallel async `reviewer` subagents before summarizing. Do not consider an implementation complete until at least one reviewer has passed.
+- **Before editing unfamiliar code**, run a `scout` subagent to map the relevant files, patterns, and risks.
+- **For non-trivial changes** (multi-file, architecture, or things you haven't seen before), run `oracle` for advisory review before implementing.
+- **Test runs, CI output, build output, or anything producing >50 lines** — delegate to a subagent rather than reading raw output inline. This is what keeps context from ballooning.
+- **Web research tasks** — prefer `researcher` subagent over inline `ctx_fetch_and_index`/`ketch` when the research scope is broad or needs sources.
+- **Parallel fanout** — when you need multiple independent checks (different review angles, separate files, distinct questions), launch them as parallel subagents rather than sequentially.
+- **Subagents default async** — use `async: true` for every subagent launch unless you specifically need a foreground/blocking run.
+
 ## Web Research & Lookups
 
 When you don't know a library, API, framework, or CLI tool confidently, **look it up** rather than guessing. Hallucinated API names and stale training data are harder to fix than taking 20 seconds to check.
+
+### Decision flow
+
+| You need to…                  | Use…                                             | Don't…               |
+| ----------------------------- | ------------------------------------------------ | -------------------- |
+| Look up a library/API         | MCP Context7 (Method 1)                          | Don't guess          |
+| Search the web                | ketch (Method 2)                                 | Don't raw `curl`     |
+| Browse a live site / fill forms | MCP Playwright (check `mcp({})` first)         | —                    |
+| Anything else infra/monitoring | Check `mcp({})` — you may have a tool for it   | —                    |
 
 ### When to look things up
 
@@ -19,7 +40,19 @@ When you don't know a library, API, framework, or CLI tool confidently, **look i
 
 **Important**: answering "let me check the latest docs" is always preferred over guessing.
 
-### Method 1 — ketch (preferred)
+### Method 1 — MCP Context7 for library/API docs (preferred)
+
+When you need documentation for a specific library, framework, or API, use the Context7
+MCP tool. It returns structured, version-specific docs without the noise of general web
+search.
+
+First resolve the library ID, then query:
+```
+mcp({ tool: "mcpjungle_context7__resolve-library-id", args: '{"name": "react"}' })
+mcp({ tool: "mcpjungle_context7__query-docs", args: '{"libraryId": "/react", "query": "useEffect cleanup"}' })
+```
+
+### Method 2 — ketch for general web search (preferred)
 
 [Ketch](https://github.com/1broseidon/ketch) is a blazing fast CLI for agentic search and scrape. It uses a local SearXNG instance for web search and Context7 for library docs. One tool for web search, scraping, library docs, and code search.
 
@@ -50,7 +83,7 @@ ketch crawl https://docs.example.com --depth 2
 
 All commands support `--json` for structured output. Use `--limit` to control result volume and paginate through results.
 
-### Method 2 — Direct URL fetching (fallback)
+### Method 3 — Direct URL fetching (fallback)
 
 If you need to fetch a raw URL that ketch can't handle:
 
@@ -58,6 +91,21 @@ If you need to fetch a raw URL that ketch can't handle:
 curl -sL "https://raw.githubusercontent.com/owner/repo/main/README.md"
 curl -sL "https://pypi.org/pypi/package-name/json"
 ```
+
+### Discovering other MCP tools
+
+Your environment has additional MCP servers (Grafana, Proxmox, Gitea, Playwright,
+*arr, and others). Before scripting something complex in bash, check whether a
+dedicated tool already exists:
+
+```
+mcp({})                         → list all servers and tool counts
+mcp({ search: "browser" })      → search across all tools by keyword
+mcp({ server: "mcpjungle" })    → list all tools on a specific server
+```
+
+If you're about to do something a tool could handle (browser automation, infrastructure
+queries, issue tracking, monitoring dashboard work) — check MCP first.
 
 ### After looking up docs
 Always cite where the info came from. If you still can't find a definitive answer, be honest about that instead of fabricating an answer.
