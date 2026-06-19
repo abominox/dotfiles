@@ -2,5 +2,6 @@
 # For when you forget to add "sudo"
 
 function fuck -d "Run last command with sudo"
-    eval sudo $history[1]
+    # Use fish -c to avoid re-evaluating command substitutions in sudo context
+    sudo fish -c (string escape -- $history[1])
 end

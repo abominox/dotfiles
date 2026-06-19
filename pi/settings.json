@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.79.1",
+  "lastChangelogVersion": "0.79.6",
   "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4-flash",
+  "defaultModel": "z-ai/glm-5.2",
   "defaultThinkingLevel": "high",
   "terminal": {
     "showTerminalProgress": true
@@ -29,7 +29,6 @@
     "npm:pi-mcp-adapter"
   ],
   "extensions": [
-    "./extensions/ask-lockdown.ts",
     "./extensions/plan-mode"
   ],
   "theme": "dark",
@@ -50,7 +49,18 @@
       },
       "researcher": {
         "model": "openrouter/deepseek/deepseek-v4-flash",
-        "thinking": "off"
+        "thinking": "off",
+        "tools": [
+          "read",
+          "write",
+          "bash",
+          "ctx_fetch_and_index",
+          "ctx_search",
+          "ctx_index",
+          "intercom"
+        ],
+        "inheritSkills": true,
+        "systemPrompt": "You are a research subagent. Use `ketch search`, `ketch scrape`, and `ketch docs` (via bash) for web searches and page fetching. Use `ctx_fetch_and_index` for fetching pages into the knowledge base, then `ctx_search` to query indexed content. Prefer primary sources and official docs. Produce a concise research brief in research.md. Gaps and sources required."
       },
       "planner": {
         "model": "openrouter/deepseek/deepseek-v4-flash",

@@ -14,8 +14,11 @@ Context-mode and subagents add fixed upfront context cost but prevent context bl
 - **For non-trivial changes** (multi-file, architecture, or things you haven't seen before), run `oracle` for advisory review before implementing.
 - **Test runs, CI output, build output, or anything producing >50 lines** — delegate to a subagent rather than reading raw output inline. This is what keeps context from ballooning.
 - **Web research tasks** — prefer `researcher` subagent over inline `ctx_fetch_and_index`/`ketch` when the research scope is broad or needs sources.
+- **Exploration or audit of an unfamiliar repo/project** — fan out parallel `scout` subagents, one per major subsystem or directory, instead of reading files sequentially. This is the single biggest context-saving move on a new codebase.
 - **Parallel fanout** — when you need multiple independent checks (different review angles, separate files, distinct questions), launch them as parallel subagents rather than sequentially.
 - **Subagents default async** — use `async: true` for every subagent launch unless you specifically need a foreground/blocking run.
+- **When in doubt, delegate.** An unnecessary subagent costs a few seconds. Bloating your context with raw file reads degrades quality for the entire rest of the session.
+- **ANTI-PATTERN: incremental synthesis from parallel gathers** — when you fan out N parallel async subagents to gather independent facts (scout an unfamiliar repo, audit different subsystems, research multiple topics), do NOT re-compile, re-plan, or re-present findings every time a single subagent returns. Each intermediate synthesis wastes tokens on a picture that the next returning subagent will render obsolete. Instead: wait for ALL parallel subagents to complete, then synthesize ONE consolidated result. The only exception is when an early return reveals something that would change what the remaining subagents should investigate — in that case, interrupt and redirect the still-running subagents rather than re-planning at the orchestrator level.
 
 ## Web Research & Lookups
 

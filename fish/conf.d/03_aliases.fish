@@ -4,13 +4,14 @@
 ####### Scripts #######
 
 # Easy speedtest from the CLI
-alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -'
+alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -'
 
 # Alias to re-encode videos of given extension in current directory (append extension)
-alias recode="curl -Ls https://raw.githubusercontent.com/abominox/assorted/master/scripts/recode.sh | source /dev/stdin"
+# NOTE: replaces remote source with local function — install recode.sh from github.com/abominox/assorted
+# alias recode="curl -Ls https://raw.githubusercontent.com/abominox/assorted/master/scripts/recode.sh | source /dev/stdin"
 
-# Custom transfer.sh alias
-alias transfer='curl -s cjmarquart.com/script/transfer.sh | bash'
+# Custom transfer.sh alias (uses official transfer.sh service)
+alias transfer='curl --upload-file - https://transfer.sh/'
 
 ####### tmux #######
 
@@ -41,7 +42,7 @@ alias server="python3 -m http.server"
 alias pf="pip freeze -l > requirements.txt"
 
 # Fix pip inside of a virtualenv
-alias fixpip="curl https://bootstrap.pypa.io/get-pip.py | python -"
+alias fixpip="curl https://bootstrap.pypa.io/get-pip.py | python3 -"
 
 ###### JavaScript ######
 
@@ -55,7 +56,7 @@ alias msf="msfconsole || /opt/metasploit-framework/bin/msfconsole"
 
 ####### Share (copyparty) #######
 
-# Share a directory via copyparty with read/write access (defined in functions/barney.fish)
+# Share a directory via copyparty with read/write access (defined in functions/shareparty.fish)
 
 ####### Homebrew #######
 

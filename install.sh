@@ -2,6 +2,9 @@
 # This script installs my dotfiles + some extras into any *nix system.
 # Requires Bash. Supports macOS (brew), Debian/Ubuntu (apt), and Arch Linux (pacman).
 
+set -euo pipefail
+trap 'echo "Error on line $LINENO. Exiting." >&2' ERR
+
 # Detect platform and package manager
 detect_platform () {
   if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -280,10 +283,11 @@ install_pi_node_wrapper () {
 
   echo "Setting up pi node wrapper for tmux compatibility..."
 
-  local target node_bin lib_dir
+  local brew_prefix node_bin lib_dir target
+  brew_prefix="$(brew --prefix)" 2>/dev/null || return 1
+  node_bin="$brew_prefix/opt/node/bin/node"
+  lib_dir="$brew_prefix/opt/node/lib"
   target="$HOME/.local/share/pi/pi"
-  node_bin="$(realpath "$(which node)")"
-  lib_dir="$(dirname "$node_bin")/../lib"
 
   mkdir -p "$(dirname "$target")"
   ln -f "$node_bin" "$target"

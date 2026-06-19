@@ -10,12 +10,6 @@ switch (uname -s)
         set -gx TERM xterm-256color
 
         # Specify coreutils for some things instead of BSD
-        # Use eza if available, otherwise gls
-        if command -v eza &> /dev/null
-            alias ls='eza -lh --group-directories-first --icons'
-        else
-            alias ls='gls --color=auto --group-directories-first -lh'
-        end
         alias date='gdate'
 
         # Add Python paths
@@ -27,9 +21,6 @@ switch (uname -s)
 
         # Add VS Code to PATH
         fish_add_path "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-
-        # Suppress new ZSH default message
-        set -gx BASH_SILENCE_DEPRECATION_WARNING 1
 
         # Make Fish history work properly on macOS
         set -gx HISTFILE "$HOME/.local/share/fish/fish_history"
