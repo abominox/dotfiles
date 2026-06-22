@@ -315,7 +315,7 @@ install_wsl_config () {
   fi
 }
 
-if [ "$1" = "minimal" ]
+if [ "${1:-}" = "minimal" ]
 then
   install_dotfiles
 else
