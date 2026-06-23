@@ -110,19 +110,6 @@ _install_pip_tools () {
     pip3 install readability-lxml html2text
 }
 
-# Install rtk (Rust Token Killer)
-_install_rtk () {
-  if command -v rtk &> /dev/null; then
-    return 0
-  fi
-  echo "  Installing rtk (Rust Token Killer)..."
-  if [[ "$PLATFORM" == "macos" ]]; then
-    brew install rtk
-  else
-    curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
-  fi
-}
-
 # ── Devtools ────────────────────────────────────────────────────────────────
 
 install_devtools () {
@@ -139,7 +126,6 @@ install_devtools () {
       brew install ketch
       brew install --cask font-jetbrains-mono-nerd-font
       _install_pip_tools
-      _install_rtk
       ;;
 
     debian)
@@ -149,7 +135,6 @@ install_devtools () {
       _install_pi
       _install_pip_tools
       install_eza_debian
-      _install_rtk
       if ! command -v delta &> /dev/null; then
         echo "  git-delta: install via cargo (cargo install git-delta) or from github.com/dandavison/delta"
         echo "    (available behind backports for trixie, see packages.debian.org/git-delta)"
@@ -164,7 +149,6 @@ install_devtools () {
         "${common_packages[@]}" net-tools python python-pip python-virtualenv eza nodejs npm git-delta glow
       _install_pi
       _install_pip_tools
-      _install_rtk
       ;;
 
     *)

@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.79.6",
+  "lastChangelogVersion": "0.79.10",
   "defaultProvider": "openrouter",
   "defaultModel": "z-ai/glm-5.2",
   "defaultThinkingLevel": "high",
@@ -17,7 +17,6 @@
       ]
     },
     "npm:pi-qq",
-    "npm:pi-rtk-optimizer",
     "npm:@plannotator/pi-extension",
     "npm:pi-tool-display",
     "npm:pi-subagents",
