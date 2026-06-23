@@ -61,7 +61,7 @@ alias msf="msfconsole || /opt/metasploit-framework/bin/msfconsole"
 ####### Homebrew #######
 
 # Brew upgrade + cleanup in one step
-alias bu='brew upgrade && brew cleanup'
+alias bu='brew upgrade -y && brew cleanup'
 
 ####### Misc #######
 
