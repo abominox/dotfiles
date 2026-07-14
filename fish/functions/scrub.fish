@@ -10,8 +10,10 @@ function scrub -d "Delete lines with keyword from Fish history"
     end
 
     # builtin history delete only supports --exact, so we search first
-    # then delete each match by exact string
-    set -l entries (builtin history search --contains "$keyword" --null | string split "\0")
+    # then delete each match by exact string.
+    # Use --null with string split0 to handle entries containing newlines.
+    # Trim each entry because history search may indent wrapped lines.
+    set -l entries (builtin history search --contains "$keyword" --null | string split0 | string trim)
 
     if test -z "$entries[1]"
         echo "No entries found containing: $keyword"
