@@ -1,0 +1,9 @@
+[[mgr.prepend_keymap]]
+on = "Z"
+run = "plugin zoom 1"
+desc = "Zoom in image preview"
+
+[[mgr.prepend_keymap]]
+on = "z"
+run = "plugin zoom -1"
+desc = "Zoom out image preview"
