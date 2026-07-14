@@ -9,7 +9,25 @@ function scrub -d "Delete lines with keyword from Fish history"
         return 1
     end
 
-    # Use builtin history delete — safe, concurrent, no file editing
-    builtin history delete --contains "$keyword"
-    echo "Scrubbed entries containing: $keyword"
+    # builtin history delete only supports --exact, so we search first
+    # then delete each match by exact string
+    set -l entries (builtin history search --contains "$keyword" --null | string split "\0")
+
+    if test -z "$entries[1]"
+        echo "No entries found containing: $keyword"
+        return 0
+    end
+
+    set -l count 0
+    for entry in $entries
+        if test -n "$entry"
+            builtin history delete --exact --case-sensitive "$entry" 2>/dev/null
+            set count (math $count + 1)
+        end
+    end
+
+    # Persist deletions to the history file immediately
+    builtin history save 2>/dev/null
+
+    echo "Scrubbed $count entr"(test $count -eq 1; and echo "y"; or echo "ies")" containing: $keyword"
 end
