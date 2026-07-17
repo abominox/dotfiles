@@ -31,6 +31,23 @@ fi
 "$BIN" &
 echo $! > "$PIDFILE"
 
+# Push statusline into zjstatus via pipe (avoids empty bar on new tabs)
+PIPE_SCRIPT="$(cd "$SCRIPT_DIR/../zellij/scripts" 2>/dev/null && pwd)/zjstatus-pipe.sh"
+if [[ ! -x "$PIPE_SCRIPT" ]]; then
+    PIPE_SCRIPT="$HOME/.dotfiles/zellij/scripts/zjstatus-pipe.sh"
+fi
+if [[ -x "$PIPE_SCRIPT" ]]; then
+    # Restart pipe pusher
+    if [[ -f /tmp/zjstatus-pipe.pid ]]; then
+        OLD_PIPE=$(cat /tmp/zjstatus-pipe.pid 2>/dev/null || true)
+        if [[ -n "${OLD_PIPE:-}" ]] && kill -0 "$OLD_PIPE" 2>/dev/null; then
+            kill "$OLD_PIPE" 2>/dev/null || true
+        fi
+        rm -f /tmp/zjstatus-pipe.pid
+    fi
+    nohup "$PIPE_SCRIPT" >/dev/null 2>&1 &
+fi
+
 # Ensure exactly one @reboot crontab entry for this script, removing any stale ones
 CRON_LINE="@reboot $SCRIPT_PATH"
 crontab -l 2>/dev/null | grep -v -F "run_systat.sh" | (cat; echo "$CRON_LINE") | crontab -
