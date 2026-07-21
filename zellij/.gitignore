@@ -1,3 +1,0 @@
-# Vendored wasm plugins are fetched by install.sh from upstream releases.
-# They are platform-independent bytecode but updated independently of config.
-plugins/*.wasm

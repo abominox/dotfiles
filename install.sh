@@ -222,7 +222,6 @@ install_ghostty_config () {
   ln -fnvs "$DOTFILES_DIR/ghostty/config" "$ghostty_dir/config"
   echo "Ghostty configuration installed!"
 }
-
 install_pi_config () {
   echo "Setting up pi configuration..."
 
