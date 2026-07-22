@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.79.10",
+  "lastChangelogVersion": "0.81.1",
   "defaultProvider": "openrouter",
-  "defaultModel": "z-ai/glm-5.2",
+  "defaultModel": "poolside/laguna-s-2.1",
   "defaultThinkingLevel": "high",
   "terminal": {
     "showTerminalProgress": true
@@ -43,11 +43,11 @@
   "subagents": {
     "agentOverrides": {
       "scout": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/poolside/laguna-s-2.1",
         "thinking": "off"
       },
       "researcher": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/poolside/laguna-s-2.1",
         "thinking": "off",
         "tools": [
           "read",
@@ -62,33 +62,39 @@
         "systemPrompt": "You are a research subagent. Use `ketch search`, `ketch scrape`, and `ketch docs` (via bash) for web searches and page fetching. Use `ctx_fetch_and_index` for fetching pages into the knowledge base, then `ctx_search` to query indexed content. Prefer primary sources and official docs. Produce a concise research brief in research.md. Gaps and sources required."
       },
       "planner": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/poolside/laguna-s-2.1",
         "thinking": "off"
       },
       "worker": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/poolside/laguna-s-2.1",
         "thinking": "off"
       },
       "reviewer": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/poolside/laguna-s-2.1",
         "thinking": "off"
       },
       "oracle": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/poolside/laguna-s-2.1",
         "thinking": "off"
       },
       "context-builder": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/poolside/laguna-s-2.1",
         "thinking": "off"
       },
       "delegate": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/poolside/laguna-s-2.1",
         "thinking": "off"
+      }
+    },
+    "watchdog": {
+      "children": {
+        "model": "openrouter/poolside/laguna-s-2.1"
       }
     }
   },
   "enabledModels": [
     "openrouter/deepseek/deepseek-v4-flash",
-    "openrouter/deepseek/deepseek-v4-pro"
+    "openrouter/deepseek/deepseek-v4-pro",
+    "openrouter/poolside/laguna-s-2.1"
   ]
 }
