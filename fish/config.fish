@@ -11,6 +11,9 @@ end
 
 set -x COLORTERM truecolor
 
+# Make valid commands lighter blue for better visibility
+set fish_color_command 87afff
+
 # Interactive shell setup
 if status is-interactive
 
@@ -43,4 +46,4 @@ set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 
 # Pi-FFF: replace built-in find/grep with FFF-powered versions
-set -x PI_FFF_MODE override
+set -x PI_FFF_MODE tools-and-ui

@@ -1,5 +1,6 @@
 {
   "registerToolOverrides": {
-    "find": false
+    "find": false,
+    "grep": false
   }
 }
