@@ -57,7 +57,9 @@ mcp({ tool: "mcpjungle_context7__query-docs", args: '{"libraryId": "/react", "qu
 
 ### Method 2 — ketch for general web search (preferred)
 
-[Ketch](https://github.com/1broseidon/ketch) is a blazing fast CLI for agentic search and scrape. It uses a local SearXNG instance for web search and Context7 for library docs. One tool for web search, scraping, library docs, and code search.
+[Ketch](https://github.com/1broseidon/ketch) is a blazing fast **CLI binary** for agentic search and scrape (not a tool/function). It uses a local SearXNG instance for web search and Context7 for library docs. One binary for web search, scraping, library docs, and code search.
+
+**Invocation**: `ketch` is a CLI binary — call it via `bash` or `ctx_execute(language: "shell", ...)`. Do NOT try to call it as a tool/function directly.
 
 ```bash
 # Search the web (uses SearXNG backend configured in ~/Library/Application\ Support/ketch/config.json)
@@ -85,6 +87,14 @@ ketch crawl https://docs.example.com --depth 2
 ```
 
 All commands support `--json` for structured output. Use `--limit` to control result volume and paginate through results.
+
+**Recommended invocation pattern with context-mode**:
+```
+ctx_execute(language: "shell", code: "ketch search 'your query'")
+ctx_execute(language: "shell", code: "ketch docs 'how to render tables' --library /charmbracelet/glamour --tokens 8000")
+ctx_execute(language: "shell", code: "ketch scrape https://example.com/page")
+```
+This keeps output out of your conversation memory — only the result is returned.
 
 ### Method 3 — Direct URL fetching (fallback)
 
