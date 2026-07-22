@@ -11,6 +11,9 @@ end
 
 set -x COLORTERM truecolor
 
+# Make valid commands lighter blue for better visibility
+set fish_color_command 87afff
+
 # Interactive shell setup
 if status is-interactive
 
