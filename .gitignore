@@ -27,3 +27,6 @@ research/
 scripts/systat_linux
 scripts/systat_linux_arm64
 scripts/systat_macos
+
+# tmux plugins (not tracked)
+.tmux/
