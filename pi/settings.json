@@ -16,6 +16,7 @@
         "!arcade/**"
       ]
     },
+    "git:github.com/DietrichGebert/ponytail",
     "npm:pi-qq",
     "npm:@plannotator/pi-extension",
     "npm:pi-tool-display",
