@@ -22,3 +22,8 @@ PLAN.md
 context.md
 plans/
 research/
+
+# systat binaries (downloaded from GitHub releases by install.sh)
+scripts/systat_linux
+scripts/systat_linux_arm64
+scripts/systat_macos

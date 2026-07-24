@@ -110,6 +110,28 @@ _install_pip_tools () {
     pip3 install readability-lxml html2text
 }
 
+# Install systat binary from latest GitHub release into scripts/ (run_systat.sh expects it there)
+_install_systat () {
+  echo "Installing systat from latest release..."
+
+  local asset
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    asset="systat_macos"
+  elif [[ "$(uname -m)" == "aarch64" ]]; then
+    asset="systat_linux_arm64"
+  else
+    asset="systat_linux"
+  fi
+
+  local dest="$DOTFILES_DIR/scripts/$asset"
+  if ! curl -fsSL "https://github.com/abominox/systat/releases/latest/download/$asset" -o "$dest"; then
+    echo "  ⚠️  Failed to download systat ($asset). run_systat.sh will not work until resolved."
+    return 1
+  fi
+  chmod +x "$dest"
+  echo "systat installed: $dest"
+}
+
 # ── Devtools ────────────────────────────────────────────────────────────────
 
 install_devtools () {
@@ -175,6 +197,7 @@ install_dotfiles () {
   install_pi_config
   install_pi_node_wrapper
   install_wsl_config
+  _install_systat
 }
 
 install_fish_config () {
