@@ -44,11 +44,11 @@
   "subagents": {
     "agentOverrides": {
       "scout": {
-        "model": "openrouter/poolside/laguna-s-2.1",
+        "model": "openrouter/deepseek/deepseek-v4-flash",
         "thinking": "off"
       },
       "researcher": {
-        "model": "openrouter/poolside/laguna-s-2.1",
+        "model": "openrouter/deepseek/deepseek-v4-flash",
         "thinking": "off",
         "tools": [
           "read",
@@ -63,33 +63,33 @@
         "systemPrompt": "You are a research subagent. Use `ketch search`, `ketch scrape`, and `ketch docs` (via bash) for web searches and page fetching. Use `ctx_fetch_and_index` for fetching pages into the knowledge base, then `ctx_search` to query indexed content. Prefer primary sources and official docs. Produce a concise research brief in research.md. Gaps and sources required."
       },
       "planner": {
-        "model": "openrouter/poolside/laguna-s-2.1",
+        "model": "openrouter/deepseek/deepseek-v4-flash",
         "thinking": "off"
       },
       "worker": {
-        "model": "openrouter/poolside/laguna-s-2.1",
+        "model": "openrouter/deepseek/deepseek-v4-flash",
         "thinking": "off"
       },
       "reviewer": {
-        "model": "openrouter/poolside/laguna-s-2.1",
+        "model": "openrouter/deepseek/deepseek-v4-flash",
         "thinking": "off"
       },
       "oracle": {
-        "model": "openrouter/poolside/laguna-s-2.1",
+        "model": "openrouter/deepseek/deepseek-v4-flash",
         "thinking": "off"
       },
       "context-builder": {
-        "model": "openrouter/poolside/laguna-s-2.1",
+        "model": "openrouter/deepseek/deepseek-v4-flash",
         "thinking": "off"
       },
       "delegate": {
-        "model": "openrouter/poolside/laguna-s-2.1",
+        "model": "openrouter/deepseek/deepseek-v4-flash",
         "thinking": "off"
       }
     },
     "watchdog": {
       "children": {
-        "model": "openrouter/poolside/laguna-s-2.1"
+        "model": "openrouter/deepseek/deepseek-v4-flash"
       }
     }
   },
