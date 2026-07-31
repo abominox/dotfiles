@@ -70,8 +70,10 @@ backup_if_real () {
 install_eza_debian () {
   if ! command -v eza &> /dev/null; then
     sudo mkdir -p /etc/apt/keyrings
-    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+    if [ ! -f /etc/apt/keyrings/gierens.gpg ]; then
+      wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --batch --yes --dearmor -o /etc/apt/keyrings/gierens.gpg
+    fi
+    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list >/dev/null
     sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
     sudo apt update && sudo apt install -y eza
   fi
@@ -267,14 +269,9 @@ install_pi_config () {
     fi
   done
 
-  # Symlink extension configs from dotfiles
-  for ext_conf in "$DOTFILES_DIR/pi/extensions"/*/config.json; do
-    [ -f "$ext_conf" ] || continue
-    local ext_name
-    ext_name="$(basename "$(dirname "$ext_conf")")"
-    mkdir -p "$HOME/.pi/agent/extensions/$ext_name"
-    ln -fnvs "$ext_conf" "$HOME/.pi/agent/extensions/$ext_name/config.json"
-  done
+  # Config.json inside extension dirs is already covered by the directory symlink above.
+  # Individual files (like .ts scripts) are also symlinked by the loop above.
+  # No second pass needed.
 
   echo "pi configuration installed! (run 'pi' to complete setup/login)"
 }
