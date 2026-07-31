@@ -358,11 +358,7 @@ export default function (pi: ExtensionAPI) {
 			const mcpServers = discoverMcpServers();
 			const motd = formatMOTD(skills, extensions, mcpServers, ctx.cwd);
 
-			if (ctx.hasUI) {
-				ctx.ui.notify(motd, "info");
-			} else {
-				console.error(motd);
-			}
+			console.error(motd);
 		} catch (err) {
 			console.error("[pi-motd] Error generating MOTD:", err);
 		}
