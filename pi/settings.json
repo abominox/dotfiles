@@ -18,7 +18,6 @@
     },
     "git:github.com/DietrichGebert/ponytail",
     "npm:pi-qq",
-    "npm:@plannotator/pi-extension",
     "npm:pi-tool-display",
     "npm:pi-subagents",
     "npm:pi-intercom",
