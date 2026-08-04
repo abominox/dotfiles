@@ -3,7 +3,6 @@ background-opacity = 0.90
 # Font configuration
 font-family = JetBrainsMono Nerd Font
 font-size = 13
-font-thicken = 1
 
 # Shell configuration
 command = /opt/homebrew/bin/fish
