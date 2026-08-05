@@ -24,9 +24,11 @@ hi lineNr ctermbg=none
 
 "#### tmux Settings
 
-"#### Pathogen / Plugin Settings
-"# Enable Pathogen
-execute pathogen#infect()
+"#### Plugin Settings (vim-plug)
+call plug#begin('~/.vim/bundle')
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+call plug#end()
 
 "#### Misc
 " Auto-indent after carriage return on yaml files

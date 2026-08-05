@@ -30,3 +30,6 @@ scripts/systat_macos
 
 # tmux plugins (not tracked)
 .tmux/
+
+# vim plugins (fetched by vim-plug, not tracked)
+.vim/bundle/
