@@ -195,6 +195,7 @@ install_dotfiles () {
   done
 
   install_vim_plugins
+  install_yazi_config
   install_fish_config
   install_ghostty_config
   install_pi_config
@@ -220,6 +221,20 @@ install_vim_plugins () {
   else
     echo "  ⚠️  vim not found; skipping plugin install."
   fi
+}
+
+install_yazi_config () {
+  echo "Setting up yazi configuration..."
+
+  local yazi_config_dir="$HOME/.config/yazi"
+  mkdir -p "$yazi_config_dir"
+
+  for conf_file in "$DOTFILES_DIR"/yazi/*.toml; do
+    [ -f "$conf_file" ] || continue
+    ln -fnvs "$conf_file" "$yazi_config_dir/$(basename "$conf_file")"
+  done
+
+  echo "yazi configuration installed!"
 }
 
 install_fish_config () {
