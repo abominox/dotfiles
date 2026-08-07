@@ -194,12 +194,32 @@ install_dotfiles () {
     ln -fnvs "$DOTFILES_DIR"/"$dotfile" ~/"$dotfile"
   done
 
+  install_vim_plugins
   install_fish_config
   install_ghostty_config
   install_pi_config
   install_pi_node_wrapper
   install_wsl_config
   _install_systat
+}
+
+# Bootstrap vim-plug (if missing) and install vim plugins (e.g. airline statusline)
+install_vim_plugins () {
+  echo "Installing vim plugins via vim-plug..."
+
+  local plug_path="$HOME/.vim/autoload/plug.vim"
+  if [ ! -f "$plug_path" ]; then
+    curl -fsSLo "$plug_path" --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  fi
+
+  if command -v vim &> /dev/null; then
+    vim +'PlugInstall --sync' +qall &> /dev/null || \
+      echo "  ⚠️  PlugInstall failed. Run ':PlugInstall' manually inside vim."
+    echo "vim plugins installed!"
+  else
+    echo "  ⚠️  vim not found; skipping plugin install."
+  fi
 }
 
 install_fish_config () {
