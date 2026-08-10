@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# cron sanitizes PATH to /usr/bin:/bin, but the binary shells out to
+# netstat (in /usr/sbin) for network stats - without it, net stays 0.0
+export PATH="/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT_PATH="$SCRIPT_DIR/$(basename "${BASH_SOURCE[0]}")"
 
