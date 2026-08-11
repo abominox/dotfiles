@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.81.1",
+  "lastChangelogVersion": "0.84.1",
   "defaultProvider": "openrouter",
-  "defaultModel": "poolside/laguna-s-2.1",
+  "defaultModel": "~deepseek/deepseek-v4-flash-latest",
   "defaultThinkingLevel": "high",
   "terminal": {
     "showTerminalProgress": true
@@ -23,9 +23,9 @@
     "npm:pi-intercom",
     "npm:pi-simplify",
     "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:@ff-labs/pi-fff",
     "npm:context-mode",
-    "npm:pi-mcp-adapter"
+    "npm:pi-mcp-adapter",
+    "npm:@juicesharp/rpiv-todo"
   ],
   "extensions": [
     "./extensions/plan-mode"
@@ -93,8 +93,7 @@
     }
   },
   "enabledModels": [
-    "openrouter/deepseek/deepseek-v4-flash",
     "openrouter/deepseek/deepseek-v4-pro",
-    "openrouter/poolside/laguna-s-2.1"
+    "openrouter/~deepseek/deepseek-v4-flash-latest"
   ]
 }
