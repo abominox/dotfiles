@@ -1,4 +1,7 @@
+# Background opacity & blur
 background-opacity = 0.90
+background-blur = true
+background-blur-radius = 10
 
 # Font configuration
 font-family = JetBrainsMono Nerd Font
