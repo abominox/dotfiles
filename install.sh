@@ -153,7 +153,10 @@ install_devtools () {
       ;;
 
     debian)
-      sudo apt update && sudo apt install -y \
+      sudo apt update
+      # Remove stale fish-common if present; fish >= 4 ships these files in the main package
+      sudo apt remove -y fish-common 2>/dev/null || true
+      sudo apt install -y \
         "${common_packages[@]}" net-tools python3 python3-pip virtualenv
       install_nodejs_debian
       _install_pi
