@@ -156,7 +156,8 @@ install_devtools () {
       sudo apt update
       # Remove stale fish-common if present; fish >= 4 ships these files in the main package
       sudo apt remove -y fish-common 2>/dev/null || true
-      sudo apt install -y \
+      # --force-overwrite: fish 4.x re-owns files the old fish-common split out
+      sudo apt install -y -o Dpkg::Options::="--force-overwrite" \
         "${common_packages[@]}" net-tools python3 python3-pip virtualenv
       install_nodejs_debian
       _install_pi
