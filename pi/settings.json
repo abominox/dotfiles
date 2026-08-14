@@ -26,7 +26,8 @@
 	"npm:@ff-labs/pi-fff",
     "npm:context-mode",
     "npm:pi-mcp-adapter",
-    "npm:@quintinshaw/pi-dynamic-workflows"
+    "npm:@quintinshaw/pi-dynamic-workflows",
+    "npm:@juicesharp/rpiv-todo"
   ],
   "extensions": [
     "./extensions/plan-mode"
@@ -44,11 +45,11 @@
   "subagents": {
     "agentOverrides": {
       "scout": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
         "thinking": "off"
       },
       "researcher": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
         "thinking": "off",
         "tools": [
           "read",
@@ -63,33 +64,33 @@
         "systemPrompt": "You are a research subagent. Use `ketch search`, `ketch scrape`, and `ketch docs` (via bash) for web searches and page fetching. Use `ctx_fetch_and_index` for fetching pages into the knowledge base, then `ctx_search` to query indexed content. Prefer primary sources and official docs. Produce a concise research brief in research.md. Gaps and sources required."
       },
       "planner": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
         "thinking": "off"
       },
       "worker": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
         "thinking": "off"
       },
       "reviewer": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
         "thinking": "off"
       },
       "oracle": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
         "thinking": "off"
       },
       "context-builder": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
         "thinking": "off"
       },
       "delegate": {
-        "model": "openrouter/deepseek/deepseek-v4-flash",
+        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
         "thinking": "off"
       }
     },
     "watchdog": {
       "children": {
-        "model": "openrouter/deepseek/deepseek-v4-flash"
+        "model": "openrouter/deepseek/deepseek-v4-flash-latest"
       }
     }
   },
