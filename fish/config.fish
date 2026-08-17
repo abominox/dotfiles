@@ -47,3 +47,4 @@ set --export PATH $BUN_INSTALL/bin $PATH
 
 # Pi-FFF: replace built-in find/grep with FFF-powered versions
 set -x PI_FFF_MODE tools-and-ui
+set -gx FFF_ENABLE_HOME_SCAN 0
