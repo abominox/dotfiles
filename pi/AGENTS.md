@@ -5,6 +5,14 @@
 - **Never commit or push to git without asking the user first.** Always confirm before `git commit`, `git push`, or any operation that modifies remotes.
 - The user will explicitly tell you when they're ready to commit. Don't assume.
 
+## Sandbox / ctx_execute discipline
+
+- Always pass `timeout` on `ctx_execute` / `ctx_execute_file` / `ctx_batch_execute` (~60s for quick commands, up to 600s for builds/tests). No default timer exists — omitting it blocks until the host RPC deadline.
+- Never-exiting processes (dev servers, watch modes, tunnels): pass `background: true`. Never leave them blocking in the foreground.
+- Never run stdin-reading commands in the sandbox — there's no TTY, so they hang instead of erroring. If unsure, append `< /dev/null`.
+- `cmd &` is not a fix: the shell still waits on the child's pipes. Use `background: true` instead.
+- One-shot short commands: plain `bash` is fine. Reserve `ctx_execute` for output-squelching on large results.
+
 ## Subagent Delegation (REQUIRED)
 
 Context-mode and subagents add fixed upfront context cost but prevent context bloat. Use them aggressively:

@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.84.2",
-  "defaultProvider": "openrouter",
-  "defaultModel": "~deepseek/deepseek-v4-flash-latest",
+  "lastChangelogVersion": "0.84.4",
+  "defaultProvider": "z-ai",
+  "defaultModel": "glm-5.3-flash",
   "defaultThinkingLevel": "high",
   "terminal": {
     "showTerminalProgress": true
@@ -18,7 +18,6 @@
     },
     "git:github.com/DietrichGebert/ponytail",
     "npm:pi-qq",
-    "npm:pi-tool-display",
     "npm:pi-subagents",
     "npm:pi-intercom",
     "npm:pi-simplify",
@@ -96,7 +95,9 @@
     }
   },
   "enabledModels": [
-    "openrouter/z-ai/glm-5.2",
-    "openrouter/~deepseek/deepseek-v4-flash-latest"
-  ]
+    "openrouter/z-ai/glm-5.3-flash"
+  ],
+  "markdown": {
+    "mermaid": "streaming"
+  }
 }

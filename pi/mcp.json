@@ -1,13 +1,20 @@
 {
   "mcpServers": {
     "context-mode": {
-      "command": "context-mode"
+      "command": "context-mode",
+      "excludeTools": ["ctx_doctor", "ctx_upgrade", "ctx_insight", "ctx_purge", "ctx_stats"]
     },
     "mcpjungle": {
-      "url": "http://192.168.1.3:8080/mcp"
+      "url": "http://192.168.1.3:8080/mcp",
+      "includeTools": ["context7__*"]
     },
     "playwright": {
-      "url": "http://192.168.1.198:3102/mcp"
+      "url": "http://192.168.1.198:3102/mcp",
+      "includeTools": [
+        "browser_navigate", "browser_snapshot", "browser_click", "browser_type",
+        "browser_fill_form", "browser_press_key", "browser_take_screenshot",
+        "browser_console_messages", "browser_evaluate", "browser_tabs", "browser_close", "browser_wait_for"
+      ]
     }
   }
 }
