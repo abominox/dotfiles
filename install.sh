@@ -273,7 +273,57 @@ install_fish_config () {
   done
 
   echo "Fish configuration installed!"
-  echo "To set Fish as default shell, run: chsh -s \$(which fish)"
+  set_login_shell
+}
+
+# Make fish the login shell. Without this the config is installed but never
+# sourced, because the user still lands in bash.
+set_login_shell () {
+  local fish_bin user current
+  fish_bin="$(command -v fish 2>/dev/null)" || true
+  [ -n "$fish_bin" ] || return 0
+  user="${USER:-$(id -un)}"
+
+  if [[ "$PLATFORM" == "macos" ]]; then
+    current="$(dscl . -read "/Users/$user" UserShell 2>/dev/null | awk '{print $2}')"
+  else
+    current="$(getent passwd "$user" 2>/dev/null | cut -d: -f7)"
+  fi
+
+  if [ "$current" = "$fish_bin" ]; then
+    echo "Login shell is already $fish_bin."
+    return 0
+  fi
+
+  # chsh only accepts shells present in /etc/shells.
+  if [ -f /etc/shells ] && ! grep -qxF "$fish_bin" /etc/shells; then
+    if sudo -n true 2>/dev/null; then
+      echo "$fish_bin" | sudo tee -a /etc/shells > /dev/null
+    else
+      echo "  ⚠️  $fish_bin is not in /etc/shells."
+      echo "  Run: echo $fish_bin | sudo tee -a /etc/shells"
+      return 1
+    fi
+  fi
+
+  echo "Setting login shell to $fish_bin..."
+
+  if [[ "$PLATFORM" == "macos" ]]; then
+    # chsh changes your own entry and prompts for the account password.
+    if chsh -s "$fish_bin" "$user" < /dev/null 2>/dev/null; then
+      echo "Login shell updated. Log out and back in to use fish."
+      return 0
+    fi
+  elif sudo -n true 2>/dev/null && sudo usermod -s "$fish_bin" "$user"; then
+    echo "Login shell updated. Log out and back in to use fish."
+    return 0
+  elif chsh -s "$fish_bin" "$user" < /dev/null 2>/dev/null; then
+    echo "Login shell updated. Log out and back in to use fish."
+    return 0
+  fi
+
+  echo "  ⚠️  Could not change the login shell automatically."
+  echo "  Run this manually: chsh -s $fish_bin"
 }
 
 install_ghostty_config () {
