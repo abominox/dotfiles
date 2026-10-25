@@ -1,6 +1,11 @@
 #!/usr/bin/env fish
 ########## abominox's Fish shell configuration ##########
 
+# Docker CLI (Docker Desktop adds ~/.docker/bin on macOS; no-op on Linux)
+if test -d "$HOME/.docker/bin"
+    fish_add_path "$HOME/.docker/bin"
+end
+
 # This file is kept minimal - most config is in conf.d/
 # Files in conf.d/ are automatically loaded by Fish
 

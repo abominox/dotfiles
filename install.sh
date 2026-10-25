@@ -26,7 +26,6 @@ dotfiles=(
   .vim
   .vimrc
   .tmux.conf
-  .tmux
 )
 
 # Fish shell configuration directory
@@ -191,11 +190,14 @@ install_devtools () {
 install_dotfiles () {
   for dotfile in "${dotfiles[@]}"
   do
-    if [ -f "$dotfile" ]; then
+    local src="$HOME/$dotfile"
+    # Check ~/$dotfile (absolute), not $dotfile relative to the caller's CWD.
+    # Skip missing paths and existing symlinks; back up real files/dirs only.
+    if [ -e "$src" ] && [ ! -L "$src" ]; then
       mkdir -p ~/.dotfiles_old
-      cp -av ~/"$dotfile" ~/.dotfiles_old/"$dotfile"
+      cp -av "$src" ~/.dotfiles_old/"$dotfile"
     fi
-    ln -fnvs "$DOTFILES_DIR"/"$dotfile" ~/"$dotfile"
+    ln -fnvs "$DOTFILES_DIR"/"$dotfile" "$src"
   done
 
   install_vim_plugins
@@ -203,6 +205,7 @@ install_dotfiles () {
   install_fish_config
   install_ghostty_config
   install_pi_config
+  install_opencode_config
   install_pi_node_wrapper
   install_wsl_config
   _install_systat
@@ -313,6 +316,36 @@ install_pi_config () {
   # No second pass needed.
 
   echo "pi configuration installed! (run 'pi' to complete setup/login)"
+}
+
+install_opencode_config () {
+  echo "Setting up opencode configuration..."
+
+  local opencode_dir="$HOME/.config/opencode"
+  mkdir -p "$opencode_dir"
+
+  for f in opencode.json opencode.jsonc tui.json; do
+    if [ -f "$DOTFILES_DIR/opencode/$f" ]; then
+      backup_if_real "$opencode_dir/$f" opencode
+      ln -fnvs "$DOTFILES_DIR/opencode/$f" "$opencode_dir/$f"
+    fi
+  done
+
+  for dir in agents plugins themes; do
+    local src="$DOTFILES_DIR/opencode/$dir"
+    local dest="$opencode_dir/$dir"
+    [ -d "$src" ] || continue
+    # ln -fnv cannot replace a real directory: with -n it would create a nested
+    # symlink (dest/dir) instead. Move the real dir aside first, which doubles
+    # as the backup. (`backup_if_real` only handles files.)
+    if [ -d "$dest" ] && [ ! -L "$dest" ]; then
+      mkdir -p ~/.dotfiles_old/opencode
+      mv "$dest" ~/.dotfiles_old/opencode/"$dir"
+    fi
+    ln -fnvs "$src" "$dest"
+  done
+
+  echo "opencode configuration installed!"
 }
 
 install_pi_node_wrapper () {

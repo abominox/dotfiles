@@ -2,6 +2,8 @@
 *.swp
 *.swn
 *.swo
+*~
+*.bak
 
 # Pushbullet API Key #
 .pb_key
@@ -16,6 +18,23 @@ pi/sessions.json
 pi/pi-sub-bar-settings.json
 pi/bin/
 pi/git/
+
+# opencode (coding agent) - never commit secrets or machine-local state
+opencode/service.json
+opencode/cli.json
+opencode/auth.json
+opencode/crowbot-key
+opencode/context-mode/
+opencode/node_modules/
+opencode/package.json
+opencode/package-lock.json
+opencode/bun.lock
+
+# opencode project-local state (the nested .gitignore is itself ignored)
+.opencode/node_modules/
+.opencode/package.json
+.opencode/package-lock.json
+.opencode/bun.lock
 
 # Plan files
 PLAN.md
@@ -33,3 +52,16 @@ scripts/systat_macos
 
 # vim plugins (fetched by vim-plug, not tracked)
 .vim/bundle/
+
+# vim netrw history (machine-local, regenerates)
+.vim/.netrwhist
+
+# Claude Code machine-local settings
+.claude/settings.local.json
+
+# Python bytecode (pi web-requests skill)
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store

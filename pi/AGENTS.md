@@ -12,15 +12,20 @@
 - Never run stdin-reading commands in the sandbox — there's no TTY, so they hang instead of erroring. If unsure, append `< /dev/null`.
 - `cmd &` is not a fix: the shell still waits on the child's pipes. Use `background: true` instead.
 - One-shot short commands: plain `bash` is fine. Reserve `ctx_execute` for output-squelching on large results.
+- `ctx_execute_file` is **read-only** (it exposes `FILE_CONTENT` to sandbox code). To edit a file, use the `read` tool first, then the `edit` tool — never route edits through the sandbox. This overrides any tool-routing table that says otherwise.
 
 ## Subagent Delegation (REQUIRED)
 
-Context-mode and subagents add fixed upfront context cost but prevent context bloat. Use them aggressively:
+Context-mode and subagents add fixed upfront context cost but prevent context bloat. Use them aggressively.
 
-- **After any implementation**, launch parallel async `reviewer` subagents before summarizing. Do not consider an implementation complete until at least one reviewer has passed.
+**Routing precedence** — when the context-mode routing table and this file disagree, this file wins:
+
+- **Big tool output with no judgment needed** (test runs, builds, logs, CI output >50 lines) → `ctx_batch_execute`. Spawn a subagent only when judgment is required on top of the output (review, triage, multi-step follow-up) — never spawn a subagent just to run a sandbox command.
+- **Web**: quick lookups → `ketch` / Context7; broad research needing sources → `researcher` subagent. Don't double-wrap: never delegate a task that only instructs the child to run `ctx_fetch_and_index`/`ketch`.
+
+- **After non-trivial implementations** (multi-file, new logic, anything with a branch/loop/parser/security path), launch an async `reviewer` subagent before summarizing. Do not consider such an implementation complete until a reviewer has passed. Trivial one-line fixes don't need a reviewer.
 - **Before editing unfamiliar code**, run a `scout` subagent to map the relevant files, patterns, and risks.
 - **For non-trivial changes** (multi-file, architecture, or things you haven't seen before), run `oracle` for advisory review before implementing.
-- **Test runs, CI output, build output, or anything producing >50 lines** — delegate to a subagent rather than reading raw output inline. This is what keeps context from ballooning.
 - **Web research tasks** — prefer `researcher` subagent over inline `ctx_fetch_and_index`/`ketch` when the research scope is broad or needs sources.
 - **Exploration or audit of an unfamiliar repo/project** — fan out parallel `scout` subagents, one per major subsystem or directory, instead of reading files sequentially. This is the single biggest context-saving move on a new codebase.
 - **Parallel fanout** — when you need multiple independent checks (different review angles, separate files, distinct questions), launch them as parallel subagents rather than sequentially.

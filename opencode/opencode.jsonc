@@ -1,0 +1,222 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["./plugins/context-mode-v2"],
+  "websearch": {
+    "provider": "exa"
+  },
+  // Crowbot: put the 16-digit account number in ~/.config/opencode/crowbot-key (chmod 600).
+  "providers": {
+    "crowbot": {
+      "name": "Crowbot",
+      "package": "@opencode/ai/providers/openai-compatible",
+      "settings": {
+        "baseURL": "https://api.crowbot.sh/v1",
+        "apiKey": "{file:~/.config/opencode/crowbot-key}"
+      },
+      "compatibility": {
+        "reasoningField": "reasoning_content"
+      },
+      "models": {
+        "crow-2": {
+          "name": "GLM 5.3 [UNCENSORED]",
+          "limit": { "context": 1000000, "output": 32768 },
+          "cost": { "input": 3.5, "output": 5, "cache": { "read": 0.5 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "glm-5.3-flash-crow": {
+          "name": "GLM 5.3 Flash [UNCENSORED]",
+          "limit": { "context": 1048576, "output": 32768 },
+          "cost": { "input": 0.2, "output": 0.6, "cache": { "read": 0.1 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "gpt-6-sol": {
+          "name": "GPT 6 Sol",
+          "limit": { "context": 1048576, "output": 128000 },
+          "cost": { "input": 0.2, "output": 1, "cache": { "read": 0.02 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "gpt-6.1-sol": {
+          "name": "GPT 6.1 Sol",
+          "limit": { "context": 1048576, "output": 128000 },
+          "cost": { "input": 0.14, "output": 0.7, "cache": { "read": 0.007 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "claude-opus-5-5": {
+          "name": "Claude Opus 5.5",
+          "limit": { "context": 1048576, "output": 128000 },
+          "cost": { "input": 0.68, "output": 3.4, "cache": { "read": 0.034 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": false }
+          }
+        },
+        "mimo-2.6-flash-crow": {
+          "name": "MiMo 2.6 Flash [UNCENSORED]",
+          "limit": { "context": 1048576, "output": 32768 },
+          "cost": { "input": 1, "output": 1.5, "cache": { "read": 0.5 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "qwen-3.8-crow": {
+          "name": "Qwen 3.8 [UNCENSORED]",
+          "limit": { "context": 524288, "output": 32768 },
+          "cost": { "input": 0.85, "output": 2.55, "cache": { "read": 0.25 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "kimi-k3": {
+          "name": "Kimi K3",
+          "limit": { "context": 1048576, "output": 1048576 },
+          "cost": { "input": 0.27, "output": 1.35, "cache": { "read": 0.027 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "deepseek-v4.1-flash-1017-crow": {
+          "name": "DeepSeek V4.1 Flash 1017 [UNCENSORED]",
+          "limit": { "context": 1000000, "output": 32768 },
+          "cost": { "input": 0.19, "output": 0.65, "cache": { "read": 0.025 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "deepseek-v4.1-flash": {
+          "name": "DeepSeek V4.1 Flash 1017 [CHEAP]",
+          "limit": { "context": 1048576, "output": 128000 },
+          "cost": { "input": 0.03, "output": 0.12, "cache": { "read": 0.0006 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "gemini-3.8-flash": {
+          "name": "Gemini 3.8 Flash",
+          "limit": { "context": 1048576, "output": 65536 },
+          "cost": { "input": 0.0675, "output": 0.3375, "cache": { "read": 0.0067 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "gemini-4-argon": {
+          "name": "Gemini 4 Argon",
+          "limit": { "context": 1048576, "output": 65536 },
+          "cost": { "input": 0.3, "output": 1.5, "cache": { "read": 0.015 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        },
+        "odin": {
+          "name": "Odin",
+          "limit": { "context": 1048576, "output": 32768 },
+          "cost": { "input": 1.5, "output": 2.4, "cache": { "read": 0.035 } },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+            "temperature": true,
+            "reasoning": { "supported": true, "effort": ["low", "medium", "high", "xhigh", "max"] }
+          }
+        }
+      }
+    }
+  },
+  "mcp": {
+    "open-computer-use": {
+      "type": "local",
+      "command": ["open-computer-use", "mcp"],
+      "enabled": true
+    },
+    "mcp-obsidian": {
+      "type": "local",
+      "command": ["/Users/raxemremy/.local/bin/mcp-obsidian-wrapper"],
+      "enabled": true
+    },
+    "servers": {
+      "mtg": {
+        "type": "local",
+        "command": ["/opt/homebrew/bin/uvx", "--with", "selectolax<1", "mtg-mcp-server"]
+      },
+      "playwright": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@playwright/mcp@latest"
+        ]
+      },
+      "context7": {
+        "type": "local",
+        "command": ["npx", "-y", "@upstash/context7-mcp@latest"]
+      },
+      "rea": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "rea-agents@6.4.0",
+          "mcp"
+        ],
+        "environment": {
+          "GHIDRA_INSTALL_DIR": "/opt/homebrew/opt/ghidra/libexec",
+          "JAVA_HOME": "/opt/homebrew/Cellar/openjdk@21/21.0.12.1/libexec/openjdk.jdk/Contents/Home"
+        }
+      }
+    }
+  }
+}

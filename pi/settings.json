@@ -1,19 +1,20 @@
 {
-  "lastChangelogVersion": "0.84.4",
+  "lastChangelogVersion": "0.87.1",
   "defaultProvider": "z-ai",
   "defaultModel": "glm-5.3-flash",
   "defaultThinkingLevel": "high",
   "terminal": {
     "showTerminalProgress": true
   },
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "packages": [
     "npm:pi-wierd-statusline",
     {
       "source": "git:github.com/tmustier/pi-extensions",
       "extensions": [
         "!files-widget/**",
-        "!arcade/**"
+        "!arcade/**",
+        "!pi-ralph-wiggum/**"
       ]
     },
     "git:github.com/DietrichGebert/ponytail",
@@ -45,11 +46,11 @@
   "subagents": {
     "agentOverrides": {
       "scout": {
-        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
+        "model": "openrouter/deepseek/deepseek-v4-flash-0731",
         "thinking": "off"
       },
       "researcher": {
-        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
+        "model": "openrouter/deepseek/deepseek-v4-flash-0731",
         "thinking": "off",
         "tools": [
           "read",
@@ -64,33 +65,33 @@
         "systemPrompt": "You are a research subagent. Use `ketch search`, `ketch scrape`, and `ketch docs` (via bash) for web searches and page fetching. Use `ctx_fetch_and_index` for fetching pages into the knowledge base, then `ctx_search` to query indexed content. Prefer primary sources and official docs. Produce a concise research brief in research.md. Gaps and sources required."
       },
       "planner": {
-        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
+        "model": "openrouter/deepseek/deepseek-v4-flash-0731",
         "thinking": "off"
       },
       "worker": {
-        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
+        "model": "openrouter/deepseek/deepseek-v4-flash-0731",
         "thinking": "off"
       },
       "reviewer": {
-        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
-        "thinking": "off"
+        "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+        "thinking": "medium"
       },
       "oracle": {
-        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
-        "thinking": "off"
+        "model": "openrouter/z-ai/glm-5.3-flash",
+        "thinking": "high"
       },
       "context-builder": {
-        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
+        "model": "openrouter/deepseek/deepseek-v4-flash-0731",
         "thinking": "off"
       },
       "delegate": {
-        "model": "openrouter/deepseek/deepseek-v4-flash-latest",
+        "model": "openrouter/deepseek/deepseek-v4-flash-0731",
         "thinking": "off"
       }
     },
     "watchdog": {
       "children": {
-        "model": "openrouter/deepseek/deepseek-v4-flash-latest"
+        "model": "openrouter/deepseek/deepseek-v4-flash-0731"
       }
     }
   },
