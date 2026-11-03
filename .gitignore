@@ -21,7 +21,6 @@ pi/git/
 
 # opencode (coding agent) - never commit secrets or machine-local state
 opencode/service.json
-opencode/cli.json
 opencode/auth.json
 opencode/crowbot-key
 opencode/context-mode/

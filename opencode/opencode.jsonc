@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "default_agent": "orchestrator",
   "plugin": ["./plugins/context-mode-v2"],
   "websearch": {
     "provider": "exa"
@@ -177,39 +178,38 @@
     }
   },
   "mcp": {
+    // Startup budget for the initial initialize handshake. Servers launched via
+    // npx/uvx used to blow the 30s default whenever the machine slept mid-spawn.
+    "timeout": { "startup": 60000 },
     "open-computer-use": {
       "type": "local",
-      "command": ["open-computer-use", "mcp"],
-      "enabled": true
+      "command": ["open-computer-use", "mcp"]
     },
     "mcp-obsidian": {
       "type": "local",
-      "command": ["/Users/raxemremy/.local/bin/mcp-obsidian-wrapper"],
-      "enabled": true
+      "command": ["/Users/raxemremy/.local/bin/mcp-obsidian-wrapper"]
     },
     "servers": {
       "mtg": {
         "type": "local",
-        "command": ["/opt/homebrew/bin/uvx", "--with", "selectolax<1", "mtg-mcp-server"]
+        // pre-installed with: uv tool install --with 'selectolax<1' mtg-mcp-server
+        "command": ["/Users/raxemremy/.local/bin/mtg-mcp-server"]
       },
       "playwright": {
         "type": "local",
-        "command": [
-          "npx",
-          "-y",
-          "@playwright/mcp@latest"
-        ]
+        // pre-installed with: npm i -g @playwright/mcp
+        "command": ["/Users/raxemremy/.npm-global/bin/playwright-mcp"]
       },
       "context7": {
         "type": "local",
-        "command": ["npx", "-y", "@upstash/context7-mcp@latest"]
+        // pre-installed with: npm i -g @upstash/context7-mcp
+        "command": ["/Users/raxemremy/.npm-global/bin/context7-mcp"]
       },
       "rea": {
         "type": "local",
+        // pre-installed with: npm i -g rea-agents@6.4.0
         "command": [
-          "npx",
-          "-y",
-          "rea-agents@6.4.0",
+          "/Users/raxemremy/.npm-global/bin/rea",
           "mcp"
         ],
         "environment": {

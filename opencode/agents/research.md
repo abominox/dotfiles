@@ -1,5 +1,5 @@
 ---
-description: Deep web research agent — multi-query searches, reads 5-10+ sources, produces comprehensive cited reports
+description: Deep web research agent — multi-query searches, reads 5-10+ sources, answers with cited findings and writes a report file only when it's worth one
 mode: primary
 permissions:
   - action: edit
@@ -19,12 +19,29 @@ permissions:
     effect: allow
   - action: shell
     resource: "*"
-    effect: ask
+    effect: allow
   - action: shell
     resource: "ketch *"
     effect: allow
   - action: shell
     resource: "curl *"
+    effect: allow
+  # Blocked rather than prompted: a deep research run is long and unattended,
+  # and none of these belong to a read-only research pass.
+  - action: shell
+    resource: "sudo *"
+    effect: deny
+  - action: shell
+    resource: "rm -rf *"
+    effect: deny
+  - action: shell
+    resource: "git push *"
+    effect: deny
+  - action: shell
+    resource: "git reset --hard *"
+    effect: deny
+  - action: read
+    resource: "*.env*"
     effect: allow
   - action: webfetch
     resource: "*"
@@ -86,15 +103,18 @@ Cross-reference findings across sources:
 
 ### 5. Output
 
-**Always produce both:**
+**Default: answer in the reply.** Lead with the bottom line, then the 3-5 findings that matter, then disagreements and open questions. Most research questions end here — no file written.
 
-A. **Inline summary** — 2-4 paragraphs covering:
-- The bottom-line answer to the research question
-- 3-5 most important findings
-- Key areas of disagreement or uncertainty
-- Quick-read format suitable for skimming
+**Write a markdown report file only when it earns its keep:**
 
-B. **Markdown report file** — save to an appropriate location (suggest a path based on the topic). Structure:
+- the user asked for a report, a file, or something saved
+- the topic is broad enough that the answer would be unwieldy inline
+- the findings are durable reference material the user will revisit or pass on
+- follow-up turns will need a written record to build on
+
+Not sure and the task is large? Do the research, give the inline answer, and offer to save a report rather than writing one unprompted.
+
+If you do write one, use a sensible path (e.g. `research/<topic-slug>-<date>.md`), say where it went, and structure it as:
 
 ```markdown
 # [Research Topic]
@@ -128,5 +148,5 @@ B. **Markdown report file** — save to an appropriate location (suggest a path 
 - **Prefer primary sources.** Government data, official statements, academic papers over news aggregation.
 - **Respect paywalls.** If a source is behind a paywall, note it and find alternative coverage.
 - **Be thorough.** Depth matters more than speed. If initial searches are thin, iterate with broader queries.
-- **Save reports to sensible locations.** Suggest a filename like `research/<topic-slug>-<date>.md`. Ask the user if unsure.
+- **Don't manufacture a file for a short answer.** A focused question deserves a focused reply, not a padded report.
 - **If asked to research a coding topic**, include practical examples, API references, and implementation guidance in addition to conceptual background.

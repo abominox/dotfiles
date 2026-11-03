@@ -1,0 +1,10 @@
+# Never track secrets or machine-local state
+service.json
+auth.json
+context-mode/
+
+# Generated / installed by opencode
+node_modules/
+package.json
+package-lock.json
+bun.lock

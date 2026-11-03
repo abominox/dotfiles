@@ -1,0 +1,38 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "theme": {
+    "name": "opencode"
+  },
+  "plugins": [
+    {
+      "package": "@npv12/opencode-recap",
+      "options": {
+        "providerID": "crowbot",
+        "modelID": "deepseek-v4.1-flash"
+      }
+    },
+    "-opencode.sidebar.context",
+    "./plugins/context-progress",
+    "./plugins/session-tokens"
+  ],
+  "diffs": {
+    "wrap": "word"
+  },
+  "session": {
+    "sidebar": "auto",
+    "scrollbar": false,
+    "thinking": "hide",
+    "image_preview": true
+  },
+  "animations": true,
+  "tabs": {
+    "mode": "off"
+  },
+  "prompt": {
+    "image_preview": true
+  },
+  "attention": {
+    "notifications": true,
+    "sound": true
+  }
+}

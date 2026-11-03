@@ -374,14 +374,17 @@ install_opencode_config () {
   local opencode_dir="$HOME/.config/opencode"
   mkdir -p "$opencode_dir"
 
-  for f in opencode.json opencode.jsonc tui.json; do
+  # cli.json holds no secrets and carries the TUI plugin list, so it is
+  # versioned: TUI plugin parts load only from cli.json, never from
+  # opencode.json(c), so leaving it out loses the whole sidebar setup.
+  for f in opencode.json opencode.jsonc tui.json cli.json AGENTS.md; do
     if [ -f "$DOTFILES_DIR/opencode/$f" ]; then
       backup_if_real "$opencode_dir/$f" opencode
       ln -fnvs "$DOTFILES_DIR/opencode/$f" "$opencode_dir/$f"
     fi
   done
 
-  for dir in agents plugins themes; do
+  for dir in agents plugins themes skills; do
     local src="$DOTFILES_DIR/opencode/$dir"
     local dest="$opencode_dir/$dir"
     [ -d "$src" ] || continue
