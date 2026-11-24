@@ -327,16 +327,23 @@ set_login_shell () {
 }
 
 install_ghostty_config () {
-  if [[ "$PLATFORM" != "macos" ]]; then
-    return 0
+  local ghostty_dir
+  if [[ "$PLATFORM" == "macos" ]]; then
+    ghostty_dir="$HOME/Library/Application Support/com.mitchellh.ghostty"
+  else
+    ghostty_dir="$HOME/.config/ghostty"
   fi
 
-  local ghostty_dir="$HOME/Library/Application Support/com.mitchellh.ghostty"
   echo "Setting up Ghostty configuration..."
-
   mkdir -p "$ghostty_dir"
-  backup_if_real "$ghostty_dir/config" ghostty
-  ln -fnvs "$DOTFILES_DIR/ghostty/config" "$ghostty_dir/config"
+  # Ghostty >= 1.3 prefers `config.ghostty` and only falls back to legacy
+  # `config` if it doesn't exist. Link the preferred name and remove any
+  # stale legacy symlink so there are no competing config files.
+  backup_if_real "$ghostty_dir/config.ghostty" ghostty
+  ln -fnvs "$DOTFILES_DIR/ghostty/config.ghostty" "$ghostty_dir/config.ghostty"
+  if [[ -L "$ghostty_dir/config" ]]; then
+    rm -f "$ghostty_dir/config"
+  fi
   echo "Ghostty configuration installed!"
 }
 install_pi_config () {

@@ -1,0 +1,29 @@
+# Background opacity & blur
+# Blur works on macOS and KDE Plasma (Wayland via ext-background-effect-v1).
+# On other Linux compositors you'll get transparency without blur.
+background-opacity = 0.90
+background-blur = true
+background-blur-radius = 10
+
+# Font configuration
+font-family = JetBrainsMono Nerd Font
+font-size = 13
+
+# Shell configuration (resolved via $PATH: works on macOS + Linux)
+command = fish
+
+# Cursor configuration
+cursor-style = block
+cursor-style-blink = false
+
+# Keybinds
+# `super` is Command on macOS (Win key on Linux); `ctrl+shift` is the Linux
+# equivalent so both platforms work from one shared file.
+keybind = super+t=new_tab
+keybind = ctrl+shift+t=new_tab
+keybind = super+left=previous_tab
+keybind = ctrl+shift+left=previous_tab
+keybind = super+right=next_tab
+keybind = ctrl+shift+right=next_tab
+keybind = super+r=prompt_tab_title
+keybind = ctrl+shift+r=prompt_tab_title
